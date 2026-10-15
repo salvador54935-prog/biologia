@@ -1,0 +1,101 @@
+import { ContinentId, ContinentInfo } from '../types';
+
+export const CONTINENTS_INFO: Record<ContinentId, ContinentInfo> = {
+  Europa: {
+    id: 'Europa',
+    nombre: 'Europa',
+    descripcion: 'Cuna de la taxonomía linneana, la teoría celular, la evolución por selección natural, la microbiología moderna y las bases de la genética.',
+    color: '#38bdf8', // Cyan glacial
+    colorBorder: 'rgba(56, 189, 248, 0.4)',
+    colorHover: 'rgba(56, 189, 248, 0.25)',
+    centro: [50.0, 15.0],
+    paises: [
+      'Alemania',
+      'Austria',
+      'Bélgica',
+      'Chequia',
+      'Dinamarca',
+      'España',
+      'Francia',
+      'Grecia',
+      'Hungría',
+      'Italia',
+      'Países Bajos',
+      'Reino Unido',
+      'Rusia',
+      'Suecia',
+      'Suiza',
+      'Ucrania',
+    ],
+  },
+  América: {
+    id: 'América',
+    nombre: 'América',
+    descripcion: 'Pioneros en genética cromosómica, biología molecular de la doble hélice, biotecnología recombinante, medicina preventiva y ecología moderna.',
+    color: '#f59e0b', // Ocre dorado cálido (como en la referencia)
+    colorBorder: 'rgba(245, 158, 11, 0.4)',
+    colorHover: 'rgba(245, 158, 11, 0.25)',
+    centro: [15.0, -85.0],
+    paises: [
+      'Argentina',
+      'Brasil',
+      'Canadá',
+      'Chile',
+      'Colombia',
+      'Costa Rica',
+      'Cuba',
+      'Estados Unidos',
+      'México',
+      'Perú',
+      'Venezuela',
+    ],
+  },
+  Asia: {
+    id: 'Asia',
+    nombre: 'Asia',
+    descripcion: 'Milenarias tradiciones de medicina botánica, cirugía clásica, agronomía de alto rendimiento, bacteriología y biología celular estructural.',
+    color: '#a855f7', // Amatista / violeta suave
+    colorBorder: 'rgba(168, 85, 247, 0.4)',
+    colorHover: 'rgba(168, 85, 247, 0.25)',
+    centro: [35.0, 95.0],
+    paises: [
+      'China',
+      'India',
+      'Irak',
+      'Irán',
+      'Israel',
+      'Japón',
+      'Siria',
+      'Turquía',
+      'Uzbekistán',
+    ],
+  },
+  África: {
+    id: 'África',
+    nombre: 'África',
+    descripcion: 'Cuna del género humano y los hallazgos fósiles fundacionales de la paleoantropología, además de avances clave en cirugía cardíaca y virología.',
+    color: '#22c55e', // Verde salvia / esmeralda (como en la referencia)
+    colorBorder: 'rgba(34, 197, 94, 0.4)',
+    colorHover: 'rgba(34, 197, 94, 0.25)',
+    centro: [0.0, 22.0],
+    paises: [
+      'Egipto',
+      'Etiopía',
+      'Kenia',
+      'Sudáfrica',
+    ],
+  },
+  Oceanía: {
+    id: 'Oceanía',
+    nombre: 'Oceanía',
+    descripcion: 'Aportes decisivos en neurofisiología, desarrollo terapéutico de antibióticos, inmunología clonal y erradicación de enfermedades epidémicas.',
+    color: '#f43f5e', // Rosa coral elegante
+    colorBorder: 'rgba(244, 63, 94, 0.4)',
+    colorHover: 'rgba(244, 63, 94, 0.25)',
+    centro: [-25.0, 135.0],
+    paises: [
+      'Australia',
+      'Nueva Zelanda',
+    ],
+  },
+};

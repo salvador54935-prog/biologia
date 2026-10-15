@@ -1,0 +1,6 @@
+{
+  "name": "BIOATLAS — Atlas Interactivo de la Historia de la Biología",
+  "description": "Exploración interactiva y rigurosa de 209 científicos y descubrimientos biológicos a través de 5 continentes desde 2650 a.C. hasta 2012.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
