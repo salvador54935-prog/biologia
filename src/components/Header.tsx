@@ -19,18 +19,18 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Zone 1: Brand Wordmark (Single text element) */}
         <button
           onClick={() => onSelectTab('inicio')}
-          className="flex items-center gap-2.5 text-left text-white group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 rounded-md py-1"
-          aria-label="Ir a inicio de BIOATLAS"
+          className="flex items-center gap-2.5 text-left text-white group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-md py-1"
+          aria-label="Ir a inicio de VITA MUNDI"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-sm shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-shadow">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700 flex items-center justify-center text-white shadow-sm shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-shadow">
             <Globe2 className="w-5 h-5 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-base font-bold tracking-tight text-white whitespace-nowrap">
-              BIOATLAS
+            <span className="text-base font-bold tracking-tight text-white whitespace-nowrap font-serif">
+              VITA MUNDI
             </span>
-            <span className="text-[10px] text-cyan-300/80 uppercase tracking-widest font-mono">
-              Historia de la biología
+            <span className="text-[10px] text-emerald-300/90 uppercase tracking-widest font-mono">
+              Atlas de la Historia Biológica
             </span>
           </div>
         </button>
@@ -42,9 +42,9 @@ export const Header: React.FC<HeaderProps> = ({
         >
           <button
             onClick={() => onSelectTab('inicio')}
-            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded ${
+            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 rounded ${
               activeTab === 'inicio'
-                ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400'
+                ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400'
                 : 'text-slate-300 hover:text-white'
             }`}
           >
@@ -52,9 +52,9 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onSelectTab('continentes')}
-            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded ${
+            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 rounded ${
               activeTab === 'continentes'
-                ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400'
+                ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400'
                 : 'text-slate-300 hover:text-white'
             }`}
           >
@@ -62,9 +62,9 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onSelectTab('linea-tiempo')}
-            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded ${
+            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 rounded ${
               activeTab === 'linea-tiempo'
-                ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400'
+                ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400'
                 : 'text-slate-300 hover:text-white'
             }`}
           >
@@ -72,19 +72,19 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
           <button
             onClick={() => onSelectTab('cientificos')}
-            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded ${
+            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 rounded ${
               activeTab === 'cientificos'
-                ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400'
+                ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400'
                 : 'text-slate-300 hover:text-white'
             }`}
           >
-            Científicos (209)
+            Científicos (459)
           </button>
           <button
             onClick={() => onSelectTab('acerca')}
-            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-400 rounded ${
+            className={`whitespace-nowrap transition-colors py-1 cursor-pointer focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400 rounded ${
               activeTab === 'acerca'
-                ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400'
+                ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400'
                 : 'text-slate-300 hover:text-white'
             }`}
           >

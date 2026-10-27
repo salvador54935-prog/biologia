@@ -53,8 +53,8 @@ export const CountryModal: React.FC<CountryModalProps> = ({
             </h2>
             <p className="text-xs text-slate-400 mt-1">
               {hasRecords
-                ? `${scientists.length} científico${scientists.length > 1 ? 's' : ''} registrado${scientists.length > 1 ? 's' : ''} en el PDF 'Línea del tiempo de la biología'`
-                : 'Sin registros específicos en la delimitación del PDF'}
+                ? `${scientists.length} científico${scientists.length > 1 ? 's' : ''} registrado${scientists.length > 1 ? 's' : ''} (${scientists.filter(s => !s.esComplementario).length} del PDF + ${scientists.filter(s => s.esComplementario).length} ampliación)`
+                : 'Sin registros específicos en la delimitación bibliográfica'}
             </p>
           </div>
 
@@ -72,11 +72,11 @@ export const CountryModal: React.FC<CountryModalProps> = ({
           {!hasRecords ? (
             <div className="p-6 bg-slate-900 rounded-xl border border-slate-800 text-center space-y-3">
               <p className="text-sm text-slate-200 font-medium">
-                No hay registros para este país en el documento PDF original.
+                No hay registros para este país en la colección actual del atlas.
               </p>
               <p className="text-xs text-slate-400 max-w-lg mx-auto leading-relaxed">
-                El documento original contempló una selección de 209 científicos divididos en cinco continentes.
-                La ausencia de una nación en esta lista no implica que no haya habido contribuciones científicas históricas en su territorio, sino que responde a la delimitación bibliográfica de la fuente consultada.
+                El atlas comprende 459 científicos documentados (209 procedentes del documento histórico 'Línea del tiempo de la biología' y 250 de la ampliación complementaria).
+                La ausencia de una nación en esta lista no implica que no haya habido contribuciones científicas históricas en su territorio, sino que responde a la delimitación bibliográfica de las fuentes consultadas.
               </p>
             </div>
           ) : (
@@ -84,7 +84,7 @@ export const CountryModal: React.FC<CountryModalProps> = ({
               {/* Summary Stats Strip */}
               <div className="grid grid-cols-3 gap-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-xs">
                 <div>
-                  <span className="text-[10px] uppercase font-mono text-slate-400 block">Total en PDF</span>
+                  <span className="text-[10px] uppercase font-mono text-slate-400 block">Total Registrados</span>
                   <span className="text-xl font-mono font-bold text-white">{scientists.length}</span>
                 </div>
                 <div>
@@ -107,7 +107,7 @@ export const CountryModal: React.FC<CountryModalProps> = ({
                   <select
                     value={selectedField}
                     onChange={e => setSelectedField(e.target.value)}
-                    className="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
+                    className="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-cyan-500 cursor-pointer"
                   >
                     <option value="Todos">Todos ({scientists.length})</option>
                     {fieldsInCountry.map(f => (
@@ -129,20 +129,35 @@ export const CountryModal: React.FC<CountryModalProps> = ({
                     className="p-4 bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/40 rounded-xl transition-all cursor-pointer group"
                   >
                     <div className="flex items-baseline justify-between gap-2">
-                      <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-                        {s.nombre}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                          {s.nombre}
+                        </h3>
+                        {s.esPionera && (
+                          <span className="px-1.5 py-0.2 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[9px]">
+                            Pionera
+                          </span>
+                        )}
+                      </div>
                       <span className="text-xs font-mono font-bold text-amber-400">
                         {s.aportePeriodo}
                       </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400 mt-1">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400 mt-1">
                       <span className="text-cyan-400 font-medium">{s.campo}</span>
                       <span>·</span>
                       <span>Vida: {s.vida}</span>
                       <span>·</span>
-                      <span>Pág. {s.paginaPDF} del PDF</span>
+                      {s.paginaPDF ? (
+                        <span className="text-blue-300 bg-blue-950/60 px-1.5 py-0.5 rounded text-[10px] font-mono">
+                          PDF Pág. {s.paginaPDF}
+                        </span>
+                      ) : (
+                        <span className="text-amber-300 bg-amber-950/60 px-1.5 py-0.5 rounded text-[10px] font-mono">
+                          Ampliación
+                        </span>
+                      )}
                     </div>
 
                     <p className="text-xs text-slate-300 mt-2 leading-relaxed">

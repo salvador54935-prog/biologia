@@ -20,7 +20,7 @@ export const StatsBar: React.FC = () => {
               <span className="text-xs text-cyan-400 font-mono">registros</span>
             </div>
             <span className="text-[11px] text-slate-400 mt-1">
-              Fidelidad exacta al PDF
+              209 del PDF + 250 ampliación
             </span>
           </div>
 

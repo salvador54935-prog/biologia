@@ -35,12 +35,14 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [viewMode, setViewMode] = useState<'timeline' | 'table'>('timeline');
 
+  const [collectionFilter, setCollectionFilter] = useState<'all' | 'pdf' | 'supplementary' | 'pioneers'>('all');
+
   const allFields = useMemo(() => getAllFields(), []);
   const allCountries = useMemo(() => getAllCountries(), []);
 
   // Defined historical eras for zooming and jump filtering
   const ERAS = [
-    { id: 'Todos', label: 'Toda la historia (209)', range: 'c. 2650 a. C. — 2012' },
+    { id: 'Todos', label: `Toda la historia (${SCIENTISTS_DATA.length})`, range: 'c. 2650 a. C. — 2012' },
     { id: 'antiguedad', label: 'Antigüedad', range: 'c. 2650 a. C. — 500 d. C.' },
     { id: 'medieval', label: 'Medievo e Islam Clásico', range: '500 — 1500' },
     { id: 'moderna', label: 'Renacimiento e Ilustración', range: '1501 — 1800' },
@@ -57,8 +59,13 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
       pais: selectedCountry,
       campo: selectedField,
       periodo: selectedPeriod,
+      soloPDF: collectionFilter === 'pdf',
+      soloAmpliacion: collectionFilter === 'supplementary',
+      soloPioneras: collectionFilter === 'pioneers',
     });
-  }, [searchQuery, selectedContinent, selectedCountry, selectedField, selectedPeriod]);
+  }, [searchQuery, selectedContinent, selectedCountry, selectedField, selectedPeriod, collectionFilter]);
+
+  // Group filtered scientists by century / era for visual markers
 
   // Group filtered scientists by century / era for visual markers
   const getCenturyMarker = (year: number) => {
@@ -91,7 +98,7 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
               Línea del Tiempo Global de la Biología
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-              Los 209 científicos documentados en estricto orden cronológico por el año de su descubrimiento o aporte.
+              Los {SCIENTISTS_DATA.length} científicos documentados (209 del PDF original + 250 de la colección complementaria) en estricto orden cronológico.
             </p>
           </div>
 
@@ -121,6 +128,52 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Collection toggle chips */}
+      <div className="flex flex-wrap items-center gap-2">
+        <button
+          onClick={() => setCollectionFilter('all')}
+          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+            collectionFilter === 'all'
+              ? 'bg-cyan-500 text-slate-950 font-bold'
+              : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
+          }`}
+        >
+          Todos ({SCIENTISTS_DATA.length})
+        </button>
+        <button
+          onClick={() => setCollectionFilter('pdf')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+            collectionFilter === 'pdf'
+              ? 'bg-blue-600 text-white font-bold'
+              : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
+          }`}
+        >
+          <BookOpen className="w-3 h-3 text-blue-400" />
+          <span>PDF Original (209)</span>
+        </button>
+        <button
+          onClick={() => setCollectionFilter('supplementary')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+            collectionFilter === 'supplementary'
+              ? 'bg-amber-500 text-slate-950 font-bold'
+              : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
+          }`}
+        >
+          <Sparkles className="w-3 h-3 text-amber-400" />
+          <span>Ampliación Histórica (250)</span>
+        </button>
+        <button
+          onClick={() => setCollectionFilter('pioneers')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+            collectionFilter === 'pioneers'
+              ? 'bg-rose-500 text-white font-bold'
+              : 'bg-slate-900/90 text-slate-300 hover:bg-slate-800 border border-slate-800'
+          }`}
+        >
+          <span>Pioneras de la Ciencia</span>
+        </button>
       </div>
 
       {/* Historical Era Zoom Tabs */}
@@ -290,7 +343,20 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
                           <span>·</span>
                           <span className="text-slate-300">{s.pais}</span>
                           <span>·</span>
-                          <span>Pág. {s.paginaPDF}</span>
+                          {s.esPionera && (
+                            <span className="px-1.5 py-0.5 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[10px] font-sans font-semibold">
+                              Pionera
+                            </span>
+                          )}
+                          {s.paginaPDF ? (
+                            <span className="px-1.5 py-0.5 rounded bg-blue-950/70 border border-blue-700/50 text-blue-300 text-[10px]">
+                              PDF Pág. {s.paginaPDF}
+                            </span>
+                          ) : (
+                            <span className="px-1.5 py-0.5 rounded bg-amber-950/60 border border-amber-600/50 text-amber-300 text-[10px]">
+                              Ampliación
+                            </span>
+                          )}
                         </div>
                       </div>
 
@@ -330,7 +396,7 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
                 <th className="py-3 px-4">Continente</th>
                 <th className="py-3 px-4">Campo</th>
                 <th className="py-3 px-4">Descripción del Aporte</th>
-                <th className="py-3 px-4 text-center">Pág.</th>
+                <th className="py-3 px-4 text-center">Fuente</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/60 text-slate-200">
@@ -344,7 +410,14 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
                     {s.aportePeriodo}
                   </td>
                   <td className="py-3 px-4 font-bold text-white group-hover:text-cyan-300 whitespace-nowrap">
-                    {s.nombre}
+                    <div className="flex items-center gap-2">
+                      <span>{s.nombre}</span>
+                      {s.esPionera && (
+                        <span className="px-1.5 py-0.2 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[9px] font-normal">
+                          Pionera
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="py-3 px-4 whitespace-nowrap text-slate-300">
                     {s.pais}
@@ -358,8 +431,16 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
                   <td className="py-3 px-4 max-w-md text-slate-300 leading-snug">
                     {s.aporteDescripcion}
                   </td>
-                  <td className="py-3 px-4 font-mono text-slate-400 text-center">
-                    {s.paginaPDF}
+                  <td className="py-3 px-4 font-mono text-center whitespace-nowrap">
+                    {s.paginaPDF ? (
+                      <span className="px-2 py-0.5 rounded bg-blue-950 border border-blue-700/60 text-blue-300 text-[10px]">
+                        PDF Pág. {s.paginaPDF}
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 rounded bg-amber-950 border border-amber-600/60 text-amber-300 text-[10px]">
+                        Ampliación
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}

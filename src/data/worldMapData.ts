@@ -35,8 +35,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       561.7,
       257
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "732",
@@ -59,7 +59,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       292.3,
       78.7
     ],
-    "scientistCount": 3,
+    "scientistCount": 8,
     "hasRecords": true
   },
   {
@@ -71,7 +71,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       250.5,
       119.5
     ],
-    "scientistCount": 38,
+    "scientistCount": 59,
     "hasRecords": true
   },
   {
@@ -95,7 +95,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       616.4,
       125.9
     ],
-    "scientistCount": 1,
+    "scientistCount": 2,
     "hasRecords": true
   },
   {
@@ -131,7 +131,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       336.4,
       336
     ],
-    "scientistCount": 3,
+    "scientistCount": 9,
     "hasRecords": true
   },
   {
@@ -143,7 +143,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       324.9,
       344.5
     ],
-    "scientistCount": 2,
+    "scientistCount": 5,
     "hasRecords": true
   },
   {
@@ -179,7 +179,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       569,
       238.4
     ],
-    "scientistCount": 4,
+    "scientistCount": 9,
     "hasRecords": true
   },
   {
@@ -203,8 +203,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       523.3,
       198.2
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "332",
@@ -239,7 +239,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       662.7,
       75.6
     ],
-    "scientistCount": 4,
+    "scientistCount": 5,
     "hasRecords": true
   },
   {
@@ -275,8 +275,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       506.3,
       59.5
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "304",
@@ -323,7 +323,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       536.7,
       319.1
     ],
-    "scientistCount": 5,
+    "scientistCount": 13,
     "hasRecords": true
   },
   {
@@ -347,7 +347,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       245.4,
       174.7
     ],
-    "scientistCount": 1,
+    "scientistCount": 6,
     "hasRecords": true
   },
   {
@@ -359,8 +359,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       354.9,
       329.6
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 2,
+    "hasRecords": true
   },
   {
     "id": "076",
@@ -371,7 +371,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       356,
       269.3
     ],
-    "scientistCount": 3,
+    "scientistCount": 8,
     "hasRecords": true
   },
   {
@@ -383,8 +383,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       329.8,
       285.6
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 2,
+    "hasRecords": true
   },
   {
     "id": "604",
@@ -395,7 +395,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       305.6,
       265
     ],
-    "scientistCount": 1,
+    "scientistCount": 5,
     "hasRecords": true
   },
   {
@@ -407,7 +407,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       308.1,
       229.3
     ],
-    "scientistCount": 1,
+    "scientistCount": 3,
     "hasRecords": true
   },
   {
@@ -431,7 +431,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       282.6,
       212.8
     ],
-    "scientistCount": 1,
+    "scientistCount": 2,
     "hasRecords": true
   },
   {
@@ -455,8 +455,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       278.1,
       199.6
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "222",
@@ -503,7 +503,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       324.6,
       220.5
     ],
-    "scientistCount": 1,
+    "scientistCount": 4,
     "hasRecords": true
   },
   {
@@ -539,7 +539,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       471.1,
       125.6
     ],
-    "scientistCount": 12,
+    "scientistCount": 23,
     "hasRecords": true
   },
   {
@@ -551,8 +551,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       295.4,
       244
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 3,
+    "hasRecords": true
   },
   {
     "id": "630",
@@ -587,7 +587,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       298.1,
       180.9
     ],
-    "scientistCount": 1,
+    "scientistCount": 3,
     "hasRecords": true
   },
   {
@@ -635,8 +635,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       446.2,
       200.9
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 3,
+    "hasRecords": true
   },
   {
     "id": "466",
@@ -647,8 +647,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       471.7,
       192.9
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "478",
@@ -695,8 +695,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       498.7,
       214
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 3,
+    "hasRecords": true
   },
   {
     "id": "120",
@@ -707,8 +707,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       509.7,
       224.6
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "768",
@@ -803,8 +803,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       475.8,
       206.4
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "140",
@@ -935,7 +935,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       558.6,
       153.9
     ],
-    "scientistCount": 2,
+    "scientistCount": 4,
     "hasRecords": true
   },
   {
@@ -995,8 +995,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       501.2,
       146.6
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "012",
@@ -1175,8 +1175,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       761.8,
       140.4
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 3,
+    "hasRecords": true
   },
   {
     "id": "496",
@@ -1199,7 +1199,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       662.6,
       177.5
     ],
-    "scientistCount": 8,
+    "scientistCount": 19,
     "hasRecords": true
   },
   {
@@ -1247,8 +1247,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       636.3,
       158.2
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "004",
@@ -1307,7 +1307,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       601.5,
       151.2
     ],
-    "scientistCount": 1,
+    "scientistCount": 3,
     "hasRecords": true
   },
   {
@@ -1343,7 +1343,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       511,
       71.8
     ],
-    "scientistCount": 2,
+    "scientistCount": 4,
     "hasRecords": true
   },
   {
@@ -1379,8 +1379,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       519.4,
       98.2
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "040",
@@ -1391,7 +1391,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       509.4,
       110.1
     ],
-    "scientistCount": 6,
+    "scientistCount": 8,
     "hasRecords": true
   },
   {
@@ -1427,8 +1427,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       532.7,
       114.8
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "440",
@@ -1463,8 +1463,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       530.3,
       81.5
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "276",
@@ -1475,7 +1475,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       501.1,
       100.9
     ],
-    "scientistCount": 19,
+    "scientistCount": 34,
     "hasRecords": true
   },
   {
@@ -1547,7 +1547,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       497.1,
       112.3
     ],
-    "scientistCount": 2,
+    "scientistCount": 6,
     "hasRecords": true
   },
   {
@@ -1559,8 +1559,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       492.3,
       104.4
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "056",
@@ -1571,7 +1571,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       489.4,
       102
     ],
-    "scientistCount": 1,
+    "scientistCount": 5,
     "hasRecords": true
   },
   {
@@ -1583,7 +1583,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       491.2,
       97.7
     ],
-    "scientistCount": 5,
+    "scientistCount": 7,
     "hasRecords": true
   },
   {
@@ -1607,7 +1607,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       472.1,
       129.7
     ],
-    "scientistCount": 7,
+    "scientistCount": 9,
     "hasRecords": true
   },
   {
@@ -1655,7 +1655,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       852.5,
       353.7
     ],
-    "scientistCount": 1,
+    "scientistCount": 9,
     "hasRecords": true
   },
   {
@@ -1667,7 +1667,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       786.2,
       310
     ],
-    "scientistCount": 10,
+    "scientistCount": 32,
     "hasRecords": true
   },
   {
@@ -1691,7 +1691,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       708.1,
       140.8
     ],
-    "scientistCount": 3,
+    "scientistCount": 13,
     "hasRecords": true
   },
   {
@@ -1715,7 +1715,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       506.1,
       123.3
     ],
-    "scientistCount": 7,
+    "scientistCount": 16,
     "hasRecords": true
   },
   {
@@ -1727,7 +1727,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       499.6,
       88
     ],
-    "scientistCount": 1,
+    "scientistCount": 5,
     "hasRecords": true
   },
   {
@@ -1739,7 +1739,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       474.3,
       93.7
     ],
-    "scientistCount": 23,
+    "scientistCount": 36,
     "hasRecords": true
   },
   {
@@ -1787,8 +1787,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       767.5,
       207.9
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 4,
+    "hasRecords": true
   },
   {
     "id": "458",
@@ -1859,7 +1859,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       511.7,
       104.4
     ],
-    "scientistCount": 2,
+    "scientistCount": 3,
     "hasRecords": true
   },
   {
@@ -1883,7 +1883,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       782.5,
       137.2
     ],
-    "scientistCount": 9,
+    "scientistCount": 20,
     "hasRecords": true
   },
   {
@@ -1967,8 +1967,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       460.8,
       158.4
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "818",
@@ -1979,7 +1979,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       548,
       167.6
     ],
-    "scientistCount": 2,
+    "scientistCount": 6,
     "hasRecords": true
   },
   {
@@ -2003,7 +2003,7 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       572.8,
       216.4
     ],
-    "scientistCount": 2,
+    "scientistCount": 6,
     "hasRecords": true
   },
   {
@@ -2039,8 +2039,8 @@ export const WORLD_COUNTRIES: MapCountryFeature[] = [
       556.2,
       236.5
     ],
-    "scientistCount": 0,
-    "hasRecords": false
+    "scientistCount": 1,
+    "hasRecords": true
   },
   {
     "id": "646",

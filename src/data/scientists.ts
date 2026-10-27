@@ -1,6 +1,7 @@
 import { Scientist } from '../types';
+import { SUPPLEMENTARY_SCIENTISTS } from './supplementaryScientists';
 
-export const SCIENTISTS_DATA: Scientist[] = [
+export const ORIGINAL_PDF_SCIENTISTS: Scientist[] = [
   // ==========================================
   // EUROPA (100 CIENTÍFICOS) - PÁGINAS 2 A 7
   // ==========================================
@@ -3050,3 +3051,9 @@ export const SCIENTISTS_DATA: Scientist[] = [
     paginaPDF: 15,
   },
 ];
+
+export const SCIENTISTS_DATA: Scientist[] = [
+  ...ORIGINAL_PDF_SCIENTISTS,
+  ...SUPPLEMENTARY_SCIENTISTS,
+];
+

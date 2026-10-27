@@ -70,19 +70,22 @@ export default function App() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                 {/* Left Text Zone */}
                 <div className="lg:col-span-7 space-y-5">
-                  <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider">
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <span>Línea del tiempo documentada · 209 Científicos</span>
+                  <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
+                    <Sparkles className="w-4 h-4 text-emerald-400" />
+                    <span>Atlas Universal · 459 Científicos y Pioneras</span>
                   </div>
 
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight text-balance">
-                    Historia de la biología
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight text-balance font-serif">
+                    VITA MUNDI
+                    <span className="block text-xl sm:text-2xl font-normal text-emerald-300/90 font-sans mt-2">
+                      Historia Universal de la Biología y la Vida
+                    </span>
                   </h1>
 
                   <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl">
-                    Un recorrido interactivo por los descubrimientos que transformaron nuestra
-                    comprensión de la vida, desde los primeros tratados quirúrgicos de Imhotep
-                    (c. 2650 a. C.) hasta la edición genética CRISPR-Cas9 (2012).
+                    Un viaje interactivo y cartográfico por más de 4.660 años de descubrimientos
+                    biológicos: desde los papiros quirúrgicos de Imhotep (c. 2650 a. C.) hasta
+                    las fronteras de la genómica moderna y la edición CRISPR-Cas9.
                   </p>
 
                   <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -91,7 +94,7 @@ export default function App() {
                         setActiveTab('continentes');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-lg shadow-cyan-600/20 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-700 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs sm:text-sm rounded-lg shadow-lg shadow-emerald-600/20 transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
                     >
                       <Globe2 className="w-4 h-4" />
                       <span>Explorar 5 continentes</span>
@@ -116,8 +119,8 @@ export default function App() {
                       }}
                       className="flex items-center gap-2 px-4 py-2.5 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 font-medium text-xs sm:text-sm rounded-lg transition-colors cursor-pointer"
                     >
-                      <BookOpen className="w-4 h-4 text-cyan-400" />
-                      <span>Catálogo (209)</span>
+                      <BookOpen className="w-4 h-4 text-emerald-400" />
+                      <span>Catálogo (459)</span>
                     </button>
                   </div>
                 </div>
@@ -132,9 +135,9 @@ export default function App() {
                       className="w-full h-72 sm:h-80 object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#070d18] via-transparent to-transparent opacity-80" />
-                    <div className="absolute bottom-3 left-3 right-3 p-3 bg-slate-950/80 backdrop-blur-md rounded-xl border border-slate-800 text-xs">
-                      <div className="flex items-center justify-between text-[11px] font-mono text-cyan-400">
-                        <span>HISTORIA NATURAL · GENÓMICA</span>
+                    <div className="absolute bottom-3 left-3 right-3 p-3 bg-slate-950/85 backdrop-blur-md rounded-xl border border-slate-800 text-xs">
+                      <div className="flex items-center justify-between text-[11px] font-mono text-emerald-300">
+                        <span>HISTORIA NATURAL · GENÓMICA · EVOLUCIÓN</span>
                         <span>4.662 AÑOS</span>
                       </div>
                       <p className="text-slate-300 text-[11px] mt-0.5 line-clamp-1">

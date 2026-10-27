@@ -88,8 +88,8 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
         <div className="max-h-[60vh] overflow-y-auto p-2">
           {!query.trim() ? (
             <div className="p-8 text-center text-xs text-slate-400 space-y-2">
-              <p className="text-slate-300 font-medium">Búsqueda global instantánea en los 209 registros</p>
-              <p>Prueba con: «penicilina», «Darwin», «Egipto», «vacuna», «mitosis», «CRISPR», «gen»</p>
+              <p className="text-slate-300 font-medium">Búsqueda global instantánea en los 459 registros</p>
+              <p>Prueba con: «penicilina», «Darwin», «Egipto», «vacuna», «mitosis», «CRISPR», «gen», «Chagas»</p>
             </div>
           ) : results.length === 0 ? (
             <div className="p-8 text-center text-xs text-slate-400">
@@ -114,6 +114,20 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
                       <span className="text-[10px] font-mono text-amber-400 font-semibold">
                         {s.aportePeriodo}
                       </span>
+                      {s.esPionera && (
+                        <span className="px-1.5 py-0.2 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[9px]">
+                          Pionera
+                        </span>
+                      )}
+                      {s.paginaPDF ? (
+                        <span className="text-[10px] font-mono text-blue-300 bg-blue-950/60 px-1 rounded">
+                          PDF pág. {s.paginaPDF}
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-mono text-amber-300 bg-amber-950/60 px-1 rounded">
+                          Ampliación
+                        </span>
+                      )}
                     </div>
                     <div className="flex items-center gap-2 text-xs text-slate-400">
                       <span className="text-cyan-400">{s.campo}</span>

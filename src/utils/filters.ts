@@ -7,6 +7,9 @@ export interface FilterOptions {
   pais?: string | 'Todos';
   campo?: string | 'Todos';
   periodo?: string | 'Todos';
+  soloPDF?: boolean;
+  soloAmpliacion?: boolean;
+  soloPioneras?: boolean;
 }
 
 export function getAllFields(): string[] {
@@ -75,11 +78,22 @@ export function getStatistics() {
 }
 
 export function filterScientists(options: FilterOptions): Scientist[] {
-  const { query, continente, pais, campo, periodo } = options;
+  const { query, continente, pais, campo, periodo, soloPDF, soloAmpliacion, soloPioneras } = options;
 
   const normalizedQuery = query ? query.trim().toLowerCase() : '';
 
   return SCIENTISTS_DATA.filter(s => {
+    // Collection source filter
+    if (soloPDF && s.esComplementario) {
+      return false;
+    }
+    if (soloAmpliacion && !s.esComplementario) {
+      return false;
+    }
+    if (soloPioneras && !s.esPionera) {
+      return false;
+    }
+
     // Continente
     if (continente && continente !== 'Todos' && s.continente !== continente) {
       return false;

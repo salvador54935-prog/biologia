@@ -13,17 +13,18 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onBackToHome }) => {
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-8 text-slate-200">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider">
+        <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 uppercase tracking-wider">
           <BookOpen className="w-4 h-4" />
-          <span>Fidelidad Documental y Metodología</span>
+          <span>Fidelidad Documental, Colección Ampliada y Metodología</span>
         </div>
-        <h1 className="text-3xl font-bold text-white tracking-tight mt-1">
-          Acerca de BIOATLAS — Historia de la Biología
+        <h1 className="text-3xl font-bold text-white tracking-tight mt-1 font-serif">
+          Acerca de VITA MUNDI — Atlas Universal de la Biología
         </h1>
         <p className="text-sm text-slate-300 mt-2 leading-relaxed">
           Plataforma web educativa e interactiva diseñada a partir de la fuente documental 
-          <strong className="text-white"> “Línea del tiempo de la biología”</strong>, con 209 científicos y 
-          descubrimientos distribuidos a lo largo de 4.662 años de historia documentada.
+          <strong className="text-white"> “Línea del tiempo de la biología”</strong> (con sus 209 científicos originales íntegramente preservados),
+          enriquecida con una <strong className="text-emerald-300">colección complementaria verificada de 250 biólogos y naturalistas</strong> de los cinco continentes,
+          alcanzando 459 figuras pioneras y más de 4.660 años de descubrimientos de la vida.
         </p>
       </div>
 
@@ -138,10 +139,10 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onBackToHome }) => {
       {/* Architectural & Open Science Note */}
       <div className="p-6 bg-slate-900/60 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2">
         <div className="text-slate-200 font-semibold text-sm">
-          Compromiso de Fidelidad y Arquitectura Modular
+          Compromiso de Fidelidad, Ciencia Abierta y Colección Ampliada
         </div>
         <p className="leading-relaxed">
-          BIOATLAS fue concebido bajo un principio de estricta fidelidad documental: no se inventan científicos, fechas ni descubrimientos, conservando cada referencia textual a la página de origen. Su arquitectura desacoplada en TypeScript permite una navegación instantánea, visualización cartográfica vectorial y exportación de datos sin dependencias externas propietarias.
+          VITA MUNDI fue concebido bajo un principio de estricta fidelidad documental y rigor histórico: los 209 científicos del documento original conservan con exactitud su número de página del PDF, mientras que los 250 registros de la colección complementaria cuentan con fuentes académicas y enciclopédicas comprobadas. Su arquitectura desacoplada en TypeScript permite navegación instantánea, visualización cartográfica vectorial y filtrado por pioneras, épocas y continentes sin sesgos ni dependencias privativas.
         </p>
       </div>
     </div>

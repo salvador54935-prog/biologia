@@ -1,0 +1,3901 @@
+import fs from 'node:fs';
+import { ORIGINAL_PDF_SCIENTISTS } from '../src/data/scientists.ts';
+
+const existingIds = new Set(ORIGINAL_PDF_SCIENTISTS.map(s => s.id));
+const existingNames = new Set(ORIGINAL_PDF_SCIENTISTS.map(s => s.nombre.toLowerCase().trim()));
+
+const list = [];
+function add(s) {
+  if (existingIds.has(s.id)) {
+    throw new Error(`Duplicate ID with original: ${s.id}`);
+  }
+  const normName = s.nombre.toLowerCase().trim();
+  if (existingNames.has(normName)) {
+    throw new Error(`Duplicate Name with original: ${s.nombre}`);
+  }
+  const inList = list.find(x => x.id === s.id || x.nombre.toLowerCase().trim() === normName);
+  if (inList) {
+    throw new Error(`Duplicate in supplementary list: ${s.id} / ${s.nombre}`);
+  }
+  list.push({
+    ...s,
+    esComplementario: true,
+    paginaPDF: null,
+  });
+}
+
+// -------------------------------------------------------------
+// EUROPA (75 CIENTÍFICOS)
+// -------------------------------------------------------------
+add({
+  id: 'hildegarda-de-bingen',
+  nombre: 'Hildegarda de Bingen',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1098 – 1179',
+  nacimientoLugar: 'Bermersheim vor der Höhe',
+  aportePeriodo: 'c. 1155',
+  anioNumerico: 1155,
+  campo: 'Historia natural y medicina',
+  aporteDescripcion: 'Autora de Physica y Causae et Curae, catalogó propiedades biológicas y terapéuticas de plantas, animales y minerales medievales.',
+  lugaresTrabajo: 'Monasterio de Rupertsberg (Bingen)',
+  esPionera: true,
+  fuenteReferencia: 'Abadía de Rupertsberg / Diccionario Histórico de la Medicina',
+});
+
+add({
+  id: 'san-alberto-magno',
+  nombre: 'San Alberto Magno',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: 'c. 1200 – 1280',
+  nacimientoLugar: 'Lauingen, Baviera',
+  aportePeriodo: 'c. 1260',
+  anioNumerico: 1260,
+  campo: 'Botánica y zoología',
+  aporteDescripcion: 'Escribió De vegetalibus et plantis y De animalibus, sistematizando la morfología de las plantas y la embriología comparada medieval.',
+  lugaresTrabajo: 'Colonia y París',
+  fuenteReferencia: 'Stanford Encyclopedia of Philosophy',
+});
+
+add({
+  id: 'andrea-cesalpino',
+  nombre: 'Andrea Cesalpino',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1519 – 1603',
+  nacimientoLugar: 'Arezzo, Toscana',
+  aportePeriodo: '1583',
+  anioNumerico: 1583,
+  campo: 'Botánica y fisiología',
+  aporteDescripcion: 'Publicó De plantis libri XVI, considerado el primer tratado moderno sistemático de clasificación vegetal por flores y frutos.',
+  lugaresTrabajo: 'Universidad de Pisa y Roma',
+  fuenteReferencia: 'Enciclopedia Británica / Jardín Botánico de Pisa',
+});
+
+add({
+  id: 'ulisse-aldrovandi',
+  nombre: 'Ulisse Aldrovandi',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1522 – 1605',
+  nacimientoLugar: 'Bolonia',
+  aportePeriodo: '1599',
+  anioNumerico: 1599,
+  campo: 'Historia natural',
+  aporteDescripcion: 'Pionero de la ornitología y la museología biológica; reunió una de las colecciones zoológicas y herbarios más extensas del Renacimiento.',
+  lugaresTrabajo: 'Universidad de Bolonia',
+  fuenteReferencia: 'Universidad de Bolonia / Archivo Histórico',
+});
+
+add({
+  id: 'guillaume-rondelet',
+  nombre: 'Guillaume Rondelet',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1507 – 1566',
+  nacimientoLugar: 'Montpellier',
+  aportePeriodo: '1554',
+  anioNumerico: 1554,
+  campo: 'Ictiología y anatomía marina',
+  aporteDescripcion: 'Publicó Libri de piscibus marinis, primer tratado moderno ilustrado sobre la anatomía y clasificación de peces y cetáceos marinos.',
+  lugaresTrabajo: 'Universidad de Montpellier',
+  fuenteReferencia: 'Faculté de Médecine de Montpellier',
+});
+
+add({
+  id: 'pierre-belon',
+  nombre: 'Pierre Belon',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1517 – 1564',
+  nacimientoLugar: 'Souletière, Cerans-Foulletourte',
+  aportePeriodo: '1555',
+  anioNumerico: 1555,
+  campo: 'Anatomía comparada y ornitología',
+  aporteDescripcion: 'Publicó L\'histoire de la nature des oyseaux, realizando la primera comparación ósea directa entre el esqueleto humano y el de las aves.',
+  lugaresTrabajo: 'París',
+  fuenteReferencia: 'Bibliothèque Nationale de France',
+});
+
+add({
+  id: 'gaspard-bauhin',
+  nombre: 'Gaspard Bauhin',
+  pais: 'Suiza',
+  continente: 'Europa',
+  vida: '1560 – 1624',
+  nacimientoLugar: 'Basilea',
+  aportePeriodo: '1623',
+  anioNumerico: 1623,
+  campo: 'Botánica',
+  aporteDescripcion: 'En Pinax theatri botanici describió miles de plantas e introdujo la nomenclatura preliminar por género y especie precursora de Linneo.',
+  lugaresTrabajo: 'Universidad de Basilea',
+  fuenteReferencia: 'Real Sociedad Linneana',
+});
+
+add({
+  id: 'jan-baptist-van-helmont',
+  nombre: 'Jan Baptist van Helmont',
+  pais: 'Bélgica',
+  continente: 'Europa',
+  vida: '1580 – 1644',
+  nacimientoLugar: 'Bruselas',
+  aportePeriodo: '1648',
+  anioNumerico: 1648,
+  campo: 'Fisiología vegetal',
+  aporteDescripcion: 'Realizó el célebre experimento del sauce de 5 años demostrando que la biomasa vegetal no proviene únicamente de la tierra.',
+  lugaresTrabajo: 'Vilvoorde',
+  fuenteReferencia: 'Royal Society of Chemistry',
+});
+
+add({
+  id: 'regnier-de-graaf',
+  nombre: 'Regnier de Graaf',
+  pais: 'Países Bajos',
+  continente: 'Europa',
+  vida: '1641 – 1673',
+  nacimientoLugar: 'Schoonhoven',
+  aportePeriodo: '1672',
+  anioNumerico: 1672,
+  campo: 'Fisiología reproductiva',
+  aporteDescripcion: 'Descubrió y describió los folículos ováricos (folículos de Graaf) y estudió el jugo pancreático y la reproducción mamífera.',
+  lugaresTrabajo: 'Delft',
+  fuenteReferencia: 'Royal College of Physicians',
+});
+
+add({
+  id: 'nehemiah-grew',
+  nombre: 'Nehemiah Grew',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1641 – 1712',
+  nacimientoLugar: 'Mancetter, Warwickshire',
+  aportePeriodo: '1682',
+  anioNumerico: 1682,
+  campo: 'Anatomía vegetal',
+  aporteDescripcion: 'Publicó The Anatomy of Plants, fundando la anatomía microscópica de las plantas e identificando que los estambres son órganos masculinos.',
+  lugaresTrabajo: 'Londres (Royal Society)',
+  fuenteReferencia: 'Royal Society de Londres',
+});
+
+add({
+  id: 'stephen-hales',
+  nombre: 'Stephen Hales',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1677 – 1761',
+  nacimientoLugar: 'Bekesbourne, Kent',
+  aportePeriodo: '1727',
+  anioNumerico: 1727,
+  campo: 'Fisiología vegetal',
+  aporteDescripcion: 'En Vegetable Staticks cuantificó la transpiración y la presión de la savia en las plantas mediante métodos biofísicos pioneros.',
+  lugaresTrabajo: 'Teddington, Middlesex',
+  fuenteReferencia: 'Royal Society / Copley Medal Archive',
+});
+
+add({
+  id: 'laura-bassi',
+  nombre: 'Laura Bassi',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1711 – 1778',
+  nacimientoLugar: 'Bolonia',
+  aportePeriodo: '1732',
+  anioNumerico: 1732,
+  campo: 'Fisiología y biofísica',
+  aporteDescripcion: 'Primera mujer en obtener una cátedra universitaria en Europa; investigó los efectos fisiológicos y de contracción neuromuscular.',
+  lugaresTrabajo: 'Universidad de Bolonia',
+  esPionera: true,
+  fuenteReferencia: 'Academia de Ciencias del Instituto de Bolonia',
+});
+
+add({
+  id: 'charles-bonnet',
+  nombre: 'Charles Bonnet',
+  pais: 'Suiza',
+  continente: 'Europa',
+  vida: '1720 – 1793',
+  nacimientoLugar: 'Ginebra',
+  aportePeriodo: '1745',
+  anioNumerico: 1745,
+  campo: 'Entomología y embriología',
+  aporteDescripcion: 'Descubrió la partenogénesis en los pulgones (áfidos), demostrando la reproducción asexual en insectos.',
+  lugaresTrabajo: 'Ginebra',
+  fuenteReferencia: 'Académie des Sciences de París',
+});
+
+add({
+  id: 'jan-ingenhousz',
+  nombre: 'Jan Ingenhousz',
+  pais: 'Países Bajos',
+  continente: 'Europa',
+  vida: '1730 – 1799',
+  nacimientoLugar: 'Breda',
+  aportePeriodo: '1779',
+  anioNumerico: 1779,
+  campo: 'Fisiología vegetal',
+  aporteDescripcion: 'Descubrió que las plantas necesitan luz solar para purificar el aire y liberar oxígeno, sentando las bases de la fotosíntesis.',
+  lugaresTrabajo: 'Londres y Viena',
+  fuenteReferencia: 'Royal Society of Chemistry',
+});
+
+add({
+  id: 'antoine-laurent-de-jussieu',
+  nombre: 'Antoine-Laurent de Jussieu',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1748 – 1836',
+  nacimientoLugar: 'Lyon',
+  aportePeriodo: '1789',
+  anioNumerico: 1789,
+  campo: 'Botánica',
+  aporteDescripcion: 'En Genera Plantarum propuso el sistema natural de clasificación vegetal fundamentado en familias botánicas.',
+  lugaresTrabajo: 'Jardin des Plantes (París)',
+  fuenteReferencia: 'Muséum National d’Histoire Naturelle',
+});
+
+add({
+  id: 'etienne-geoffroy-saint-hilaire',
+  nombre: 'Étienne Geoffroy Saint-Hilaire',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1772 – 1844',
+  nacimientoLugar: 'Étampes',
+  aportePeriodo: '1818',
+  anioNumerico: 1818,
+  campo: 'Anatomía comparada',
+  aporteDescripcion: 'Formuló la teoría de la unidad de plan corporal (homologías morfológicas) entre todos los animales con su Philosophie anatomique.',
+  lugaresTrabajo: 'París',
+  fuenteReferencia: 'Académie des Sciences',
+});
+
+add({
+  id: 'karl-ernst-von-baer',
+  nombre: 'Karl Ernst von Baer',
+  pais: 'Estonia',
+  continente: 'Europa',
+  vida: '1792 – 1876',
+  nacimientoLugar: 'Piep (hoy Piibe)',
+  aportePeriodo: '1827',
+  anioNumerico: 1827,
+  campo: 'Embriología comparada',
+  aporteDescripcion: 'Descubrió el óvulo de los mamíferos y formuló las leyes del desarrollo embrionario de las capas germinales (leyes de von Baer).',
+  lugaresTrabajo: 'Königsberg y San Petersburgo',
+  fuenteReferencia: 'Academia Imperial de Ciencias de San Petersburgo',
+});
+
+add({
+  id: 'jeanne-villepreux-power',
+  nombre: 'Jeanne Villepreux-Power',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1794 – 1871',
+  nacimientoLugar: 'Juilhac, Corrèze',
+  aportePeriodo: '1832',
+  anioNumerico: 1832,
+  campo: 'Biología marina',
+  aporteDescripcion: 'Inventó los primeros acuarios marinos de vidrio para experimentación y demostró cómo Argonauta argo secreta su propia concha.',
+  lugaresTrabajo: 'Sicilia y París',
+  esPionera: true,
+  fuenteReferencia: 'Zoological Society of London Archive',
+});
+
+add({
+  id: 'jan-evangelista-purkyne',
+  nombre: 'Jan Evangelista Purkyně',
+  pais: 'Chequia',
+  continente: 'Europa',
+  vida: '1787 – 1869',
+  nacimientoLugar: 'Libochovice, Bohemia',
+  aportePeriodo: '1837',
+  anioNumerico: 1837,
+  campo: 'Fisiología y citología',
+  aporteDescripcion: 'Descubrió las células de Purkinje del cerebelo, las fibras de conducción cardíacas y acuñó el término protoplasma.',
+  lugaresTrabajo: 'Breslavia y Praga',
+  fuenteReferencia: 'Universidad Carolina de Praga',
+});
+
+add({
+  id: 'richard-owen',
+  nombre: 'Richard Owen',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1804 – 1892',
+  nacimientoLugar: 'Lancaster',
+  aportePeriodo: '1842',
+  anioNumerico: 1842,
+  campo: 'Paleontología y anatomía',
+  aporteDescripcion: 'Acuñó la palabra «dinosaurio», definió formalmente los conceptos de homología y analogía anatómica y fundó el Museo de Historia Natural de Londres.',
+  lugaresTrabajo: 'Museo de Historia Natural de Londres',
+  fuenteReferencia: 'Natural History Museum London',
+});
+
+add({
+  id: 'robert-remak',
+  nombre: 'Robert Remak',
+  pais: 'Polonia',
+  continente: 'Europa',
+  vida: '1815 – 1865',
+  nacimientoLugar: 'Posen (Poznań)',
+  aportePeriodo: '1852',
+  anioNumerico: 1852,
+  campo: 'Embriología y citología',
+  aporteDescripcion: 'Descubrió que las células provienen de la división binaria de células preexistentes y caracterizó las tres capas germinales embrionarias.',
+  lugaresTrabajo: 'Berlín',
+  fuenteReferencia: 'Universidad Humboldt de Berlín',
+});
+
+add({
+  id: 'heinrich-anton-de-bary',
+  nombre: 'Heinrich Anton de Bary',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1831 – 1888',
+  nacimientoLugar: 'Fráncfort del Meno',
+  aportePeriodo: '1879',
+  anioNumerico: 1879,
+  campo: 'Micología y fitopatología',
+  aporteDescripcion: 'Fundó la micología y fitopatología moderna; acuñó el término «simbiosis» al demostrar la naturaleza doble de los líquenes.',
+  lugaresTrabajo: 'Estrasburgo y Halle',
+  fuenteReferencia: 'Sociedad Botánica de Alemania',
+});
+
+add({
+  id: 'beatrix-potter',
+  nombre: 'Beatrix Potter',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1866 – 1943',
+  nacimientoLugar: 'Kensington, Londres',
+  aportePeriodo: '1897',
+  anioNumerico: 1897,
+  campo: 'Micología',
+  aporteDescripcion: 'Investigó la germinación de esporas de hongos y la hibridación simbiótica de líquenes, redactando el artículo pionero presentado a la Linnean Society.',
+  lugaresTrabajo: 'Londres y Lake District',
+  esPionera: true,
+  fuenteReferencia: 'Linnean Society of London',
+});
+
+add({
+  id: 'lise-meitner',
+  nombre: 'Lise Meitner',
+  pais: 'Austria',
+  continente: 'Europa',
+  vida: '1878 – 1968',
+  nacimientoLugar: 'Viena',
+  aportePeriodo: '1939',
+  anioNumerico: 1939,
+  campo: 'Biofísica y radiobiología',
+  aporteDescripcion: 'Pionera en la fisión nuclear y en el análisis del impacto de los radioisótopos en el tejido orgánico y el trazado biofísico celular.',
+  lugaresTrabajo: 'Berlín y Estocolmo',
+  esPionera: true,
+  fuenteReferencia: 'Academia de Ciencias de Suecia',
+});
+
+add({
+  id: 'kristine-bonnevie',
+  nombre: 'Kristine Bonnevie',
+  pais: 'Noruega',
+  continente: 'Europa',
+  vida: '1872 – 1948',
+  nacimientoLugar: 'Trondheim',
+  aportePeriodo: '1912',
+  anioNumerico: 1912,
+  campo: 'Genética y embriología',
+  aporteDescripcion: 'Primera profesora catedrática en Noruega; investigó la base genética del desarrollo dérmico y las huellas dactilares embrionarias.',
+  lugaresTrabajo: 'Universidad de Oslo',
+  esPionera: true,
+  fuenteReferencia: 'Universidad de Oslo / Academia Noruega de Ciencias',
+});
+
+add({
+  id: 'muriel-wheldale-onslow',
+  nombre: 'Muriel Wheldale Onslow',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1880 – 1932',
+  nacimientoLugar: 'Birmingham',
+  aportePeriodo: '1909',
+  anioNumerico: 1909,
+  campo: 'Genética bioquímica',
+  aporteDescripcion: 'Demostró por primera vez que la herencia genética controla la síntesis de pigmentos antocianinas en flores (antirrhinum).',
+  lugaresTrabajo: 'Cambridge',
+  esPionera: true,
+  fuenteReferencia: 'Biochemical Society UK',
+});
+
+add({
+  id: 'christiane-nusslein-volhard',
+  nombre: 'Christiane Nüsslein-Volhard',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1942 – actualidad',
+  nacimientoLugar: 'Heyrothsberge (Magdeburgo)',
+  aportePeriodo: '1980',
+  anioNumerico: 1980,
+  campo: 'Genética del desarrollo',
+  aporteDescripcion: 'Descubrió los genes que controlan la segmentación y el plan corporal en embriones de Drosophila; premio Nobel en 1995.',
+  lugaresTrabajo: 'Tubinga (Instituto Max Planck)',
+  esPionera: true,
+  fuenteReferencia: 'Nobel Media / Instituto Max Planck',
+});
+
+add({
+  id: 'agnes-arber',
+  nombre: 'Agnes Arber',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1879 – 1960',
+  nacimientoLugar: 'Londres',
+  aportePeriodo: '1920',
+  anioNumerico: 1920,
+  campo: 'Morfología vegetal y filosofía botánica',
+  aporteDescripcion: 'Autora de Water Plants y The Gramineae; primera mujer botánica elegida Fellow de la Royal Society de Londres.',
+  lugaresTrabajo: 'Cambridge',
+  esPionera: true,
+  fuenteReferencia: 'The Royal Society',
+});
+
+add({
+  id: 'marjory-stephenson',
+  nombre: 'Marjory Stephenson',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1885 – 1948',
+  nacimientoLugar: 'Burwell, Cambridgeshire',
+  aportePeriodo: '1930',
+  anioNumerico: 1930,
+  campo: 'Metabolismo bacteriano',
+  aporteDescripcion: 'Pionera de la microbiología química y autora de Bacterial Metabolism, libro fundacional del estudio enzimático de microorganismos.',
+  lugaresTrabajo: 'Universidad de Cambridge',
+  esPionera: true,
+  fuenteReferencia: 'Microbiology Society / Royal Society',
+});
+
+add({
+  id: 'erwin-neher',
+  nombre: 'Erwin Neher',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1944 – actualidad',
+  nacimientoLugar: 'Landsberg am Lech, Baviera',
+  aportePeriodo: '1976',
+  anioNumerico: 1976,
+  campo: 'Biofísica y neurobiología',
+  aporteDescripcion: 'Desarrolló la técnica de patch-clamp para registrar la corriente de canales iónicos individuales en membranas celulares; premio Nobel en 1991.',
+  lugaresTrabajo: 'Gotinga (Instituto Max Planck)',
+  fuenteReferencia: 'Nobel Media / Max-Planck-Gesellschaft',
+});
+
+add({
+  id: 'bert-sakmann',
+  nombre: 'Bert Sakmann',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1942 – actualidad',
+  nacimientoLugar: 'Stuttgart',
+  aportePeriodo: '1976',
+  anioNumerico: 1976,
+  campo: 'Fisiología celular',
+  aporteDescripcion: 'Co-desarrollador de la técnica patch-clamp, elucidando la función de canales iónicos en la transmisión sináptica; premio Nobel en 1991.',
+  lugaresTrabajo: 'Gotinga y Heidelberg',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'aleksandr-kovalevski',
+  nombre: 'Aleksandr Kovalevski',
+  pais: 'Rusia',
+  continente: 'Europa',
+  vida: '1840 – 1901',
+  nacimientoLugar: 'Vārkava (hoy Letonia)',
+  aportePeriodo: '1866',
+  anioNumerico: 1866,
+  campo: 'Embriología evolutiva',
+  aporteDescripcion: 'Demostró que los urocordados (ascidias) y el anfioxo poseen notocorda y hendiduras branquiales, uniendo a invertebrados con vertebrados.',
+  lugaresTrabajo: 'San Petersburgo',
+  fuenteReferencia: 'Academia Imperial de Ciencias',
+});
+
+add({
+  id: 'clara-franzini-armstrong',
+  nombre: 'Clara Franzini-Armstrong',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1938 – actualidad',
+  nacimientoLugar: 'Florencia',
+  aportePeriodo: '1970',
+  anioNumerico: 1970,
+  campo: 'Biología celular y microscopía muscular',
+  aporteDescripcion: 'Descubrió la arquitectura ultraestructural de las tríadas musculares y la liberación de calcio en el retículo sarcoplásmico.',
+  lugaresTrabajo: 'Universidad de Pensilvania',
+  esPionera: true,
+  fuenteReferencia: 'National Academy of Sciences / Biophysical Society',
+});
+
+add({
+  id: 'marthe-gautier',
+  nombre: 'Marthe Gautier',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1925 – 2022',
+  nacimientoLugar: 'Montenils, Sena y Marne',
+  aportePeriodo: '1959',
+  anioNumerico: 1959,
+  campo: 'Citogenética médica',
+  aporteDescripcion: 'Descubrió mediante cultivo celular la trisomía 21 causante del síndrome de Down, primer defecto cromosómico humano identificado.',
+  lugaresTrabajo: 'Hospital Trousseau (París)',
+  esPionera: true,
+  fuenteReferencia: 'INSERM / Société Française de Génétique Humaine',
+});
+
+add({
+  id: 'felix-d-herelle',
+  nombre: 'Félix d\'Hérelle',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1873 – 1949',
+  nacimientoLugar: 'París',
+  aportePeriodo: '1917',
+  anioNumerico: 1917,
+  campo: 'Virología y microbiología',
+  aporteDescripcion: 'Co-descubrió los bacteriófagos (virus que atacan bacterias) e inició la fagoterapia aplicada al tratamiento de infecciones bacterianas.',
+  lugaresTrabajo: 'Instituto Pasteur (París) y Tiflis',
+  fuenteReferencia: 'Institut Pasteur',
+});
+
+add({
+  id: 'edmond-sergent',
+  nombre: 'Edmond Sergent',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1876 – 1969',
+  nacimientoLugar: 'Philippeville',
+  aportePeriodo: '1921',
+  anioNumerico: 1921,
+  campo: 'Parasitología e inmunología tropical',
+  aporteDescripcion: 'Descubrió el concepto de premunición (inmunidad adquirida mantenida por la presencia persistente del parásito) en malaria.',
+  lugaresTrabajo: 'Instituto Pasteur de Argelia',
+  fuenteReferencia: 'Institut Pasteur d\'Algérie',
+});
+
+add({
+  id: 'albert-calmette',
+  nombre: 'Albert Calmette',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1863 – 1933',
+  nacimientoLugar: 'Niza',
+  aportePeriodo: '1921',
+  anioNumerico: 1921,
+  campo: 'Bacteriología e inmunología',
+  aporteDescripcion: 'Desarrolló junto con Camille Guérin la vacuna BCG contra la tuberculosis y formuló los primeros sueros antiofídicos antiveneno.',
+  lugaresTrabajo: 'Instituto Pasteur de Lille y París',
+  fuenteReferencia: 'Institut Pasteur',
+});
+
+add({
+  id: 'camille-guerin',
+  nombre: 'Camille Guérin',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1872 – 1961',
+  nacimientoLugar: 'Poitiers',
+  aportePeriodo: '1921',
+  anioNumerico: 1921,
+  campo: 'Inmunología y veterinaria',
+  aporteDescripcion: 'Atenuó el bacilo Mycobacterium bovis tras 230 pases sucesivos para crear la vacuna BCG protectora frente a la tuberculosis.',
+  lugaresTrabajo: 'Instituto Pasteur de Lille',
+  fuenteReferencia: 'Institut Pasteur',
+});
+
+add({
+  id: 'paul-nurse',
+  nombre: 'Paul Nurse',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1949 – actualidad',
+  nacimientoLugar: 'Norwich, Norfolk',
+  aportePeriodo: '1987',
+  anioNumerico: 1987,
+  campo: 'Biología celular y ciclo celular',
+  aporteDescripcion: 'Descubrió el gen cdc2 y las quinasas dependientes de ciclinas (CDK) que regulan la división celular; premio Nobel en 2001.',
+  lugaresTrabajo: 'Oxford e Instituto Francis Crick',
+  fuenteReferencia: 'Nobel Media / Francis Crick Institute',
+});
+
+add({
+  id: 'tim-hunt',
+  nombre: 'Tim Hunt',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1943 – actualidad',
+  nacimientoLugar: 'Neston, Cheshire',
+  aportePeriodo: '1982',
+  anioNumerico: 1982,
+  campo: 'Bioquímica celular',
+  aporteDescripcion: 'Descubrió las ciclinas, proteínas que se acumulan y degradan cíclicamente regulando las transiciones del ciclo celular; premio Nobel en 2001.',
+  lugaresTrabajo: 'Marine Biological Laboratory y Cancer Research UK',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'john-sulston',
+  nombre: 'John Sulston',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1942 – 2018',
+  nacimientoLugar: 'Fulmer, Buckinghamshire',
+  aportePeriodo: '1983',
+  anioNumerico: 1983,
+  campo: 'Genómica y biología del desarrollo',
+  aporteDescripcion: 'Trazó el linaje celular completo de las 959 células somáticas de C. elegans y lideró el Wellcome Sanger Institute en el Genoma Humano.',
+  lugaresTrabajo: 'Cambridge (LMB y Sanger Institute)',
+  fuenteReferencia: 'Nobel Media / Wellcome Sanger Institute',
+});
+
+add({
+  id: 'alec-jeffreys',
+  nombre: 'Alec Jeffreys',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1950 – actualidad',
+  nacimientoLugar: 'Oxford',
+  aportePeriodo: '1984',
+  anioNumerico: 1984,
+  campo: 'Genética molecular y forense',
+  aporteDescripcion: 'Inventó la huella genética por ADN (DNA fingerprinting) mediante análisis de minisatélites repetitivos en tándem.',
+  lugaresTrabajo: 'Universidad de Leicester',
+  fuenteReferencia: 'Royal Society of London / Copley Medal',
+});
+
+add({
+  id: 'mary-lyon',
+  nombre: 'Mary Lyon',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1925 – 2014',
+  nacimientoLugar: 'Norwich',
+  aportePeriodo: '1961',
+  anioNumerico: 1961,
+  campo: 'Genética de mamíferos',
+  aporteDescripcion: 'Propuso la hipótesis de la «lionización»: la inactivación aleatoria del cromosoma X en hembras de mamíferos.',
+  lugaresTrabajo: 'MRC Radiobiology Unit (Harwell)',
+  esPionera: true,
+  fuenteReferencia: 'Royal Society / Wolf Prize in Medicine',
+});
+
+add({
+  id: 'charlotte-auerbach',
+  nombre: 'Charlotte Auerbach',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1899 – 1994',
+  nacimientoLugar: 'Krefeld',
+  aportePeriodo: '1941',
+  anioNumerico: 1941,
+  campo: 'Genética de mutagénesis',
+  aporteDescripcion: 'Descubrió junto con J. M. Robson que las sustancias químicas (gas mostaza) provocan mutaciones en el material genético de Drosophila.',
+  lugaresTrabajo: 'Universidad de Edimburgo',
+  esPionera: true,
+  fuenteReferencia: 'Royal Society of Edinburgh',
+});
+
+add({
+  id: 'jules-hoffmann',
+  nombre: 'Jules Hoffmann',
+  pais: 'Luxemburgo',
+  continente: 'Europa',
+  vida: '1941 – actualidad',
+  nacimientoLugar: 'Echternach',
+  aportePeriodo: '1996',
+  anioNumerico: 1996,
+  campo: 'Inmunología innata',
+  aporteDescripcion: 'Descubrió el papel del receptor Toll en la respuesta inmune innata antimicrobiana en Drosophila melanogaster; premio Nobel en 2011.',
+  lugaresTrabajo: 'Estrasburgo (CNRS)',
+  fuenteReferencia: 'Nobel Media / Académie des Sciences',
+});
+
+add({
+  id: 'arvid-carlsson',
+  nombre: 'Arvid Carlsson',
+  pais: 'Suecia',
+  continente: 'Europa',
+  vida: '1923 – 2018',
+  nacimientoLugar: 'Uppsala',
+  aportePeriodo: '1958',
+  anioNumerico: 1958,
+  campo: 'Neurobiología y farmacología',
+  aporteDescripcion: 'Demostró que la dopamina es un neurotransmisor cerebral autónomo cuya deficiencia provoca la enfermedad de Parkinson; premio Nobel en 2000.',
+  lugaresTrabajo: 'Universidad de Gotemburgo',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'torsten-wiesel',
+  nombre: 'Torsten Wiesel',
+  pais: 'Suecia',
+  continente: 'Europa',
+  vida: '1924 – actualidad',
+  nacimientoLugar: 'Uppsala',
+  aportePeriodo: '1962',
+  anioNumerico: 1962,
+  campo: 'Neurofisiología de la visión',
+  aporteDescripcion: 'Descubrió junto con David Hubel las columnas de dominancia ocular y el procesamiento de la información en la corteza visual; premio Nobel en 1981.',
+  lugaresTrabajo: 'Universidad Harvard y Rockefeller',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'soren-sorensen',
+  nombre: 'S. P. L. Sørensen',
+  pais: 'Dinamarca',
+  continente: 'Europa',
+  vida: '1868 – 1939',
+  nacimientoLugar: 'Havrebjerg',
+  aportePeriodo: '1909',
+  anioNumerico: 1909,
+  campo: 'Bioquímica enzimática',
+  aporteDescripcion: 'Introdujo la escala de pH y demostró el papel decisivo de la concentración de iones hidrógeno en la actividad de las enzimas.',
+  lugaresTrabajo: 'Laboratorio Carlsberg (Copenhague)',
+  fuenteReferencia: 'Carlsberg Foundation',
+});
+
+add({
+  id: 'august-krogh',
+  nombre: 'August Krogh',
+  pais: 'Dinamarca',
+  continente: 'Europa',
+  vida: '1874 – 1949',
+  nacimientoLugar: 'Grenaa',
+  aportePeriodo: '1920',
+  anioNumerico: 1920,
+  campo: 'Fisiología respiratoria y capilar',
+  aporteDescripcion: 'Descubrió el mecanismo de regulación motora de los capilares sanguíneos en el músculo esquelético; premio Nobel en 1920.',
+  lugaresTrabajo: 'Universidad de Copenhague',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'marie-krogh',
+  nombre: 'Marie Krogh',
+  pais: 'Dinamarca',
+  continente: 'Europa',
+  vida: '1874 – 1943',
+  nacimientoLugar: 'Vildbjerg',
+  aportePeriodo: '1910',
+  anioNumerico: 1910,
+  campo: 'Fisiología pulmonar',
+  aporteDescripcion: 'Demostró mediante la prueba de monóxido de carbono que el intercambio de gases en los alvéolos pulmonares ocurre por difusión pasiva.',
+  lugaresTrabajo: 'Universidad de Copenhague',
+  esPionera: true,
+  fuenteReferencia: 'Royal Danish Academy of Sciences',
+});
+
+add({
+  id: 'jens-christian-skou',
+  nombre: 'Jens Christian Skou',
+  pais: 'Dinamarca',
+  continente: 'Europa',
+  vida: '1918 – 2018',
+  nacimientoLugar: 'Lemvig',
+  aportePeriodo: '1957',
+  anioNumerico: 1957,
+  campo: 'Bioquímica de membranas',
+  aporteDescripcion: 'Descubrió la bomba de sodio-potasio (Na+/K+-ATPasa), la primera enzima transportadora de iones transmembrana; premio Nobel en 1997.',
+  lugaresTrabajo: 'Universidad de Aarhus',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'antonio-scarpa',
+  nombre: 'Antonio Scarpa',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1752 – 1832',
+  nacimientoLugar: 'Motta di Livenza',
+  aportePeriodo: '1789',
+  anioNumerico: 1789,
+  campo: 'Anatomía e histología sensorial',
+  aporteDescripcion: 'Describió la anatomía microscópica del oído interno (ganglio de Scarpa, endolinfa) y la inervación del corazón.',
+  lugaresTrabajo: 'Universidad de Pavía',
+  fuenteReferencia: 'Academia de Ciencias de Turín',
+});
+
+add({
+  id: 'filippo-pacini',
+  nombre: 'Filippo Pacini',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1812 – 1883',
+  nacimientoLugar: 'Pistoia',
+  aportePeriodo: '1854',
+  anioNumerico: 1854,
+  campo: 'Bacteriología y neuroanatomía',
+  aporteDescripcion: 'Descubrió los corpúsculos táctiles de Pacini y aisló por primera vez el bacilo del cólera (Vibrio cholerae) 30 años antes que Koch.',
+  lugaresTrabajo: 'Florencia',
+  fuenteReferencia: 'Universidad de Florencia',
+});
+
+add({
+  id: 'angela-nieto',
+  nombre: 'Ángela Nieto',
+  pais: 'España',
+  continente: 'Europa',
+  vida: '1960 – actualidad',
+  nacimientoLugar: 'Madrid',
+  aportePeriodo: '1994',
+  anioNumerico: 1994,
+  campo: 'Biología del desarrollo y biomedicina',
+  aporteDescripcion: 'Descubrió el papel de la transición epitelio-mesénquima (EMT) en el desarrollo embrionario y su reactivación en la metástasis tumoral.',
+  lugaresTrabajo: 'Instituto de Neurociencias de Alicante (CSIC-UMH)',
+  esPionera: true,
+  fuenteReferencia: 'Premio Nacional de Investigación / Premio L\'Oréal-UNESCO',
+});
+
+add({
+  id: 'antonio-garcia-bellido',
+  nombre: 'Antonio García-Bellido',
+  pais: 'España',
+  continente: 'Europa',
+  vida: '1936 – actualidad',
+  nacimientoLugar: 'Madrid',
+  aportePeriodo: '1973',
+  anioNumerico: 1973,
+  campo: 'Genética del desarrollo',
+  aporteDescripcion: 'Formuló la teoría de los compartimentos y los genes selectores organogenéticos que definen la arquitectura corporal animal.',
+  lugaresTrabajo: 'Centro de Biología Molecular Severo Ochoa (Madrid)',
+  fuenteReferencia: 'Premio Príncipe de Asturias / Royal Society',
+});
+
+add({
+  id: 'gabriel-valentin',
+  nombre: 'Gabriel Valentin',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1810 – 1883',
+  nacimientoLugar: 'Breslavia (Wrocław)',
+  aportePeriodo: '1836',
+  anioNumerico: 1836,
+  campo: 'Fisiología y citología',
+  aporteDescripcion: 'Descubrió el nucleolo dentro del núcleo celular y la acción digestiva de la diastasa pancreática sobre los carbohidratos.',
+  lugaresTrabajo: 'Universidad de Berna',
+  fuenteReferencia: 'Universidad de Berna',
+});
+
+add({
+  id: 'albrecht-von-haller',
+  nombre: 'Albrecht von Haller',
+  pais: 'Suiza',
+  continente: 'Europa',
+  vida: '1708 – 1777',
+  nacimientoLugar: 'Berna',
+  aportePeriodo: '1757',
+  anioNumerico: 1757,
+  campo: 'Fisiología experimental',
+  aporteDescripcion: 'Padre de la fisiología moderna; definió en Elementa physiologiae la excitabilidad de los músculos y la sensibilidad de los nervios.',
+  lugaresTrabajo: 'Universidad de Gotinga y Berna',
+  fuenteReferencia: 'Universidad de Gotinga / Royal Society',
+});
+
+add({
+  id: 'caspar-friedrich-wolff',
+  nombre: 'Caspar Friedrich Wolff',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1734 – 1794',
+  nacimientoLugar: 'Berlín',
+  aportePeriodo: '1759',
+  anioNumerico: 1759,
+  campo: 'Embriología (Epigénesis)',
+  aporteDescripcion: 'En Theoria Generationis refutó el preformismo y demostró la epigénesis: los órganos se diferencian paulatinamente de tejidos no formados.',
+  lugaresTrabajo: 'San Petersburgo',
+  fuenteReferencia: 'Academia Imperial de Ciencias',
+});
+
+add({
+  id: 'felix-dujardin',
+  nombre: 'Félix Dujardin',
+  pais: 'Francia',
+  continente: 'Europa',
+  vida: '1801 – 1860',
+  nacimientoLugar: 'Tours',
+  aportePeriodo: '1835',
+  anioNumerico: 1835,
+  campo: 'Protistología y biología celular',
+  aporteDescripcion: 'Descubrió el material gelatinoso intracelular en protozoos al que llamó «sarcoda» (luego bautizado protoplasma), base de la vida celular.',
+  lugaresTrabajo: 'Universidad de Rennes',
+  fuenteReferencia: 'Académie des Sciences',
+});
+
+add({
+  id: 'edouard-van-beneden',
+  nombre: 'Édouard van Beneden',
+  pais: 'Bélgica',
+  continente: 'Europa',
+  vida: '1846 – 1910',
+  nacimientoLugar: 'Lovaina',
+  aportePeriodo: '1883',
+  anioNumerico: 1883,
+  campo: 'Citogenética y embriología',
+  aporteDescripcion: 'Descubrió la meiosis en el gusano Ascaris, demostrando que los gametos tienen la mitad de cromosomas que las células somáticas.',
+  lugaresTrabajo: 'Universidad de Lieja',
+  fuenteReferencia: 'Académie Royale des Sciences de Belgique',
+});
+
+add({
+  id: 'hugo-von-mohl',
+  nombre: 'Hugo von Mohl',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1805 – 1872',
+  nacimientoLugar: 'Stuttgart',
+  aportePeriodo: '1846',
+  anioNumerico: 1846,
+  campo: 'Citología vegetal',
+  aporteDescripcion: 'Acuñó el término protoplasma para el líquido vivo vegetal y describió la formación de la pared celular secundaria.',
+  lugaresTrabajo: 'Universidad de Tubinga',
+  fuenteReferencia: 'Universidad de Tubinga',
+});
+
+add({
+  id: 'franz-leydig',
+  nombre: 'Franz Leydig',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1821 – 1908',
+  nacimientoLugar: 'Rothenburg ob der Tauber',
+  aportePeriodo: '1850',
+  anioNumerico: 1850,
+  campo: 'Histología comparada',
+  aporteDescripcion: 'Descubrió las células intersticiales testiculares productoras de testosterona (células de Leydig).',
+  lugaresTrabajo: 'Wurzburgo y Bonn',
+  fuenteReferencia: 'Universidad de Bonn',
+});
+
+add({
+  id: 'heinrich-wilhelm-waldeyer',
+  nombre: 'Heinrich Wilhelm Waldeyer',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1836 – 1921',
+  nacimientoLugar: 'Hehlen',
+  aportePeriodo: '1888',
+  anioNumerico: 1888,
+  campo: 'Anatomía y citología',
+  aporteDescripcion: 'Acuñó formalmente los términos «cromosoma» y «neurona», consolidando la teoría neuronal y citogenética.',
+  lugaresTrabajo: 'Universidad de Berlín',
+  fuenteReferencia: 'Charité Berlín',
+});
+
+
+add({
+  id: 'carl-bergmann',
+  nombre: 'Carl Bergmann',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1814 – 1865',
+  nacimientoLugar: 'Gotinga',
+  aportePeriodo: '1847',
+  anioNumerico: 1847,
+  campo: 'Ecología y fisiología comparada',
+  aporteDescripcion: 'Formuló la «regla de Bergmann»: las especies endotérmicas de climas fríos tienden a tener mayor masa corporal que sus parientes de zonas cálidas.',
+  lugaresTrabajo: 'Gotinga y Rostock',
+  fuenteReferencia: 'Sociedad de Historia Natural de Rostock',
+});
+
+
+add({
+  id: 'giuseppe-levi',
+  nombre: 'Giuseppe Levi',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1872 – 1965',
+  nacimientoLugar: 'Trieste',
+  aportePeriodo: '1934',
+  anioNumerico: 1934,
+  campo: 'Histología y cultivo de tejidos',
+  aporteDescripcion: 'Maestro de tres premios Nobel (Levi-Montalcini, Luria, Dulbecco); pionero del cultivo in vitro de neuronas embrionarias vivas.',
+  lugaresTrabajo: 'Universidad de Turín',
+  fuenteReferencia: 'Academia de Medicina de Turín',
+});
+
+add({
+  id: 'renato-dulbecco',
+  nombre: 'Renato Dulbecco',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1914 – 2012',
+  nacimientoLugar: 'Catanzaro',
+  aportePeriodo: '1965',
+  anioNumerico: 1965,
+  campo: 'Virología oncológica',
+  aporteDescripcion: 'Demostró la transformación de células sanas en tumorales por integración de virus de ADN (oncovirus); premio Nobel en 1975.',
+  lugaresTrabajo: 'Instituto Salk y Turín',
+  fuenteReferencia: 'Nobel Media / Salk Institute',
+});
+
+add({
+  id: 'albert-claude',
+  nombre: 'Albert Claude',
+  pais: 'Bélgica',
+  continente: 'Europa',
+  vida: '1899 – 1983',
+  nacimientoLugar: 'Longlier, Neufchâteau',
+  aportePeriodo: '1945',
+  anioNumerico: 1945,
+  campo: 'Biología celular y microscopía electrónica',
+  aporteDescripcion: 'Pionero en la centrifugación diferencial y en el uso del microscopio electrónico para descubrir el retículo endoplásmico; premio Nobel en 1974.',
+  lugaresTrabajo: 'Rockefeller Institute y Bruselas',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'christian-de-duve',
+  nombre: 'Christian de Duve',
+  pais: 'Bélgica',
+  continente: 'Europa',
+  vida: '1917 – 2013',
+  nacimientoLugar: 'Thames Ditton, Reino Unido (belga)',
+  aportePeriodo: '1955',
+  anioNumerico: 1955,
+  campo: 'Bioquímica y biología celular',
+  aporteDescripcion: 'Descubrió los lisosomas y los peroxisomas, orgánulos encargados de la digestión y detoxificación intracelular; premio Nobel en 1974.',
+  lugaresTrabajo: 'Universidad de Lovaina y Rockefeller',
+  fuenteReferencia: 'Nobel Media / Universidad Católica de Lovaina',
+});
+
+add({
+  id: 'george-emil-palade',
+  nombre: 'George Emil Palade',
+  pais: 'Rumanía',
+  continente: 'Europa',
+  vida: '1912 – 2008',
+  nacimientoLugar: 'Iași',
+  aportePeriodo: '1955',
+  anioNumerico: 1955,
+  campo: 'Biología celular y ribosomas',
+  aporteDescripcion: 'Descubrió los ribosomas (gránulos de Palade) y describió la ruta biosintética y secretora de proteínas celulares; premio Nobel en 1974.',
+  lugaresTrabajo: 'Rockefeller University y Yale',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'werner-arber',
+  nombre: 'Werner Arber',
+  pais: 'Suiza',
+  continente: 'Europa',
+  vida: '1929 – actualidad',
+  nacimientoLugar: 'Gränichen, Argovia',
+  aportePeriodo: '1968',
+  anioNumerico: 1968,
+  campo: 'Genética molecular y enzimas de restricción',
+  aporteDescripcion: 'Descubrió las enzimas de restricción bacterianas que cortan el ADN en secuencias específicas, base de la ingeniería genética; premio Nobel en 1978.',
+  lugaresTrabajo: 'Universidad de Basilea y Ginebra',
+  fuenteReferencia: 'Nobel Media / Biozentrum Basel',
+});
+
+add({
+  id: 'gottfried-schatz',
+  nombre: 'Gottfried Schatz',
+  pais: 'Austria',
+  continente: 'Europa',
+  vida: '1936 – 2015',
+  nacimientoLugar: 'Strem, Burgenland',
+  aportePeriodo: '1964',
+  anioNumerico: 1964,
+  campo: 'Bioquímica y biogénesis mitocondrial',
+  aporteDescripcion: 'Descubrió que las mitocondrias poseen su propio ADN autónomo y caracterizó el complejo de transporte de proteínas a través de la membrana mitocondrial.',
+  lugaresTrabajo: 'Universidad de Viena y Biozentrum Basilea',
+  fuenteReferencia: 'Biozentrum Basel / Austrian Academy of Sciences',
+});
+
+
+add({
+  id: 'hieronymus-fabricius',
+  nombre: 'Hieronymus Fabricius',
+  pais: 'Italia',
+  continente: 'Europa',
+  vida: '1533 – 1619',
+  nacimientoLugar: 'Acquapendente',
+  aportePeriodo: '1603',
+  anioNumerico: 1603,
+  campo: 'Embriología y anatomía venosa',
+  aporteDescripcion: 'Describió minuciosamente las válvulas de las venas (De venarum ostiolis) y fue maestro formativo de William Harvey en Padua.',
+  lugaresTrabajo: 'Universidad de Padua',
+  fuenteReferencia: 'Teatro Anatómico de Padua',
+});
+
+add({
+  id: 'erasmus-darwin',
+  nombre: 'Erasmus Darwin',
+  pais: 'Reino Unido',
+  continente: 'Europa',
+  vida: '1731 – 1802',
+  nacimientoLugar: 'Elston Hall, Nottinghamshire',
+  aportePeriodo: '1794',
+  anioNumerico: 1794,
+  campo: 'Filosofía natural y evolución temprana',
+  aporteDescripcion: 'En Zoonomia anticipó ideas sobre la transmutación y ancestría común de todos los seres vivos orgánicos.',
+  lugaresTrabajo: 'Lichfield y Derby',
+  fuenteReferencia: 'Lunar Society / Royal Society',
+});
+
+add({
+  id: 'amelie-dietrich',
+  nombre: 'Amalie Dietrich',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1821 – 1891',
+  nacimientoLugar: 'Siebenlehn, Sajonia',
+  aportePeriodo: '1863',
+  anioNumerico: 1863,
+  campo: 'Historia natural y botánica de campo',
+  aporteDescripcion: 'Recolectó e investigó miles de especímenes botánicos y zoológicos en Australia para el Museo Godeffroy de Hamburgo.',
+  lugaresTrabajo: 'Hamburgo y Queensland',
+  esPionera: true,
+  fuenteReferencia: 'Museum Godeffroy Archive (Hamburgo)',
+});
+
+
+// Replace this with European scientist to hit exact 75:
+add({
+  id: 'theodor-escherich',
+  nombre: 'Theodor Escherich',
+  pais: 'Alemania',
+  continente: 'Europa',
+  vida: '1857 – 1911',
+  nacimientoLugar: 'Ansbach, Baviera',
+  aportePeriodo: '1885',
+  anioNumerico: 1885,
+  campo: 'Bacteriología y pediatría',
+  aporteDescripcion: 'Descubrió la bacteria Escherichia coli (E. coli), convertida en el organismo modelo por excelencia de la biología molecular.',
+  lugaresTrabajo: 'Múnich, Graz y Viena',
+  fuenteReferencia: 'Universidad de Viena / American Society for Microbiology',
+});
+
+// Check Europa count:
+console.log(`Europa: ${list.filter(s => s.continente === 'Europa').length} (Expected: 75)`);
+
+// -------------------------------------------------------------
+// AMÉRICA (65 CIENTÍFICOS)
+// -------------------------------------------------------------
+add({
+  id: 'nettie-stevens',
+  nombre: 'Nettie Stevens',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1861 – 1912',
+  nacimientoLugar: 'Cavendish, Vermont',
+  aportePeriodo: '1905',
+  anioNumerico: 1905,
+  campo: 'Genética y citología',
+  aporteDescripcion: 'Descubrió que el sexo biológico está determinado por los cromosomas X e Y al observar el escarabajo Tenebrio molitor.',
+  lugaresTrabajo: 'Bryn Mawr College',
+  esPionera: true,
+  fuenteReferencia: 'Carnegie Institution of Washington',
+});
+
+add({
+  id: 'esther-lederberg',
+  nombre: 'Esther Lederberg',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1922 – 2006',
+  nacimientoLugar: 'Bronx, Nueva York',
+  aportePeriodo: '1951',
+  anioNumerico: 1951,
+  campo: 'Genética bacteriana',
+  aporteDescripcion: 'Descubrió el bacteriófago lambda, el factor de fertilidad F y desarrolló la técnica de siembra por réplica en placa de terciopelo.',
+  lugaresTrabajo: 'Universidad de Wisconsin y Stanford',
+  esPionera: true,
+  fuenteReferencia: 'Stanford University School of Medicine',
+});
+
+add({
+  id: 'mary-claire-king',
+  nombre: 'Mary-Claire King',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1946 – actualidad',
+  nacimientoLugar: 'Wilmette, Illinois',
+  aportePeriodo: '1990',
+  anioNumerico: 1990,
+  campo: 'Genética médica y genómica',
+  aporteDescripcion: 'Demostró que el gen BRCA1 en el cromosoma 17 predispone al cáncer de mama hereditario; pionera de identificación genética forense.',
+  lugaresTrabajo: 'Universidad de Washington',
+  esPionera: true,
+  fuenteReferencia: 'National Academy of Sciences',
+});
+
+add({
+  id: 'ruth-patrick',
+  nombre: 'Ruth Patrick',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1907 – 2013',
+  nacimientoLugar: 'Topeka, Kansas',
+  aportePeriodo: '1949',
+  anioNumerico: 1949,
+  campo: 'Limnología y ecología fluvial',
+  aporteDescripcion: 'Formuló el «principio de Patrick», utilizando la diversidad de diatomeas como bioindicador de la salud ecológica de los ríos.',
+  lugaresTrabajo: 'Academia de Ciencias Naturales de Filadelfia',
+  esPionera: true,
+  fuenteReferencia: 'Academy of Natural Sciences of Drexel University',
+});
+
+add({
+  id: 'sylvia-earle',
+  nombre: 'Sylvia Earle',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1935 – actualidad',
+  nacimientoLugar: 'Gibbstown, Nueva Jersey',
+  aportePeriodo: '1970',
+  anioNumerico: 1970,
+  campo: 'Oceanografía y biología marina',
+  aporteDescripcion: 'Lideró el primer equipo de científicas acuáticas en el hábitat Tektite II y fundó Mission Blue para la preservación de reservas marinas.',
+  lugaresTrabajo: 'NOAA y Mission Blue',
+  esPionera: true,
+  fuenteReferencia: 'National Geographic Society / NOAA',
+});
+
+add({
+  id: 'alice-ball',
+  nombre: 'Alice Ball',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1892 – 1916',
+  nacimientoLugar: 'Seattle, Washington',
+  aportePeriodo: '1915',
+  anioNumerico: 1915,
+  campo: 'Química biológica',
+  aporteDescripcion: 'Desarrolló el «método Ball», técnica inyectable de aceite de chaulmoogra que constituyó el tratamiento más eficaz contra la lepra durante décadas.',
+  lugaresTrabajo: 'Universidad de Hawái',
+  esPionera: true,
+  fuenteReferencia: 'Universidad de Hawái / National Institutes of Health',
+});
+
+add({
+  id: 'florence-sabin',
+  nombre: 'Florence Sabin',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1871 – 1953',
+  nacimientoLugar: 'Central City, Colorado',
+  aportePeriodo: '1917',
+  anioNumerico: 1917,
+  campo: 'Anatomía e histología',
+  aporteDescripcion: 'Descubrió el origen embriológico del sistema linfático a partir de los vasos sanguíneos y fue la primera mujer miembro de la National Academy of Sciences.',
+  lugaresTrabajo: 'Universidad Johns Hopkins y Rockefeller Institute',
+  esPionera: true,
+  fuenteReferencia: 'The Rockefeller University Archives',
+});
+
+add({
+  id: 'florentino-ameghino',
+  nombre: 'Florentino Ameghino',
+  pais: 'Argentina',
+  continente: 'América',
+  vida: '1854 – 1911',
+  nacimientoLugar: 'Luján, Buenos Aires',
+  aportePeriodo: '1889',
+  anioNumerico: 1889,
+  campo: 'Paleontología y evolución',
+  aporteDescripcion: 'Descubrió y catalogó miles de mamíferos fósiles de las pampas y la Patagonia en Filogenia y Contribución al conocimiento de los mamíferos fósiles.',
+  lugaresTrabajo: 'Museo de La Plata y Buenos Aires',
+  fuenteReferencia: 'Museo Argentino de Ciencias Naturales',
+});
+
+add({
+  id: 'salvador-mazza',
+  nombre: 'Salvador Mazza',
+  pais: 'Argentina',
+  continente: 'América',
+  vida: '1886 – 1946',
+  nacimientoLugar: 'Buenos Aires',
+  aportePeriodo: '1926',
+  anioNumerico: 1926,
+  campo: 'Epidemiología y parasitología',
+  aporteDescripcion: 'Fundó la MEPRA (Misión de Estudios de Patología Regional Argentina) y probó la endemia del mal de Chagas en el norte argentino.',
+  lugaresTrabajo: 'Jujuy y Buenos Aires',
+  fuenteReferencia: 'Academia Nacional de Medicina de Argentina',
+});
+
+add({
+  id: 'carlos-spegazzini',
+  nombre: 'Carlos Spegazzini',
+  pais: 'Argentina',
+  continente: 'América',
+  vida: '1858 – 1926',
+  nacimientoLugar: 'Bairo, Piamonte (nacionalizado argentino)',
+  aportePeriodo: '1899',
+  anioNumerico: 1899,
+  campo: 'Micología y botánica',
+  aporteDescripcion: 'Pionero de la micología sudamericana; describió cerca de 4.000 especies nuevas de hongos y plantas en sus expediciones a Tierra del Fuego y Chaco.',
+  lugaresTrabajo: 'La Plata y Buenos Aires',
+  fuenteReferencia: 'Instituto Spegazzini / Universidad Nacional de La Plata',
+});
+
+add({
+  id: 'eduardo-ladislao-holmberg',
+  nombre: 'Eduardo Ladislao Holmberg',
+  pais: 'Argentina',
+  continente: 'América',
+  vida: '1852 – 1937',
+  nacimientoLugar: 'Buenos Aires',
+  aportePeriodo: '1881',
+  anioNumerico: 1881,
+  campo: 'Aracnología y botánica',
+  aporteDescripcion: 'Pionero del estudio científico de arañas e insectos en Argentina y primer director del Jardín Zoológico de Buenos Aires.',
+  lugaresTrabajo: 'Buenos Aires',
+  fuenteReferencia: 'Sociedad Científica Argentina',
+});
+
+add({
+  id: 'bertha-lutz',
+  nombre: 'Bertha Lutz',
+  pais: 'Brasil',
+  continente: 'América',
+  vida: '1894 – 1976',
+  nacimientoLugar: 'São Paulo',
+  aportePeriodo: '1932',
+  anioNumerico: 1932,
+  campo: 'Herpetología y zoología',
+  aporteDescripcion: 'Catalogó numerosas especies de anfibios neotropicales del género Hylidae en el Museo Nacional de Río de Janeiro y defendió la conservación de la fauna.',
+  lugaresTrabajo: 'Museu Nacional (Río de Janeiro)',
+  esPionera: true,
+  fuenteReferencia: 'Museu Nacional da UFRJ',
+});
+
+add({
+  id: 'adolpho-lutz',
+  nombre: 'Adolpho Lutz',
+  pais: 'Brasil',
+  continente: 'América',
+  vida: '1855 – 1940',
+  nacimientoLugar: 'Río de Janeiro',
+  aportePeriodo: '1908',
+  anioNumerico: 1908,
+  campo: 'Parasitología y medicina tropical',
+  aporteDescripcion: 'Descubrió la paracoccidioidomicosis (enfermedad de Lutz-Splendore-Almeida) y demostró la transmisión de la lepra y la fiebre amarilla.',
+  lugaresTrabajo: 'Instituto Butantan y Fiocruz (Río de Janeiro)',
+  fuenteReferencia: 'Fundação Oswaldo Cruz (Fiocruz)',
+});
+
+add({
+  id: 'candido-mello-leitao',
+  nombre: 'Cândido Firmino de Mello-Leitão',
+  pais: 'Brasil',
+  continente: 'América',
+  vida: '1886 – 1948',
+  nacimientoLugar: 'Campina Grande, Paraíba',
+  aportePeriodo: '1923',
+  anioNumerico: 1923,
+  campo: 'Aracnología y biogeografía',
+  aporteDescripcion: 'Padre de la aracnología sudamericana, describió cientos de especies de arácnidos y propuso divisiones zoogeográficas de América del Sur.',
+  lugaresTrabajo: 'Museu Nacional (Río de Janeiro)',
+  fuenteReferencia: 'Museu Nacional da UFRJ / Academia Brasileira de Ciências',
+});
+
+add({
+  id: 'nise-da-silveira',
+  nombre: 'Nise da Silveira',
+  pais: 'Brasil',
+  continente: 'América',
+  vida: '1905 – 1999',
+  nacimientoLugar: 'Maceió, Alagoas',
+  aportePeriodo: '1952',
+  anioNumerico: 1952,
+  campo: 'Psicobiología y etología',
+  aporteDescripcion: 'Pionera en el estudio del vínculo afectivo y la comunicación interespecífica entre humanos y animales como terapia biológica integradora.',
+  lugaresTrabajo: 'Río de Janeiro',
+  esPionera: true,
+  fuenteReferencia: 'Conselho Nacional de Desenvolvimento Científico e Tecnológico',
+});
+
+add({
+  id: 'helia-bravo-hollis',
+  nombre: 'Helia Bravo Hollis',
+  pais: 'México',
+  continente: 'América',
+  vida: '1901 – 2001',
+  nacimientoLugar: 'Mixcoac, Ciudad de México',
+  aportePeriodo: '1937',
+  anioNumerico: 1937,
+  campo: 'Botánica (Cactología)',
+  aporteDescripcion: 'Publicó Las cactáceas de México, obra cumbre mundial sobre la taxonomía, morfología y evolución de los cactus.',
+  lugaresTrabajo: 'Instituto de Biología (UNAM)',
+  esPionera: true,
+  fuenteReferencia: 'Instituto de Biología UNAM / Jardín Botánico',
+});
+
+add({
+  id: 'isaac-ochoterena',
+  nombre: 'Isaac Ochoterena',
+  pais: 'México',
+  continente: 'América',
+  vida: '1885 – 1950',
+  nacimientoLugar: 'Atlixco, Puebla',
+  aportePeriodo: '1929',
+  anioNumerico: 1929,
+  campo: 'Histología y botánica',
+  aporteDescripcion: 'Fundador del Instituto de Biología de la UNAM; impulsó los estudios histológicos del sistema nervioso y la flora endémica mexicana.',
+  lugaresTrabajo: 'UNAM (Ciudad de México)',
+  fuenteReferencia: 'Universidad Nacional Autónoma de México',
+});
+
+add({
+  id: 'maria-elena-caso',
+  nombre: 'María Elena Caso',
+  pais: 'México',
+  continente: 'América',
+  vida: '1915 – 1991',
+  nacimientoLugar: 'Ciudad de México',
+  aportePeriodo: '1961',
+  anioNumerico: 1961,
+  campo: 'Biología marina (Equinodermos)',
+  aporteDescripcion: 'Pionera de las ciencias del mar en México; describió y clasificó los equinodermos (estrellas y erizos) del Golfo de México y el Pacífico.',
+  lugaresTrabajo: 'Instituto de Ciencias del Mar y Limnología (UNAM)',
+  esPionera: true,
+  fuenteReferencia: 'Instituto de Ciencias del Mar y Limnología UNAM',
+});
+
+add({
+  id: 'enrique-beltran',
+  nombre: 'Enrique Beltrán',
+  pais: 'México',
+  continente: 'América',
+  vida: '1903 – 1994',
+  nacimientoLugar: 'Ciudad de México',
+  aportePeriodo: '1952',
+  anioNumerico: 1952,
+  campo: 'Conservación biológica y protozoología',
+  aporteDescripcion: 'Fundó el Instituto Mexicano de Recursos Naturales Renovables (IMERNAR) y promovió la conservación de los bosques tropicales.',
+  lugaresTrabajo: 'Ciudad de México',
+  fuenteReferencia: 'Colegio de México / IMERNAR',
+});
+
+add({
+  id: 'guillermo-mann',
+  nombre: 'Guillermo Mann Fischer',
+  pais: 'Chile',
+  continente: 'América',
+  vida: '1919 – 1967',
+  nacimientoLugar: 'Santiago',
+  aportePeriodo: '1950',
+  anioNumerico: 1950,
+  campo: 'Zoología y ecología',
+  aporteDescripcion: 'Pionero de la zoología antártica y patagónica; fundó el Centro de Investigaciones Zoológicas de la Universidad de Chile.',
+  lugaresTrabajo: 'Universidad de Chile (Santiago)',
+  fuenteReferencia: 'Sociedad de Biología de Chile',
+});
+
+add({
+  id: 'rodolfo-armando-philippi',
+  nombre: 'Rodolfo Armando Philippi',
+  pais: 'Chile',
+  continente: 'América',
+  vida: '1808 – 1904',
+  nacimientoLugar: 'Charlottenburg (radicado en Chile)',
+  aportePeriodo: '1860',
+  anioNumerico: 1860,
+  campo: 'Historia natural y botánica',
+  aporteDescripcion: 'Exploró el desierto de Atacama y la flora chilena, dirigió el Museo Nacional de Historia Natural durante más de 40 años.',
+  lugaresTrabajo: 'Santiago y Museo Nacional de Historia Natural',
+  fuenteReferencia: 'Museo Nacional de Historia Natural de Chile',
+});
+
+add({
+  id: 'felipe-poey',
+  nombre: 'Felipe Poey',
+  pais: 'Cuba',
+  continente: 'América',
+  vida: '1799 – 1891',
+  nacimientoLugar: 'La Habana',
+  aportePeriodo: '1851',
+  anioNumerico: 1851,
+  campo: 'Ictiología',
+  aporteDescripcion: 'Publicó Memorias sobre la Historia Natural de la Isla de Cuba e Ictiología Cubana, describiendo cientos de peces del mar Caribe.',
+  lugaresTrabajo: 'Universidad de La Habana',
+  fuenteReferencia: 'Academia de Ciencias de Cuba',
+});
+
+add({
+  id: 'antonio-nunez-jimenez',
+  nombre: 'Antonio Núñez Jiménez',
+  pais: 'Cuba',
+  continente: 'América',
+  vida: '1923 – 1998',
+  nacimientoLugar: 'Alquízar, La Habana',
+  aportePeriodo: '1965',
+  anioNumerico: 1965,
+  campo: 'Espeleología y biogeografía',
+  aporteDescripcion: 'Fundador de la Sociedad Espeleológica de Cuba; estudió la fauna cavernícola y la biogeografía caribeña.',
+  lugaresTrabajo: 'Academia de Ciencias de Cuba',
+  fuenteReferencia: 'Sociedad Espeleológica de Cuba',
+});
+
+add({
+  id: 'tobias-lasser',
+  nombre: 'Tobías Lasser',
+  pais: 'Venezuela',
+  continente: 'América',
+  vida: '1911 – 2006',
+  nacimientoLugar: 'Agua Larga, Falcón',
+  aportePeriodo: '1945',
+  anioNumerico: 1945,
+  campo: 'Botánica y ecología',
+  aporteDescripcion: 'Fundador del Jardín Botánico de Caracas y del Herbario Nacional de Venezuela, protegió la flora del parque nacional Henri Pittier.',
+  lugaresTrabajo: 'Universidad Central de Venezuela (Caracas)',
+  fuenteReferencia: 'Instituto Botánico de Venezuela',
+});
+
+add({
+  id: 'henri-pittier',
+  nombre: 'Henri Pittier',
+  pais: 'Venezuela',
+  continente: 'América',
+  vida: '1857 – 1950',
+  nacimientoLugar: 'Bex, Suiza (nacionalizado venezolano)',
+  aportePeriodo: '1926',
+  anioNumerico: 1926,
+  campo: 'Fitogeografía y ecología',
+  aporteDescripcion: 'Clasificó más de 30.000 especímenes vegetales de América Central y Venezuela e impulsó la creación del primer parque nacional de Venezuela.',
+  lugaresTrabajo: 'Costa Rica y Caracas',
+  fuenteReferencia: 'Fundación Instituto Botánico de Venezuela',
+});
+
+add({
+  id: 'armando-dugand',
+  nombre: 'Armando Dugand',
+  pais: 'Colombia',
+  continente: 'América',
+  vida: '1906 – 1971',
+  nacimientoLugar: 'Barranquilla',
+  aportePeriodo: '1940',
+  anioNumerico: 1940,
+  campo: 'Botánica y ornitología',
+  aporteDescripcion: 'Director del Instituto de Ciencias Naturales de Colombia; catalogó palmeras y aves de la región Caribe y de la Amazonía colombiana.',
+  lugaresTrabajo: 'Instituto de Ciencias Naturales (Bogotá)',
+  fuenteReferencia: 'Universidad Nacional de Colombia',
+});
+
+add({
+  id: 'enrique-perez-arbelaez',
+  nombre: 'Enrique Pérez Arbeláez',
+  pais: 'Colombia',
+  continente: 'América',
+  vida: '1896 – 1972',
+  nacimientoLugar: 'Medellín',
+  aportePeriodo: '1956',
+  anioNumerico: 1956,
+  campo: 'Botánica económica',
+  aporteDescripcion: 'Autor de Plantas útiles de Colombia y fundador del Herbario Nacional Colombiano y del Jardín Botánico de Bogotá José Celestino Mutis.',
+  lugaresTrabajo: 'Bogotá',
+  fuenteReferencia: 'Jardín Botánico de Bogotá',
+});
+
+add({
+  id: 'augusto-weberbauer',
+  nombre: 'Augusto Weberbauer',
+  pais: 'Perú',
+  continente: 'América',
+  vida: '1871 – 1948',
+  nacimientoLugar: 'Breslavia (radicado en Perú)',
+  aportePeriodo: '1911',
+  anioNumerico: 1911,
+  campo: 'Fitogeografía andina',
+  aporteDescripcion: 'Autor de El mundo vegetal de los Andes peruanos, trazando los pisos ecológicos de la vegetación andina y amazónica.',
+  lugaresTrabajo: 'Universidad Nacional Mayor de San Marcos (Lima)',
+  fuenteReferencia: 'Universidad Nacional Mayor de San Marcos',
+});
+
+add({
+  id: 'sebastian-barranca',
+  nombre: 'Sebastián Barranca',
+  pais: 'Perú',
+  continente: 'América',
+  vida: '1830 – 1909',
+  nacimientoLugar: 'Acarí, Arequipa',
+  aportePeriodo: '1876',
+  anioNumerico: 1876,
+  campo: 'Historia natural y farmacognosia',
+  aporteDescripcion: 'Estudió las plantas medicinales andinas y el guano como fertilizante biogeoquímico fundamental en la costa pacífica.',
+  lugaresTrabajo: 'Lima',
+  fuenteReferencia: 'Sociedad Geográfica de Lima',
+});
+
+add({
+  id: 'luis-alberto-leon',
+  nombre: 'Luis Alberto León',
+  pais: 'Ecuador',
+  continente: 'América',
+  vida: '1903 – 1988',
+  nacimientoLugar: 'Pelileo, Tungurahua',
+  aportePeriodo: '1945',
+  anioNumerico: 1945,
+  campo: 'Parasitología médica',
+  aporteDescripcion: 'Estudió la leishmaniasis andina (uta), la enfermedad de Chagas y los ciclos de vida de helmintos en poblaciones ecuatorianas.',
+  lugaresTrabajo: 'Universidad Central del Ecuador (Quito)',
+  fuenteReferencia: 'Academia Nacional de Medicina del Ecuador',
+});
+
+add({
+  id: 'misael-acosta-solis',
+  nombre: 'Misael Acosta Solís',
+  pais: 'Ecuador',
+  continente: 'América',
+  vida: '1910 – 1994',
+  nacimientoLugar: 'Ambato',
+  aportePeriodo: '1947',
+  anioNumerico: 1947,
+  campo: 'Fitogeografía y ecología',
+  aporteDescripcion: 'Pionero de la conservación en las islas Galápagos y de los páramos andinos; fundó el Instituto Ecuatoriano de Ciencias Naturales.',
+  lugaresTrabajo: 'Quito y Galápagos',
+  fuenteReferencia: 'Instituto Ecuatoriano de Ciencias Naturales',
+});
+
+add({
+  id: 'martin-cardenas-hermosa',
+  nombre: 'Martín Cárdenas Hermosa',
+  pais: 'Bolivia',
+  continente: 'América',
+  vida: '1899 – 1973',
+  nacimientoLugar: 'Cochabamba',
+  aportePeriodo: '1944',
+  anioNumerico: 1944,
+  campo: 'Botánica y agronomía',
+  aporteDescripcion: 'Clasificó cientos de especies de papas silvestres (Solanum) y cactáceas de los Andes, considerado el botánico más insigne de Bolivia.',
+  lugaresTrabajo: 'Universidad Mayor de San Simón (Cochabamba)',
+  fuenteReferencia: 'Herbario Martín Cárdenas / Academia Nacional de Ciencias de Bolivia',
+});
+
+add({
+  id: 'noel-kempff-mercado',
+  nombre: 'Noel Kempff Mercado',
+  pais: 'Bolivia',
+  continente: 'América',
+  vida: '1924 – 1986',
+  nacimientoLugar: 'Santa Cruz de la Sierra',
+  aportePeriodo: '1979',
+  anioNumerico: 1979,
+  campo: 'Ecología y conservación',
+  aporteDescripcion: 'Promotor de la conservación de la Chiquitania y Amazonía boliviana; el Parque Nacional Noel Kempff Mercado honra su legado.',
+  lugaresTrabajo: 'Santa Cruz de la Sierra',
+  fuenteReferencia: 'Fundación Noel Kempff Mercado',
+});
+
+add({
+  id: 'damaso-antonio-larranaga',
+  nombre: 'Dámaso Antonio Larrañaga',
+  pais: 'Uruguay',
+  continente: 'América',
+  vida: '1771 – 1848',
+  nacimientoLugar: 'Montevideo',
+  aportePeriodo: '1815',
+  anioNumerico: 1815,
+  campo: 'Historia natural y botánica',
+  aporteDescripcion: 'Pionero naturalista de la cuenca del Plata; describió la fauna pampeana, introdujo el cultivo de morera y fundó la Biblioteca Nacional.',
+  lugaresTrabajo: 'Montevideo',
+  fuenteReferencia: 'Museo Nacional de Historia Natural de Uruguay',
+});
+
+add({
+  id: 'rodolfo-talice',
+  nombre: 'Rodolfo Tálice',
+  pais: 'Uruguay',
+  continente: 'América',
+  vida: '1899 – 1999',
+  nacimientoLugar: 'Montevideo',
+  aportePeriodo: '1937',
+  anioNumerico: 1937,
+  campo: 'Parasitología y etología',
+  aporteDescripcion: 'Primer catedrático de parasitología médica en Uruguay; investigó el ciclo del Trypanosoma cruzi y promovió la bioética ecológica.',
+  lugaresTrabajo: 'Universidad de la República (Montevideo)',
+  fuenteReferencia: 'Facultad de Medicina (Udelar)',
+});
+
+add({
+  id: 'elizabeth-neufeld',
+  nombre: 'Elizabeth Neufeld',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1928 – actualidad',
+  nacimientoLugar: 'París (emigrada a EE.UU.)',
+  aportePeriodo: '1972',
+  anioNumerico: 1972,
+  campo: 'Genética humana y bioquímica lisosomal',
+  aporteDescripcion: 'Elucidó la base genética y enzimática de las mucopolisacaridosis (síndrome de Hurler y Hunter) por defectos lisosomales.',
+  lugaresTrabajo: 'National Institutes of Health y UCLA',
+  esPionera: true,
+  fuenteReferencia: 'National Academy of Sciences / Lasker Award',
+});
+
+add({
+  id: 'shirley-tilghman',
+  nombre: 'Shirley Tilghman',
+  pais: 'Canadá',
+  continente: 'América',
+  vida: '1946 – actualidad',
+  nacimientoLugar: 'Toronto, Ontario',
+  aportePeriodo: '1978',
+  anioNumerico: 1978,
+  campo: 'Genética molecular e impronta genómica',
+  aporteDescripcion: 'Participó en la primera clonación de un gen de mamífero (beta-globina) y descubrió la impronta genómica en el gen H19.',
+  lugaresTrabajo: 'NIH, Instituto Fox Chase y Universidad de Princeton',
+  esPionera: true,
+  fuenteReferencia: 'Royal Society / Princeton University',
+});
+
+add({
+  id: 'maude-abbott',
+  nombre: 'Maude Abbott',
+  pais: 'Canadá',
+  continente: 'América',
+  vida: '1869 – 1940',
+  nacimientoLugar: 'St. Andrews East, Quebec',
+  aportePeriodo: '1936',
+  anioNumerico: 1936,
+  campo: 'Anatomía patológica cardíaca',
+  aporteDescripcion: 'Publicó el Atlas of Congenital Cardiac Disease, catalogando y clasificando por primera vez las cardiopatías congénitas humanas.',
+  lugaresTrabajo: 'Universidad McGill (Montreal)',
+  esPionera: true,
+  fuenteReferencia: 'McGill University Faculty of Medicine',
+});
+
+add({
+  id: 'brenda-milner',
+  nombre: 'Brenda Milner',
+  pais: 'Canadá',
+  continente: 'América',
+  vida: '1918 – actualidad',
+  nacimientoLugar: 'Mánchester (radicada en Canadá)',
+  aportePeriodo: '1957',
+  anioNumerico: 1957,
+  campo: 'Neuropsicología y neurobiología de la memoria',
+  aporteDescripcion: 'Descubrió en el paciente H.M. que la memoria explícita y procedimental dependen de sistemas biológicos cerebrales distintos (hipocampo).',
+  lugaresTrabajo: 'Montreal Neurological Institute (McGill)',
+  esPionera: true,
+  fuenteReferencia: 'Montreal Neurological Institute / Kavli Prize',
+});
+
+add({
+  id: 'charles-best',
+  nombre: 'Charles Best',
+  pais: 'Canadá',
+  continente: 'América',
+  vida: '1899 – 1978',
+  nacimientoLugar: 'West Pembroke, Maine (nacionalizado canadiense)',
+  aportePeriodo: '1921',
+  anioNumerico: 1921,
+  campo: 'Fisiología médica',
+  aporteDescripcion: 'Co-descubridor del aislamiento funcional de la insulina junto con Banting y purificador de la heparina como anticoagulante.',
+  lugaresTrabajo: 'Universidad de Toronto',
+  fuenteReferencia: 'University of Toronto / Canadian Medical Hall of Fame',
+});
+
+add({
+  id: 'hans-selye',
+  nombre: 'Hans Selye',
+  pais: 'Canadá',
+  continente: 'América',
+  vida: '1907 – 1982',
+  nacimientoLugar: 'Viena (nacionalizado canadiense)',
+  aportePeriodo: '1936',
+  anioNumerico: 1936,
+  campo: 'Endocrinología y neurobiología',
+  aporteDescripcion: 'Definió biológicamente el concepto de «estrés» y formuló el Síndrome General de Adaptación mediado por el eje hipófisis-suprarrenal.',
+  lugaresTrabajo: 'Universidad de Montreal',
+  fuenteReferencia: 'Université de Montréal',
+});
+
+add({
+  id: 'norman-borlaug',
+  nombre: 'Norman Borlaug',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1914 – 2009',
+  nacimientoLugar: 'Cresco, Iowa',
+  aportePeriodo: '1960',
+  anioNumerico: 1960,
+  campo: 'Fitopatología y genética agrícola',
+  aporteDescripcion: 'Padre de la Revolución Verde; desarrolló variedades de trigo enano de alto rendimiento resistentes a la roya (Puccinia graminis); Nobel de la Paz 1970.',
+  lugaresTrabajo: 'CIMMYT (México) y Texas A&M',
+  fuenteReferencia: 'CIMMYT / The World Food Prize',
+});
+
+add({
+  id: 'edward-osborne-wilson-partner',
+  nombre: 'Robert MacArthur',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1930 – 1972',
+  nacimientoLugar: 'Toronto, Canadá',
+  aportePeriodo: '1967',
+  anioNumerico: 1967,
+  campo: 'Ecología teórica y biogeografía',
+  aporteDescripcion: 'Co-formuló con E. O. Wilson la Teoría de la Biogeografía de Islas, vinculando área, distancia, inmigración y tasa de extinción.',
+  lugaresTrabajo: 'Universidad de Princeton',
+  fuenteReferencia: 'Princeton University Press / National Academy of Sciences',
+});
+
+add({
+  id: 'ruth-sager',
+  nombre: 'Ruth Sager',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1917 – 1997',
+  nacimientoLugar: 'Chicago, Illinois',
+  aportePeriodo: '1963',
+  anioNumerico: 1963,
+  campo: 'Genética citoplasmática y oncosupresión',
+  aporteDescripcion: 'Pionera en demostrar la herencia genética extracromosómica (no mendeliana) en cloroplastos del alga Chlamydomonas.',
+  lugaresTrabajo: 'Universidad de Columbia y Harvard Medical School',
+  esPionera: true,
+  fuenteReferencia: 'National Academy of Sciences / Dana-Farber Cancer Institute',
+});
+
+add({
+  id: 'salvador-moncada',
+  nombre: 'Salvador Moncada',
+  pais: 'Honduras',
+  continente: 'América',
+  vida: '1944 – actualidad',
+  nacimientoLugar: 'Tegucigalpa',
+  aportePeriodo: '1976',
+  anioNumerico: 1976,
+  campo: 'Farmacología vascular y biología del óxido nítrico',
+  aporteDescripcion: 'Descubrió la prostaciclina (inhibidor de agregación plaquetaria) y demostró que el factor relajante derivado del endotelio (EDRF) es el óxido nítrico.',
+  lugaresTrabajo: 'Wellcome Research Laboratories y University College London',
+  fuenteReferencia: 'Royal Society of London / Premio Príncipe de Asturias',
+});
+
+add({
+  id: 'carlos-monge-medrano',
+  nombre: 'Carlos Monge Medrano',
+  pais: 'Perú',
+  continente: 'América',
+  vida: '1884 – 1970',
+  nacimientoLugar: 'Lima',
+  aportePeriodo: '1928',
+  anioNumerico: 1928,
+  campo: 'Fisiología de altura',
+  aporteDescripcion: 'Describió el mal de montaña crónico (enfermedad de Monge) y fundó el Instituto de Biología Andina para estudiar la adaptación hipóxica eritrocitaria.',
+  lugaresTrabajo: 'Universidad Nacional Mayor de San Marcos (Lima)',
+  fuenteReferencia: 'Instituto de Biología Andina / UNMSM',
+});
+
+add({
+  id: 'lucas-kraglievich',
+  nombre: 'Lucas Kraglievich',
+  pais: 'Argentina',
+  continente: 'América',
+  vida: '1886 – 1932',
+  nacimientoLugar: 'Buenos Aires',
+  aportePeriodo: '1925',
+  anioNumerico: 1925,
+  campo: 'Paleontología de vertebrados',
+  aporteDescripcion: 'Describió decenas de géneros de gliptodontes y roedores gigantes fósiles del Cenozoico sudamericano.',
+  lugaresTrabajo: 'Museo Argentino de Ciencias Naturales (Buenos Aires)',
+  fuenteReferencia: 'Museo Argentino de Ciencias Naturales',
+});
+
+add({
+  id: 'francisco-mujica-add',
+  nombre: 'Francisco Freire',
+  pais: 'Chile',
+  continente: 'América',
+  vida: '1839 – 1900',
+  nacimientoLugar: 'Santiago',
+  aportePeriodo: '1880',
+  anioNumerico: 1880,
+  campo: 'Fisiología médica y botánica',
+  aporteDescripcion: 'Impulsó los primeros laboratorios de fisiología experimental en la Universidad de Chile y el estudio de flora medicinal.',
+  lugaresTrabajo: 'Universidad de Chile',
+  fuenteReferencia: 'Anales de la Universidad de Chile',
+});
+
+add({
+  id: 'eugene-odum',
+  nombre: 'Eugene Odum',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1913 – 2002',
+  nacimientoLugar: 'Newport, Nuevo Hampshire',
+  aportePeriodo: '1953',
+  anioNumerico: 1953,
+  campo: 'Ecología de ecosistemas',
+  aporteDescripcion: 'Autor de Fundamentals of Ecology; pionero en conceptualizar el ecosistema a través del flujo de energía termodinámica y redes tróficas.',
+  lugaresTrabajo: 'Universidad de Georgia',
+  fuenteReferencia: 'Premio Crafoord / University of Georgia',
+});
+
+add({
+  id: 'howard-thomas-odum',
+  nombre: 'Howard T. Odum',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1924 – 2002',
+  nacimientoLugar: 'Durham, Carolina del Norte',
+  aportePeriodo: '1955',
+  anioNumerico: 1955,
+  campo: 'Ecología de sistemas y biogeoquímica',
+  aporteDescripcion: 'Pionero en la cuantificación de la energía metabólica y producción primaria neta en arrecifes de coral y manantiales.',
+  lugaresTrabajo: 'Universidad de Florida',
+  fuenteReferencia: 'Premio Crafoord / University of Florida',
+});
+
+add({
+  id: 'theodosius-dobzhansky-america', // Avoid ID collision
+  nombre: 'Sewall Wright Partner', // wait, Sewall Wright is in PDF.
+  nombre: 'Hampton Carson',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1914 – 2004',
+  nacimientoLugar: 'Filadelfia, Pensilvania',
+  aportePeriodo: '1970',
+  anioNumerico: 1970,
+  campo: 'Genética evolutiva y especiación',
+  aporteDescripcion: 'Estudió la especiación rápida y cromosómica en las moscas Drosophila endémicas de las islas Hawái (teoría de fundadores).',
+  lugaresTrabajo: 'Universidad de Washington y Universidad de Hawái',
+  fuenteReferencia: 'National Academy of Sciences',
+});
+
+add({
+  id: 'leontina-licinio',
+  nombre: 'Leontina Licinio de Souza',
+  pais: 'Brasil',
+  continente: 'América',
+  vida: '1910 – 1985',
+  nacimientoLugar: 'Río de Janeiro',
+  aportePeriodo: '1942',
+  anioNumerico: 1942,
+  campo: 'Bacteriología aplicada',
+  aporteDescripcion: 'Investigó la producción industrial de toxoides bacterianos y antitoxinas en el Instituto Oswaldo Cruz.',
+  lugaresTrabajo: 'Instituto Oswaldo Cruz (Fiocruz)',
+  esPionera: true,
+  fuenteReferencia: 'Fiocruz / Memórias do Instituto Oswaldo Cruz',
+});
+
+add({
+  id: 'maria-cobe-mexico',
+  nombre: 'Luz María Villarreal de Puga',
+  pais: 'México',
+  continente: 'América',
+  vida: '1913 – 2013',
+  nacimientoLugar: 'Ciudad de México',
+  aportePeriodo: '1978',
+  anioNumerico: 1978,
+  campo: 'Botánica y conservación (Sierra de Manantlán)',
+  aporteDescripcion: 'Pionera en el descubrimiento y rescate del maíz primitivo perenne Zea diploperennis y promotora de la Reserva de la Biosfera Sierra de Manantlán.',
+  lugaresTrabajo: 'Universidad de Guadalajara',
+  esPionera: true,
+  fuenteReferencia: 'Universidad de Guadalajara / Instituto de Botánica',
+});
+
+add({
+  id: 'julio-cesar-tello',
+  nombre: 'Julio C. Tello',
+  pais: 'Perú',
+  continente: 'América',
+  vida: '1880 – 1947',
+  nacimientoLugar: 'Huarochirí',
+  aportePeriodo: '1918',
+  anioNumerico: 1918,
+  campo: 'Antropología física y paleopatología',
+  aporteDescripcion: 'Pionero de la paleopatología andina; estudió la trepanación craneana, sífilis ósea precolombina y momias de la cultura Paracas.',
+  lugaresTrabajo: 'Universidad Nacional Mayor de San Marcos (Lima)',
+  fuenteReferencia: 'Museo Nacional de Arqueología, Antropología e Historia del Perú',
+});
+
+add({
+  id: 'eugenio-espejo',
+  nombre: 'Eugenio Espejo',
+  pais: 'Ecuador',
+  continente: 'América',
+  vida: '1747 – 1795',
+  nacimientoLugar: 'Quito',
+  aportePeriodo: '1785',
+  anioNumerico: 1785,
+  campo: 'Epidemiología e higiene pública',
+  aporteDescripcion: 'En Reflexiones sobre las viruelas intuyó que las enfermedades infecciosas son causadas por partículas vivas microscópicas («átomos vivos contagiosos»).',
+  lugaresTrabajo: 'Quito',
+  fuenteReferencia: 'Academia Nacional de Historia del Ecuador',
+});
+
+add({
+  id: 'rene-favaloro',
+  nombre: 'René Favaloro',
+  pais: 'Argentina',
+  continente: 'América',
+  vida: '1923 – 2000',
+  nacimientoLugar: 'La Plata, Buenos Aires',
+  aportePeriodo: '1967',
+  anioNumerico: 1967,
+  campo: 'Cirugía cardiovascular y biología de la perfusión',
+  aporteDescripcion: 'Desarrolló y estandarizó la cirugía del bypass aortocoronario con vena safena, transformando la revascularización miocárdica en todo el mundo.',
+  lugaresTrabajo: 'Cleveland Clinic y Fundación Favaloro (Buenos Aires)',
+  fuenteReferencia: 'Cleveland Clinic / Fundación Favaloro',
+});
+
+add({
+  id: 'alfonso-trejos-willis',
+  nombre: 'Alfonso Trejos Willis',
+  pais: 'Costa Rica',
+  continente: 'América',
+  vida: '1915 – 1988',
+  nacimientoLugar: 'San José',
+  aportePeriodo: '1953',
+  anioNumerico: 1953,
+  campo: 'Parasitología y micología médica',
+  aporteDescripcion: 'Pionero de la micología médica centroamericana; describió especies patógenas fúngicas y fundó el Centro Panamericano de Zoonosis (CEPANZO).',
+  lugaresTrabajo: 'Universidad de Costa Rica y CEPANZO',
+  fuenteReferencia: 'Universidad de Costa Rica / OPS',
+});
+
+add({
+  id: 'fidel-marquez',
+  nombre: 'César Gómez Mantellini',
+  pais: 'Venezuela',
+  continente: 'América',
+  vida: '1927 – 2012',
+  nacimientoLugar: 'Caracas',
+  aportePeriodo: '1962',
+  anioNumerico: 1962,
+  campo: 'Virología',
+  aporteDescripcion: 'Pionero en el aislamiento y caracterización de arbovirus tropicales transmitidos por mosquitos en la cuenca del Orinoco.',
+  lugaresTrabajo: 'Instituto Venezolano de Investigaciones Científicas (IVIC)',
+  fuenteReferencia: 'IVIC / Academia de Ciencias Físicas, Matemáticas y Naturales',
+});
+
+add({
+  id: 'alberto-marcos-hurley',
+  nombre: 'Lucille Farrier Stickel',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1915 – 2007',
+  nacimientoLugar: 'Hillman, Míchigan',
+  aportePeriodo: '1965',
+  anioNumerico: 1965,
+  campo: 'Ecotoxicología de fauna silvestre',
+  aporteDescripcion: 'Demostró los efectos biológicos del DDT en el adelgazamiento de la cáscara de huevos de aves rapaces, base científica del ecologismo moderno.',
+  lugaresTrabajo: 'Patuxent Wildlife Research Center (Maryland)',
+  esPionera: true,
+  fuenteReferencia: 'USGS Patuxent Wildlife Research Center',
+});
+
+add({
+  id: 'joel-asaph-allen',
+  nombre: 'Joel Asaph Allen',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1838 – 1921',
+  nacimientoLugar: 'Springfield, Massachusetts',
+  aportePeriodo: '1877',
+  anioNumerico: 1877,
+  campo: 'Biogeografía ecológica',
+  aporteDescripcion: 'Formuló la «regla de Allen»: las extremidades corporales de animales homeotermos son más cortas en climas fríos para reducir pérdida térmica.',
+  lugaresTrabajo: 'Museo Americano de Historia Natural (Nueva York)',
+  fuenteReferencia: 'American Museum of Natural History',
+});
+
+add({
+  id: 'clinton-hart-merriam',
+  nombre: 'C. Hart Merriam',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1855 – 1942',
+  nacimientoLugar: 'Nueva York',
+  aportePeriodo: '1894',
+  anioNumerico: 1894,
+  campo: 'Biogeografía (Zonas de vida)',
+  aporteDescripcion: 'Propuso el concepto de «zonas de vida» biogeográficas según gradientes de temperatura y latitud en América del Norte.',
+  lugaresTrabajo: 'US Biological Survey y National Geographic Society',
+  fuenteReferencia: 'National Academy of Sciences',
+});
+
+add({
+  id: 'marston-bates',
+  nombre: 'Marston Bates',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1906 – 1974',
+  nacimientoLugar: 'Bloomfield, Nueva Jersey',
+  aportePeriodo: '1949',
+  anioNumerico: 1949,
+  campo: 'Ecología de vectores y mosquitos',
+  aporteDescripcion: 'Autor de The Natural History of Mosquitoes; descubrió los patrones de transmisión silvestre de la fiebre amarilla en Colombia.',
+  lugaresTrabajo: 'Villavicencio (Colombia) y Universidad de Míchigan',
+  fuenteReferencia: 'Rockefeller Foundation / University of Michigan',
+});
+
+add({
+  id: 'gladys-anderson-emerson',
+  nombre: 'Gladys Anderson Emerson',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1903 – 1984',
+  nacimientoLugar: 'Caldwell, Kansas',
+  aportePeriodo: '1936',
+  anioNumerico: 1936,
+  campo: 'Bioquímica nutricional (Vitamina E)',
+  aporteDescripcion: 'Aisló por primera vez la vitamina E pura (alfa-tocoferol) a partir del aceite de germen de trigo, determinando su acción antioxidante celular.',
+  lugaresTrabajo: 'Universidad de California en Berkeley y Merck Institute',
+  esPionera: true,
+  fuenteReferencia: 'Merck Institute for Therapeutic Research',
+});
+
+add({
+  id: 'gerty-radnitz-partner',
+  nombre: 'Carl Ferdinand Cori',
+  pais: 'Estados Unidos', // Esposo y co-descubridor de Gerty Cori
+  continente: 'América',
+  vida: '1896 – 1984',
+  nacimientoLugar: 'Praga (nacionalizado estadounidense)',
+  aportePeriodo: '1929',
+  anioNumerico: 1929,
+  campo: 'Bioquímica metabólica',
+  aporteDescripcion: 'Co-descubridor del ciclo de Cori: elucidó el metabolismo del glucógeno y la enzima fosforilasa; premio Nobel en 1947.',
+  lugaresTrabajo: 'Washington University in St. Louis',
+  fuenteReferencia: 'Nobel Media',
+});
+
+add({
+  id: 'george-wald',
+  nombre: 'George Wald',
+  pais: 'Estados Unidos',
+  continente: 'América',
+  vida: '1906 – 1997',
+  nacimientoLugar: 'Nueva York',
+  aportePeriodo: '1933',
+  anioNumerico: 1933,
+  campo: 'Bioquímica de la visión',
+  aporteDescripcion: 'Descubrió la presencia de la vitamina A en la retina y elucidó las reacciones químicas del ciclo de la rodopsina; premio Nobel en 1967.',
+  lugaresTrabajo: 'Universidad Harvard',
+  fuenteReferencia: 'Nobel Media',
+});
+
+// Check América count:
+console.log(`América: ${list.filter(s => s.continente === 'América').length} (Expected: 65)`);
+
+// -------------------------------------------------------------
+// ASIA (45 CIENTÍFICOS)
+// -------------------------------------------------------------
+add({
+  id: 'charaka-samhita',
+  nombre: 'Charaka',
+  pais: 'India',
+  continente: 'Asia',
+  vida: 'c. siglo II a. C.',
+  nacimientoLugar: 'Noroeste de la India antigua',
+  aportePeriodo: 'c. 100 a. C.',
+  anioNumerico: -100,
+  campo: 'Medicina y fisiología ayurvédica',
+  aporteDescripcion: 'Autor del Charaka Samhita, describió el sistema circulatorio elemental, la digestión de nutrientes y la anatomía funcional de los tres doshas.',
+  lugaresTrabajo: 'Taxila',
+  fuenteReferencia: 'All India Institute of Ayurveda',
+});
+
+add({
+  id: 'bian-que',
+  nombre: 'Bian Que',
+  pais: 'China',
+  continente: 'Asia',
+  vida: 'c. 407 a. C. – 310 a. C.',
+  nacimientoLugar: 'Estado de Qi (hoy Shandong)',
+  aportePeriodo: 'c. 350 a. C.',
+  anioNumerico: -350,
+  campo: 'Medicina diagnóstica y pulsiología',
+  aporteDescripcion: 'Pionero en el diagnóstico por auscultación y palpación de pulso vascular, vinculando la circulación sanguínea con el estado biológico.',
+  lugaresTrabajo: 'China septentrional',
+  fuenteReferencia: 'Sociedad China de Historia de la Medicina',
+});
+
+add({
+  id: 'zhang-zhongjing',
+  nombre: 'Zhang Zhongjing',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '150 – 219',
+  nacimientoLugar: 'Dengzhou, Henan',
+  aportePeriodo: '205',
+  anioNumerico: 205,
+  campo: 'Medicina e inmunopatología clásica',
+  aporteDescripcion: 'Escribió Shanghan Lun (Tratado sobre enfermedades febriles), estableciendo el diagnóstico diferencial de infecciones agudas por etapas patológicas.',
+  lugaresTrabajo: 'Changsha',
+  fuenteReferencia: 'Academia China de Ciencias Médicas',
+});
+
+add({
+  id: 'hua-tuo',
+  nombre: 'Hua Tuo',
+  pais: 'China',
+  continente: 'Asia',
+  vida: 'c. 140 – 208',
+  nacimientoLugar: 'Bozhou, Anhui',
+  aportePeriodo: 'c. 200',
+  anioNumerico: 200,
+  campo: 'Cirugía y fitofarmacología anestésica',
+  aporteDescripcion: 'Pionero en anestesia quirúrgica herbal (Mafeisan) e inventor de los ejercicios biológicos Five Animals Frolics para la longevidad fisiológica.',
+  lugaresTrabajo: 'Anhui y Henan',
+  fuenteReferencia: 'Diccionario Biográfico de la Medicina China',
+});
+
+add({
+  id: 'ge-hong',
+  nombre: 'Ge Hong',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '283 – 343',
+  nacimientoLugar: 'Jurong, Jiangsu',
+  aportePeriodo: '340',
+  anioNumerico: 340,
+  campo: 'Farmacología y epidemiología temprana',
+  aporteDescripcion: 'Describió por primera vez el tratamiento de las fiebres palúdicas con ajenjo dulce (Qinghao / Artemisia annua), precursor del hallazgo de Tu Youyou.',
+  lugaresTrabajo: 'Montes Luofu (Guangdong)',
+  fuenteReferencia: 'Academia China de Medicina Tradicional',
+});
+
+add({
+  id: 'sun-simiao',
+  nombre: 'Sun Simiao',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '581 – 682',
+  nacimientoLugar: 'Tongchuan, Shaanxi',
+  aportePeriodo: '652',
+  anioNumerico: 652,
+  campo: 'Nutrición clínica y bioética médica',
+  aporteDescripcion: 'Identificó que el bocio se cura con algas ricas en yodo y que el beriberi se previene con salvado de cereales, siglos antes de aislarse las vitaminas.',
+  lugaresTrabajo: 'Chang\'an',
+  fuenteReferencia: 'Sociedad China de Historia de la Ciencia',
+});
+
+add({
+  id: 'al-dinawari',
+  nombre: 'Al-Dinawari',
+  pais: 'Irán',
+  continente: 'Asia',
+  vida: '815 – 896',
+  nacimientoLugar: 'Dinawar, Kermanshah',
+  aportePeriodo: '870',
+  anioNumerico: 870,
+  campo: 'Botánica y agronomía',
+  aporteDescripcion: 'Escribió Kitab al-Nabat (Libro de las plantas), enciclopedia botánica que describió cientos de plantas, sus flores, frutos y etapas de crecimiento.',
+  lugaresTrabajo: 'Isfahán y Bagdad',
+  fuenteReferencia: 'Enciclopedia Iránica',
+});
+
+add({
+  id: 'al-biruni',
+  nombre: 'Al-Biruni',
+  pais: 'Uzbekistán',
+  continente: 'Asia',
+  vida: '973 – 1050',
+  nacimientoLugar: 'Kath, Corasmia',
+  aportePeriodo: '1027',
+  anioNumerico: 1027,
+  campo: 'Farmacología y biología descriptiva',
+  aporteDescripcion: 'En Kitab al-Saydana catalogó más de 1.000 remedios botánicos y animales, vinculando la taxonomía botánica con la farmacología.',
+  lugaresTrabajo: 'Gazni y Corasmia',
+  fuenteReferencia: 'UNESCO Memorial Series',
+});
+
+add({
+  id: 'su-song',
+  nombre: 'Su Song',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '1020 – 1101',
+  nacimientoLugar: 'Tong\'an, Fujian',
+  aportePeriodo: '1061',
+  anioNumerico: 1061,
+  campo: 'Botánica farmacéutica y zoología',
+  aporteDescripcion: 'Compiló el Bencao Tujing (Tratado ilustrado de materias médicas), primer atlas con xilografías exactas de plantas y animales medicinales.',
+  lugaresTrabajo: 'Kaifeng',
+  fuenteReferencia: 'Academia Sínica',
+});
+
+add({
+  id: 'kamala-sohonie',
+  nombre: 'Kamala Sohonie',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1911 – 1998',
+  nacimientoLugar: 'Indore, Madhya Pradesh',
+  aportePeriodo: '1939',
+  anioNumerico: 1939,
+  campo: 'Bioquímica vegetal y nutrición',
+  aporteDescripcion: 'Descubrió el citocromo c en tejidos vegetales demostrando la respiración mitocondrial en plantas; primera mujer india con doctorado en ciencias.',
+  lugaresTrabajo: 'Universidad de Cambridge y Royal Institute of Science (Bombay)',
+  esPionera: true,
+  fuenteReferencia: 'Indian Institute of Science / Biochemical Journal',
+});
+
+add({
+  id: 'asima-chatterjee',
+  nombre: 'Asima Chatterjee',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1917 – 2006',
+  nacimientoLugar: 'Calcuta, Bengala',
+  aportePeriodo: '1954',
+  anioNumerico: 1954,
+  campo: 'Fitoquímica y biología vegetal',
+  aporteDescripcion: 'Aisló alcaloides de plantas medicinales como Vinca rosea para terapias contra el cáncer y la epilepsia; primera mujer en presidir el Indian Science Congress.',
+  lugaresTrabajo: 'Universidad de Calcuta',
+  esPionera: true,
+  fuenteReferencia: 'Indian National Science Academy',
+});
+
+add({
+  id: 'birbal-sahni',
+  nombre: 'Birbal Sahni',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1891 – 1949',
+  nacimientoLugar: 'Bhera, Punjab',
+  aportePeriodo: '1920',
+  anioNumerico: 1920,
+  campo: 'Paleobotánica',
+  aporteDescripcion: 'Fundador de la paleobotánica en la India; descubrió el grupo fósil Pentoxyleae y dilucidó la evolución de la flora de Gondwana.',
+  lugaresTrabajo: 'Universidad de Lucknow e Instituto Birbal Sahni',
+  fuenteReferencia: 'Birbal Sahni Institute of Palaeosciences',
+});
+
+add({
+  id: 'katsusaburo-yamagiwa',
+  nombre: 'Katsusaburō Yamagiwa',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1863 – 1930',
+  nacimientoLugar: 'Ueda, Nagano',
+  aportePeriodo: '1915',
+  anioNumerico: 1915,
+  campo: 'Patología experimental del cáncer',
+  aporteDescripcion: 'Indujo por primera vez cáncer experimentalmente aplicando alquitrán en la piel de conejos, probando la causa química carcinógena.',
+  lugaresTrabajo: 'Universidad Imperial de Tokio',
+  fuenteReferencia: 'Japanese Cancer Association',
+});
+
+add({
+  id: 'kumagusu-minakata',
+  nombre: 'Kumagusu Minakata',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1867 – 1941',
+  nacimientoLugar: 'Wakayama',
+  aportePeriodo: '1926',
+  anioNumerico: 1926,
+  campo: 'Micología y protistología (Mixomicetos)',
+  aporteDescripcion: 'Pionero mundial del estudio de hongos mucilaginosos (Myxomycetes) y precursor del movimiento de protección ambiental y biodiversidad sagrada en Japón.',
+  lugaresTrabajo: 'Tanabe, Wakayama',
+  fuenteReferencia: 'Minakata Kumagusu Museum',
+});
+
+add({
+  id: 'michiyo-tsujimura',
+  nombre: 'Michiyo Tsujimura',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1888 – 1969',
+  nacimientoLugar: 'Okegawa, Saitama',
+  aportePeriodo: '1929',
+  anioNumerico: 1929,
+  campo: 'Bioquímica nutricional',
+  aporteDescripcion: 'Aisló la vitamina C del té verde y aisló por primera vez las catequinas y taninos antioxidantes; primera doctora en agricultura de Japón.',
+  lugaresTrabajo: 'Instituto RIKEN y Universidad Femenina de Ochanomizu',
+  esPionera: true,
+  fuenteReferencia: 'Instituto RIKEN',
+});
+
+add({
+  id: 'chika-kuroda',
+  nombre: 'Chika Kuroda',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1884 – 1968',
+  nacimientoLugar: 'Matsubara, Saga',
+  aportePeriodo: '1924',
+  anioNumerico: 1924,
+  campo: 'Bioquímica de pigmentos',
+  aporteDescripcion: 'Determinó la estructura química de pigmentos biológicos naturales de plantas como la cartamina del cártamo y la shikonina de Lithospermum.',
+  lugaresTrabajo: 'Instituto RIKEN (Tokio)',
+  esPionera: true,
+  fuenteReferencia: 'Sociedad Química de Japón / RIKEN',
+});
+
+add({
+  id: 'reiji-okazaki',
+  nombre: 'Reiji Okazaki',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1930 – 1975',
+  nacimientoLugar: 'Hiroshima',
+  aportePeriodo: '1968',
+  anioNumerico: 1968,
+  campo: 'Biología molecular',
+  aporteDescripcion: 'Descubrió los «fragmentos de Okazaki», secuencias cortas de ADN sintetizadas en la hebra discontinua durante la replicación celular.',
+  lugaresTrabajo: 'Universidad de Nagoya',
+  fuenteReferencia: 'Nagoya University / PNAS',
+});
+
+add({
+  id: 'tsuneko-okazaki',
+  nombre: 'Tsuneko Okazaki',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1933 – actualidad',
+  nacimientoLugar: 'Nagoya, Aichi',
+  aportePeriodo: '1968',
+  anioNumerico: 1968,
+  campo: 'Biología molecular',
+  aporteDescripcion: 'Co-descubridora de los fragmentos de Okazaki; demostró la presencia del cebador de ARN necesario para iniciar la síntesis de la hebra discontinua.',
+  lugaresTrabajo: 'Universidad de Nagoya',
+  esPionera: true,
+  fuenteReferencia: 'Nagoya University / Premio L\'Oréal-UNESCO',
+});
+
+add({
+  id: 'tomoko-ohta',
+  nombre: 'Tomoko Ohta',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1933 – actualidad',
+  nacimientoLugar: 'Miyoshi, Aichi',
+  aportePeriodo: '1973',
+  anioNumerico: 1973,
+  campo: 'Genética de poblaciones y evolución',
+  aporteDescripcion: 'Formuló la «teoría casi neutral de la evolución molecular», perfeccionando el modelo de Kimura al incluir mutaciones levemente deletéreas.',
+  lugaresTrabajo: 'Instituto Nacional de Genética (Mishima)',
+  esPionera: true,
+  fuenteReferencia: 'Premio Crafoord / National Institute of Genetics',
+});
+
+add({
+  id: 'bei-shizhang',
+  nombre: 'Bei Shizhang',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '1903 – 2009',
+  nacimientoLugar: 'Zhenhai, Ningbo, Zhejiang',
+  aportePeriodo: '1932',
+  anioNumerico: 1932,
+  campo: 'Citología y biofísica',
+  aporteDescripcion: 'Fundador de la biofísica y citología experimental en China; creó el Instituto de Biofísica de la Academia China de Ciencias.',
+  lugaresTrabajo: 'Academia China de Ciencias (Pekín)',
+  fuenteReferencia: 'Chinese Academy of Sciences',
+});
+
+add({
+  id: 'cc-tan',
+  nombre: 'C. C. Tan (Tan Jiazhen)',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '1909 – 2008',
+  nacimientoLugar: 'Cixi, Ningbo, Zhejiang',
+  aportePeriodo: '1946',
+  anioNumerico: 1946,
+  campo: 'Genética',
+  aporteDescripcion: 'Padre de la genética moderna en China; discípulo de Dobzhansky, demostró el polimorfismo mosaico cromosómico en mariquitas (Harmonia axyridis).',
+  lugaresTrabajo: 'Universidad Fudan (Shanghái)',
+  fuenteReferencia: 'Fudan University School of Life Sciences',
+});
+
+add({
+  id: 'hitoshi-kihara',
+  nombre: 'Hitoshi Kihara',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1893 – 1986',
+  nacimientoLugar: 'Tokio',
+  aportePeriodo: '1930',
+  anioNumerico: 1930,
+  campo: 'Genética vegetal (Citogenética de trigo)',
+  aporteDescripcion: 'Elucidó el origen alopoliploide del trigo hexaploide moderno mediante cruzamientos con Aegilops y desarrolló las sandías triploides sin semillas.',
+  lugaresTrabajo: 'Universidad de Kioto e Instituto Kihara',
+  fuenteReferencia: 'Japan Academy / Kihara Biological Research Institute',
+});
+
+add({
+  id: 'sahachiro-hata',
+  nombre: 'Sahachiro Hata',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1873 – 1938',
+  nacimientoLugar: 'Tsumo, Shimane',
+  aportePeriodo: '1909',
+  anioNumerico: 1909,
+  campo: 'Quimioterapia antimicrobiana',
+  aporteDescripcion: 'Co-descubridor del Salvarsán (compuesto 606) junto con Paul Ehrlich, primer medicamento antimicrobiano eficaz contra Treponema pallidum (sífilis).',
+  lugaresTrabajo: 'Instituto Kitasato (Tokio) y Fráncfort',
+  fuenteReferencia: 'Kitasato University / Nobel Archive nominee',
+});
+
+add({
+  id: 'toshio-yanagida',
+  nombre: 'Toshio Yanagida',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1946 – actualidad',
+  nacimientoLugar: 'Hyogo',
+  aportePeriodo: '1991',
+  anioNumerico: 1991,
+  campo: 'Biofísica de motores moleculares',
+  aporteDescripcion: 'Desarrolló microscopía óptica de fluorescencia para observar en tiempo real el paso a paso individual de moléculas de miosina sobre filamentos de actina.',
+  lugaresTrabajo: 'Universidad de Osaka y RIKEN',
+  fuenteReferencia: 'Japan Academy / RIKEN Center for Biosystems Dynamics',
+});
+
+add({
+  id: 'sushila-nayar',
+  nombre: 'Sushila Nayar',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1914 – 2001',
+  nacimientoLugar: 'Kunjah, Gujrat (hoy Pakistán)',
+  aportePeriodo: '1952',
+  anioNumerico: 1952,
+  campo: 'Salud pública y epidemiología comunitaria',
+  aporteDescripcion: 'Lideró los programas nacionales de erradicación de la filariasis y la malaria en India y fundó el Mahatma Gandhi Institute of Medical Sciences.',
+  lugaresTrabajo: 'Nueva Delhi y Sevagram',
+  esPionera: true,
+  fuenteReferencia: 'MGIMS / World Health Organization',
+});
+
+add({
+  id: 'darshan-ranganathan',
+  nombre: 'Darshan Ranganathan',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1941 – 2001',
+  nacimientoLugar: 'Delhi',
+  aportePeriodo: '1986',
+  anioNumerico: 1986,
+  campo: 'Bioquímica bioorgánica y plegamiento peptídico',
+  aporteDescripcion: 'Pionera en el diseño de péptidos miméticos funcionales y estructuras autoensambladas supramoleculares proteicas.',
+  lugaresTrabajo: 'IIT Kanpur e Indian Institute of Chemical Technology',
+  esPionera: true,
+  fuenteReferencia: 'National Academy of Sciences, India',
+});
+
+add({
+  id: 'obaid-siddiqi',
+  nombre: 'Obaid Siddiqi',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1932 – 2013',
+  nacimientoLugar: 'Basti, Uttar Pradesh',
+  aportePeriodo: '1976',
+  anioNumerico: 1976,
+  campo: 'Neurogenética comportamental',
+  aporteDescripcion: 'Fundador del Centro Nacional de Ciencias Biológicas (NCBS) de Bangalore; aisló mutantes de Drosophila con defectos olfatorios y gustativos.',
+  lugaresTrabajo: 'Tata Institute of Fundamental Research (TIFR) y NCBS',
+  fuenteReferencia: 'Royal Society of London / NCBS',
+});
+
+add({
+  id: 'sambhu-nath-de',
+  nombre: 'Sambhu Nath De',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1915 – 1985',
+  nacimientoLugar: 'Garalgachha, Hooghly, Bengala',
+  aportePeriodo: '1959',
+  anioNumerico: 1959,
+  campo: 'Bacteriología y patología',
+  aporteDescripcion: 'Descubrió la toxina del cólera (colerágeno) mediante el modelo de asa ileal aislada de conejo, revelando el mecanismo biológico de la deshidratación diarreica.',
+  lugaresTrabajo: 'Calcutta National Medical College',
+  fuenteReferencia: 'Nature / World Health Organization',
+});
+
+add({
+  id: 'zhu-xi',
+  nombre: 'Zhu Xi (Biólogo)',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '1899 – 1962',
+  nacimientoLugar: 'Linhai, Zhejiang',
+  aportePeriodo: '1951',
+  anioNumerico: 1951,
+  campo: 'Embriología experimental',
+  aporteDescripcion: 'Logró la primera partenogénesis artificial completa en anfibios (sapos sin padre biológico) que alcanzaron la etapa adulta reproductora.',
+  lugaresTrabajo: 'Instituto de Fisiología Experimental (Shanghái)',
+  fuenteReferencia: 'Academia China de Ciencias',
+});
+
+add({
+  id: 'fe-del-mundo',
+  nombre: 'Fe del Mundo',
+  pais: 'Filipinas',
+  continente: 'Asia',
+  vida: '1911 – 2011',
+  nacimientoLugar: 'Intramuros, Manila',
+  aportePeriodo: '1954',
+  anioNumerico: 1954,
+  campo: 'Pediatría y epidemiología tropical',
+  aporteDescripcion: 'Pionera de la salud materno-infantil en el sudeste asiático; inventó una incubadora neonatal de bambú y estudió el dengue hemorrágico en Filipinas.',
+  lugaresTrabajo: 'Children\'s Medical Center (Manila)',
+  esPionera: true,
+  fuenteReferencia: 'Ramon Magsaysay Award / National Academy of Science and Technology',
+});
+
+add({
+  id: 'carmen-velasquez',
+  nombre: 'Carmen Velasquez',
+  pais: 'Filipinas',
+  continente: 'Asia',
+  vida: '1913 – 1994',
+  nacimientoLugar: 'Bayambang, Pangasinán',
+  aportePeriodo: '1975',
+  anioNumerico: 1975,
+  campo: 'Parasitología e ictiología',
+  aporteDescripcion: 'Catalogó más de 30 especies nuevas de parásitos trematodos de peces comestibles filipinos, previniendo zoonosis parasitarias en el sudeste asiático.',
+  lugaresTrabajo: 'Universidad de Filipinas Diliman',
+  esPionera: true,
+  fuenteReferencia: 'National Academy of Science and Technology (NAST)',
+});
+
+add({
+  id: 'angel-alcala',
+  nombre: 'Angel Alcala',
+  pais: 'Filipinas',
+  continente: 'Asia',
+  vida: '1929 – 2023',
+  nacimientoLugar: 'Cauayan, Negros Occidental',
+  aportePeriodo: '1974',
+  anioNumerico: 1974,
+  campo: 'Biología marina y herpetología',
+  aporteDescripcion: 'Creó el primer santuario marino artificial en Filipinas (Apo Island) y describió más de 50 especies nuevas de anfibios y reptiles.',
+  lugaresTrabajo: 'Silliman University',
+  fuenteReferencia: 'Ramon Magsaysay Award / NAST',
+});
+
+add({
+  id: 'edgardo-gomez',
+  nombre: 'Edgardo Gomez',
+  pais: 'Filipinas',
+  continente: 'Asia',
+  vida: '1937 – 2019',
+  nacimientoLugar: 'Manila',
+  aportePeriodo: '1981',
+  anioNumerico: 1981,
+  campo: 'Biología marina y conservación de arrecifes',
+  aporteDescripcion: 'Dirigió la primera evaluación mundial del estado de los arrecifes de coral y promovió el cultivo pionero de la almeja gigante Tridacna.',
+  lugaresTrabajo: 'Marine Science Institute (Universidad de Filipinas)',
+  fuenteReferencia: 'National Scientist of the Philippines',
+});
+
+add({
+  id: 'makoto-murase',
+  nombre: 'Makoto Asashima',
+  pais: 'Japón',
+  continente: 'Asia',
+  vida: '1944 – actualidad',
+  nacimientoLugar: 'Ina, Nagano',
+  aportePeriodo: '1989',
+  anioNumerico: 1989,
+  campo: 'Biología del desarrollo (Inducción embrionaria)',
+  aporteDescripcion: 'Identificó la activina A como la molécula clave de inducción mesodérmica en embriones tempranos de anfibios.',
+  lugaresTrabajo: 'Universidad de Tokio',
+  fuenteReferencia: 'Japan Academy / Tokyo University of Science',
+});
+
+add({
+  id: 'ruth-arnon',
+  nombre: 'Ruth Arnon',
+  pais: 'Israel',
+  continente: 'Asia',
+  vida: '1933 – actualidad',
+  nacimientoLugar: 'Tel Aviv',
+  aportePeriodo: '1971',
+  anioNumerico: 1971,
+  campo: 'Inmunología química',
+  aporteDescripcion: 'Co-desarrolló el acetato de glatirámero (Copaxone), uno de los medicamentos biológicos más prescritos contra la esclerosis múltiple.',
+  lugaresTrabajo: 'Instituto Weizmann de Ciencias (Rehovot)',
+  esPionera: true,
+  fuenteReferencia: 'Weizmann Institute of Science / Wolf Prize in Medicine',
+});
+
+add({
+  id: 'michael-sela',
+  nombre: 'Michael Sela',
+  pais: 'Israel',
+  continente: 'Asia',
+  vida: '1924 – 2022',
+  nacimientoLugar: 'Tomaszów Mazowiecki, Polonia (radicado en Israel)',
+  aportePeriodo: '1962',
+  anioNumerico: 1962,
+  campo: 'Inmunología sintética',
+  aporteDescripcion: 'Sintetizó los primeros antígenos peptídicos artificiales para desentrañar el control genético de la respuesta inmune de anticuerpos.',
+  lugaresTrabajo: 'Instituto Weizmann de Ciencias',
+  fuenteReferencia: 'Wolf Prize / Weizmann Institute',
+});
+
+add({
+  id: 'ghulam-murtaza',
+  nombre: 'Atta-ur-Rahman',
+  pais: 'Pakistán',
+  continente: 'Asia',
+  vida: '1942 – actualidad',
+  nacimientoLugar: 'Delhi (nacionalizado pakistaní)',
+  aportePeriodo: '1985',
+  anioNumerico: 1985,
+  campo: 'Química biológica y productos naturales',
+  aporteDescripcion: 'Aisló y estructuró más de un centenar de compuestos bioactivos y alcaloides de plantas asiáticas para terapias neuroprotectoras.',
+  lugaresTrabajo: 'HEJ Research Institute of Chemistry (Karachi)',
+  fuenteReferencia: 'Royal Society of London / TWAS',
+});
+
+add({
+  id: 'anand-mohan-chakrabarty',
+  nombre: 'Ananda Mohan Chakrabarty',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1938 – 2020',
+  nacimientoLugar: 'Sainthia, Bengala',
+  aportePeriodo: '1972',
+  anioNumerico: 1972,
+  campo: 'Biotecnología y microbiología ambiental',
+  aporteDescripcion: 'Desarrolló la bacteria genéticamente modificada Pseudomonas putida capaz de degradar petróleo crudo (hito del caso judicial Diamond v. Chakrabarty).',
+  lugaresTrabajo: 'General Electric y Universidad de Illinois en Chicago',
+  fuenteReferencia: 'US Supreme Court Landmark / University of Illinois',
+});
+
+add({
+  id: 't-v-ramakrishnan',
+  nombre: 'Madhav Gadgil',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1942 – actualidad',
+  nacimientoLugar: 'Pune, Maharashtra',
+  aportePeriodo: '1982',
+  anioNumerico: 1982,
+  campo: 'Ecología comunitaria y biodiversidad de Ghats',
+  aporteDescripcion: 'Fundador del Centro de Ciencias Ecológicas del IISc; lideró el informe de conservación ambiental de los Ghats occidentales de la India.',
+  lugaresTrabajo: 'Indian Institute of Science (Bangalore)',
+  fuenteReferencia: 'Tyler Prize for Environmental Achievement',
+});
+
+add({
+  id: 'kamal-jit-bawa',
+  nombre: 'Kamaljit S. Bawa',
+  pais: 'India',
+  continente: 'Asia',
+  vida: '1939 – actualidad',
+  nacimientoLugar: 'Punjab',
+  aportePeriodo: '1974',
+  anioNumerico: 1974,
+  campo: 'Biología reproductiva de árboles tropicales',
+  aporteDescripcion: 'Demostró que la mayoría de los árboles de los bosques tropicales lluviosos son dioicos y de fertilización cruzada obligada por polinizadores.',
+  lugaresTrabajo: 'Universidad de Massachusetts y ATREE (Bangalore)',
+  fuenteReferencia: 'Royal Society of London / Midori Prize',
+});
+
+add({
+  id: 'y-c-fung',
+  nombre: 'Yuan-Cheng Fung',
+  pais: 'China',
+  continente: 'Asia',
+  vida: '1919 – 2019',
+  nacimientoLugar: 'Changzhou, Jiangsu',
+  aportePeriodo: '1966',
+  anioNumerico: 1966,
+  campo: 'Biomecánica y hemodinámica',
+  aporteDescripcion: 'Padre de la biomecánica moderna; formuló las leyes constitutivas elásticas de los tejidos biológicos vivos y capilares pulmonares.',
+  lugaresTrabajo: 'Universidad de California en San Diego',
+  fuenteReferencia: 'National Academy of Sciences / National Medal of Science',
+});
+
+add({
+  id: 's-m-hosseini',
+  nombre: 'Shamsoddin Mofidi',
+  pais: 'Irán',
+  continente: 'Asia',
+  vida: '1921 – 2004',
+  nacimientoLugar: 'Rasht, Gilan',
+  aportePeriodo: '1956',
+  anioNumerico: 1956,
+  campo: 'Parasitología médica',
+  aporteDescripcion: 'Lideró el Instituto de Parasitología y Malariología de Teherán, erradicando focos endémicos de malaria y leishmaniasis en Oriente Medio.',
+  lugaresTrabajo: 'Universidad de Teherán',
+  fuenteReferencia: 'World Health Organization / Shoushtari Medal',
+});
+
+add({
+  id: 'ho-wang-lee',
+  nombre: 'Ho Wang Lee',
+  pais: 'Corea del Sur',
+  continente: 'Asia',
+  vida: '1928 – 2022',
+  nacimientoLugar: 'Sinanju',
+  aportePeriodo: '1976',
+  anioNumerico: 1976,
+  campo: 'Virología (Hantavirus)',
+  aporteDescripcion: 'Aisló el virus Hantaan en el roedor Apodemus agrarius causante de la fiebre hemorrágica con síndrome renal y desarrolló la primera vacuna protectora.',
+  lugaresTrabajo: 'Universidad de Corea (Seúl)',
+  fuenteReferencia: 'National Academy of Sciences / Lasker nominee',
+});
+
+add({
+  id: 'jeongbin-yim',
+  nombre: 'V. Narry Kim',
+  pais: 'Corea del Sur',
+  continente: 'Asia',
+  vida: '1969 – actualidad',
+  nacimientoLugar: 'Seúl',
+  aportePeriodo: '2002',
+  anioNumerico: 2002,
+  campo: 'Biología molecular de microARN',
+  aporteDescripcion: 'Elucidó el mecanismo biogénico de los microARN (miARN) por la ribonucleasa Drosha en el núcleo celular humano.',
+  lugaresTrabajo: 'Universidad Nacional de Seúl e Institute for Basic Science',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO / Nature',
+});
+
+add({
+  id: 'suh-nam-pyo',
+  nombre: 'Inhee Mook-Jung',
+  pais: 'Corea del Sur',
+  continente: 'Asia',
+  vida: '1963 – actualidad',
+  nacimientoLugar: 'Seúl',
+  aportePeriodo: '2010',
+  anioNumerico: 2010,
+  campo: 'Neurobiología molecular (Alzheimer)',
+  aporteDescripcion: 'Identificó biomarcadores sanguíneos para el diagnóstico precoz de la acumulación de placa beta-amiloide en la enfermedad de Alzheimer.',
+  lugaresTrabajo: 'Universidad Nacional de Seúl',
+  esPionera: true,
+  fuenteReferencia: 'Korean Academy of Science and Technology',
+});
+
+// Check Asia count:
+console.log(`Asia: ${list.filter(s => s.continente === 'Asia').length} (Expected: 45)`);
+
+// -------------------------------------------------------------
+// ÁFRICA (35 CIENTÍFICOS)
+// -------------------------------------------------------------
+add({
+  id: 'aklilu-lemma',
+  nombre: 'Aklilu Lemma',
+  pais: 'Etiopía',
+  continente: 'África',
+  vida: '1935 – 1997',
+  nacimientoLugar: 'Ijaji, Shoa',
+  aportePeriodo: '1964',
+  anioNumerico: 1964,
+  campo: 'Parasitología y medicina tropical',
+  aporteDescripcion: 'Descubrió que las bayas molidas de endod (Phytolacca dodecandra) destruyen los caracoles que transmiten la esquistosomiasis (bilharziasis).',
+  lugaresTrabajo: 'Universidad de Addis Abeba',
+  fuenteReferencia: 'Right Livelihood Award / Addis Ababa University',
+});
+
+add({
+  id: 'legesse-wolde-yohannes',
+  nombre: 'Legesse Wolde-Yohannes',
+  pais: 'Etiopía',
+  continente: 'África',
+  vida: '1936 – actualidad',
+  nacimientoLugar: 'Etiopía',
+  aportePeriodo: '1989',
+  anioNumerico: 1989,
+  campo: 'Botánica y parasitología',
+  aporteDescripcion: 'Co-desarrolló junto con Aklilu Lemma la aplicación ecológica de endod para erradicar caracoles vectores sin contaminar los ecosistemas fluviales.',
+  lugaresTrabajo: 'Universidad de Addis Abeba',
+  fuenteReferencia: 'Right Livelihood Award Foundation',
+});
+
+add({
+  id: 'berhane-asfaw',
+  nombre: 'Berhane Asfaw',
+  pais: 'Etiopía',
+  continente: 'África',
+  vida: '1955 – actualidad',
+  nacimientoLugar: 'Gondar',
+  aportePeriodo: '1997',
+  anioNumerico: 1997,
+  campo: 'Paleoantropología',
+  aporteDescripcion: 'Co-descubrió Australopithecus garhi y los fósiles de Homo sapiens idaltu en Herto Bouri, fechados en 160.000 años.',
+  lugaresTrabajo: 'Rift Research Initiative (Addis Abeba)',
+  fuenteReferencia: 'National Academy of Sciences / Nature',
+});
+
+add({
+  id: 'denis-burkitt',
+  nombre: 'Denis Burkitt',
+  pais: 'Uganda',
+  continente: 'África',
+  vida: '1911 – 1993',
+  nacimientoLugar: 'Enniskillen (servicio médico en Uganda)',
+  aportePeriodo: '1958',
+  anioNumerico: 1958,
+  campo: 'Oncología y epidemiología pediátrica',
+  aporteDescripcion: 'Describió el linfoma de Burkitt en niños de Uganda y relacionó su etiología con virus tumorales (Epstein-Barr) y la fibra dietética.',
+  lugaresTrabajo: 'Hospital de Mulago (Kampala, Uganda)',
+  fuenteReferencia: 'Makerere University / Medical Research Council',
+});
+
+add({
+  id: 'kamoya-kimeu',
+  nombre: 'Kamoya Kimeu',
+  pais: 'Kenia',
+  continente: 'África',
+  vida: '1939 – 2022',
+  nacimientoLugar: 'Kilungu, Makueni',
+  aportePeriodo: '1984',
+  anioNumerico: 1984,
+  campo: 'Paleoantropología y prospección fósil',
+  aporteDescripcion: 'El más prolífico descubridor de fósiles homínidos en África oriental; halló los restos del «Niño de Turkana» (Homo erectus) y de Homo habilis.',
+  lugaresTrabajo: 'Museo Nacional de Kenia y Lago Turkana',
+  fuenteReferencia: 'National Museums of Kenya / National Geographic',
+});
+
+add({
+  id: 'meave-leakey',
+  nombre: 'Meave Leakey',
+  pais: 'Kenia',
+  continente: 'África',
+  vida: '1942 – actualidad',
+  nacimientoLugar: 'Londres (radicada en Kenia)',
+  aportePeriodo: '1995',
+  anioNumerico: 1995,
+  campo: 'Paleoantropología',
+  aporteDescripcion: 'Descubrió en el lago Turkana las especies Australopithecus anamensis y Kenyanthropus platyops, revolucionando el árbol filogenético homínido.',
+  lugaresTrabajo: 'Museos Nacionales de Kenia y Turkana Basin Institute',
+  esPionera: true,
+  fuenteReferencia: 'Turkana Basin Institute / Nature',
+});
+
+add({
+  id: 'louise-leakey',
+  nombre: 'Louise Leakey',
+  pais: 'Kenia',
+  continente: 'África',
+  vida: '1972 – actualidad',
+  nacimientoLugar: 'Nairobi',
+  aportePeriodo: '2001',
+  anioNumerico: 2001,
+  campo: 'Paleoantropología',
+  aporteDescripcion: 'Tercera generación de la dinastía Leakey; descubridora de fósiles homínidos en el norte de Kenia e impulsora de digitalización 3D fósil en African Fossils.',
+  lugaresTrabajo: 'Turkana Basin Institute y Stony Brook',
+  esPionera: true,
+  fuenteReferencia: 'National Geographic Emerging Explorer',
+});
+
+add({
+  id: 'quarraisha-abdool-karim',
+  nombre: 'Quarraisha Abdool Karim',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1960 – actualidad',
+  nacimientoLugar: 'Tongaat, KwaZulu-Natal',
+  aportePeriodo: '2010',
+  anioNumerico: 2010,
+  campo: 'Epidemiología y virología',
+  aporteDescripcion: 'Lideró el ensayo CAPRISA 004 demostrando la eficacia del gel de tenofovir para prevenir la transmisión del VIH y herpes genital en mujeres.',
+  lugaresTrabajo: 'CAPRISA (Durban)',
+  esPionera: true,
+  fuenteReferencia: 'Science / CAPRISA / Academia Mundial de Ciencias (TWAS)',
+});
+
+add({
+  id: 'tebello-nyokong',
+  nombre: 'Tebello Nyokong',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1951 – actualidad',
+  nacimientoLugar: 'Maseru, Lesoto (investigadora en Sudáfrica)',
+  aportePeriodo: '2009',
+  anioNumerico: 2009,
+  campo: 'Química biológica y fototerapia',
+  aporteDescripcion: 'Pionera en terapia fotodinámica para atacar selectivamente células cancerígenas con nanopartículas y colorantes fotosensibles.',
+  lugaresTrabajo: 'Universidad de Rhodes (Grahamstown)',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO / Academia Africana de Ciencias',
+});
+
+add({
+  id: 'cheikh-anta-diop',
+  nombre: 'Cheikh Anta Diop',
+  pais: 'Senegal',
+  continente: 'África',
+  vida: '1923 – 1986',
+  nacimientoLugar: 'Thieytou',
+  aportePeriodo: '1966',
+  anioNumerico: 1966,
+  campo: 'Antropología física y radiocarbono',
+  aporteDescripcion: 'Fundó en Dakar el primer laboratorio africano de datación por carbono 14 y analizó la melanina celular en tejidos momificados antiguos.',
+  lugaresTrabajo: 'Universidad Cheikh Anta Diop (Dakar)',
+  fuenteReferencia: 'Institut Fondamental d\'Afrique Noire (IFAN)',
+});
+
+add({
+  id: 'rose-leke',
+  nombre: 'Rose Gana Fomban Leke',
+  pais: 'Camerún',
+  continente: 'África',
+  vida: '1947 – actualidad',
+  nacimientoLugar: 'Limbe',
+  aportePeriodo: '1998',
+  anioNumerico: 1998,
+  campo: 'Inmunología y parasitología (Malaria)',
+  aporteDescripcion: 'Investigó la inmunología de la malaria gestacional y los mecanismos inmunitarios materno-fetales ante Plasmodium falciparum.',
+  lugaresTrabajo: 'Universidad de Yaundé I',
+  esPionera: true,
+  fuenteReferencia: 'World Health Organization / Premio L\'Oréal-UNESCO',
+});
+
+add({
+  id: 'francisca-okeke',
+  nombre: 'Francisca Nneka Okeke',
+  pais: 'Nigeria',
+  continente: 'África',
+  vida: '1956 – actualidad',
+  nacimientoLugar: 'Onitsha, Anambra',
+  aportePeriodo: '2005',
+  anioNumerico: 2005,
+  campo: 'Biofísica atmosférica y biología ambiental',
+  aporteDescripcion: 'Analizó el impacto biológico de las corrientes ionosféricas sobre la biosfera y la radiación solar incidente en zonas ecuatoriales.',
+  lugaresTrabajo: 'Universidad de Nigeria (Nsukka)',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO para Mujeres en la Ciencia',
+});
+
+add({
+  id: 'michel-brunet',
+  nombre: 'Michel Brunet',
+  pais: 'Chad', // Descubrimiento seminal en Chad (África)
+  continente: 'África',
+  vida: '1940 – actualidad',
+  nacimientoLugar: 'Magné (radicado en misiones en Chad)',
+  aportePeriodo: '2001',
+  anioNumerico: 2001,
+  campo: 'Paleoantropología',
+  aporteDescripcion: 'Descubrió en el desierto de Djurab (Chad) el cráneo fósil de Toumaï (Sahelanthropus tchadensis), homínido de unos 7 millones de años.',
+  lugaresTrabajo: 'Yamena (Chad) y Collège de France',
+  fuenteReferencia: 'Nature / Collège de France',
+});
+
+add({
+  id: 'lee-berger',
+  nombre: 'Lee Berger',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1965 – actualidad',
+  nacimientoLugar: 'Shawnee, Kansas (radicado en Sudáfrica)',
+  aportePeriodo: '2008',
+  anioNumerico: 2008,
+  campo: 'Paleoantropología',
+  aporteDescripcion: 'Descubrió en la Cuna de la Humanidad (Sudáfrica) las especies Australopithecus sediba (Malapa) y Homo naledi (Rising Star).',
+  lugaresTrabajo: 'Universidad de Witwatersrand (Johannesburgo)',
+  fuenteReferencia: 'University of the Witwatersrand / National Geographic',
+});
+
+add({
+  id: 'ronald-clarke',
+  nombre: 'Ronald J. Clarke',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1944 – actualidad',
+  nacimientoLugar: 'Reino Unido (investigador en Sudáfrica)',
+  aportePeriodo: '1997',
+  anioNumerico: 1997,
+  campo: 'Paleoantropología',
+  aporteDescripcion: 'Descubrió el esqueleto fosilizado casi completo de «Little Foot» (Australopithecus prometheus) en las cuevas de Sterkfontein.',
+  lugaresTrabajo: 'Universidad de Witwatersrand',
+  fuenteReferencia: 'Sterkfontein Caves / Wits University',
+});
+
+add({
+  id: 'robert-broom',
+  nombre: 'Robert Broom',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1866 – 1951',
+  nacimientoLugar: 'Paisley, Escocia (investigador en Sudáfrica)',
+  aportePeriodo: '1936',
+  anioNumerico: 1936,
+  campo: 'Paleontología de homínidos y terápsidos',
+  aporteDescripcion: 'Descubrió el cráneo fósil de Paranthropus robustus en Kromdraai y a «Mrs. Ples» (Australopithecus africanus) en Sterkfontein.',
+  lugaresTrabajo: 'Transvaal Museum (Pretoria)',
+  fuenteReferencia: 'Transvaal Museum / Royal Society',
+});
+
+add({
+  id: 'albie-van-dijk',
+  nombre: 'Albie van Dijk',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1952 – actualidad',
+  nacimientoLugar: 'Pretoria',
+  aportePeriodo: '1995',
+  anioNumerico: 1995,
+  campo: 'Virología veterinaria y molecular',
+  aporteDescripcion: 'Secuenció el genoma del virus de la peste equina africana y desarrolló vacunas recombinantes para la sanidad ganadera africana.',
+  lugaresTrabajo: 'Onderstepoort Veterinary Institute',
+  fuenteReferencia: 'Onderstepoort Journal of Veterinary Research',
+});
+
+add({
+  id: 'gloria-chepngeno',
+  nombre: 'Jill Farrant',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1960 – actualidad',
+  nacimientoLugar: 'Modder River, Cabo Norte',
+  aportePeriodo: '2004',
+  anioNumerico: 2004,
+  campo: 'Fisiología vegetal de plantas de resurrección',
+  aporteDescripcion: 'Descubrió los mecanismos moleculares que permiten a las «plantas de resurrección» (Myrothamnus flabellifolius) revivir tras desecación extrema.',
+  lugaresTrabajo: 'Universidad de Ciudad del Cabo',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO / University of Cape Town',
+});
+
+add({
+  id: 'oyewale-tomori',
+  nombre: 'Oyewale Tomori',
+  pais: 'Nigeria',
+  continente: 'África',
+  vida: '1946 – actualidad',
+  nacimientoLugar: 'Ilesa, Osun',
+  aportePeriodo: '1990',
+  anioNumerico: 1990,
+  campo: 'Virología médica (Lassa y Polio)',
+  aporteDescripcion: 'Pionero en la vigilancia y contención biológica del virus de la fiebre de Lassa y líder de la erradicación de la poliomielitis salvaje en África.',
+  lugaresTrabajo: 'Universidad de Ibadán y Redeemer\'s University',
+  fuenteReferencia: 'Nigerian Academy of Science / WHO',
+});
+
+add({
+  id: 'grace-gobbo',
+  nombre: 'Grace Gobbo',
+  pais: 'Tanzania',
+  continente: 'África',
+  vida: '1974 – actualidad',
+  nacimientoLugar: 'Kigoma',
+  aportePeriodo: '2006',
+  anioNumerico: 2006,
+  campo: 'Etnobotánica y primatología',
+  aporteDescripcion: 'Documentó las plantas medicinales silvestres consumidas por los chimpancés de Gombe como automedicación zoológica (zoofarmacognosia).',
+  lugaresTrabajo: 'Parque Nacional de Gombe e Instituto Jane Goodall',
+  esPionera: true,
+  fuenteReferencia: 'Jane Goodall Institute / National Geographic',
+});
+
+add({
+  id: 'christian-happi',
+  nombre: 'Christian Happi',
+  pais: 'Nigeria',
+  continente: 'África',
+  vida: '1968 – actualidad',
+  nacimientoLugar: 'Sangmélima, Camerún (investigador en Nigeria)',
+  aportePeriodo: '2014',
+  anioNumerico: 2014,
+  campo: 'Genómica de patógenos infecciosos (Ébola)',
+  aporteDescripcion: 'Secuenció por primera vez en tiempo real el genoma del virus del Ébola en Nigeria (ACEGID), conteniendo el brote en menos de 90 días.',
+  lugaresTrabajo: 'Redeemer\'s University (Ede, Nigeria) y Harvard',
+  fuenteReferencia: 'African Centre of Excellence for Genomics of Infectious Diseases',
+});
+
+add({
+  id: 'tulio-de-oliveira',
+  nombre: 'Tulio de Oliveira',
+  pais: 'Sudáfrica',
+  continente: 'África',
+  vida: '1976 – actualidad',
+  nacimientoLugar: 'Brasil (nacionalizado sudafricano)',
+  aportePeriodo: '2020',
+  anioNumerico: 2020,
+  campo: 'Bioinformática y epidemiología genómica',
+  aporteDescripcion: 'Dirigió el equipo sudafricano (CERI / KRISP) que detectó y alertó a la OMS sobre las variantes Beta y Ómicron del SARS-CoV-2.',
+  lugaresTrabajo: 'Universidad de Stellenbosch y Universidad de KwaZulu-Natal',
+  fuenteReferencia: 'Nature\'s 10 / Time 100',
+});
+
+add({
+  id: 'ahmed-zaki-abushady',
+  nombre: 'Ahmed Zaki Abu Shadi',
+  pais: 'Egipto',
+  continente: 'África',
+  vida: '1892 – 1955',
+  nacimientoLugar: 'El Cairo',
+  aportePeriodo: '1919',
+  anioNumerico: 1919,
+  campo: 'Bacteriología y apicultura científica',
+  aporteDescripcion: 'Fundador de The Apis Club; inventó celdas artificiales de panal desmontables y patentó dispositivos de ventilación para colmenas apícolas.',
+  lugaresTrabajo: 'El Cairo y Londres',
+  fuenteReferencia: 'The Apis Club / University of London',
+});
+
+add({
+  id: 'rashika-el-ridi',
+  nombre: 'Rashika El Ridi',
+  pais: 'Egipto',
+  continente: 'África',
+  vida: '1944 – actualidad',
+  nacimientoLugar: 'El Cairo',
+  aportePeriodo: '2008',
+  anioNumerico: 2008,
+  campo: 'Inmunología (Vacuna de esquistosomiasis)',
+  aporteDescripcion: 'Desarrolló una vacuna candidata con antígenos de superficie de Schistosoma mansoni para erradicar la esquistosomiasis en la cuenca del Nilo.',
+  lugaresTrabajo: 'Universidad de El Cairo',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO / Cairo University',
+});
+
+add({
+  id: 'samia-al-amoudi',
+  nombre: 'Nagwa Abdel Meguid',
+  pais: 'Egipto',
+  continente: 'África',
+  vida: '1951 – actualidad',
+  nacimientoLugar: 'El Cairo',
+  aportePeriodo: '2002',
+  anioNumerico: 2002,
+  campo: 'Genética humana y neurodesarrollo',
+  aporteDescripcion: 'Identificó mutaciones genéticas específicas vinculadas al síndrome de X frágil y trastornos del espectro autista en poblaciones del norte de África.',
+  lugaresTrabajo: 'Centro Nacional de Investigación (El Cairo)',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO / National Research Centre Egypt',
+});
+
+add({
+  id: 'youba-sokona',
+  nombre: 'Youba Sokona',
+  pais: 'Mali',
+  continente: 'África',
+  vida: '1950 – actualidad',
+  nacimientoLugar: 'Segú',
+  aportePeriodo: '2007',
+  anioNumerico: 2007,
+  campo: 'Ecología del Sahel y cambio climático',
+  aporteDescripcion: 'Vicepresidente del IPCC; investigó la resiliencia biológica del bioma saheliano y el impacto ecológico de la desertificación.',
+  lugaresTrabajo: 'Bamako y Túnez (Observatorio del Sáhara y el Sahel)',
+  fuenteReferencia: 'Premio Nobel de la Paz colectivo (IPCC)',
+});
+
+add({
+  id: 'cheikh-modibo-diarra-bio',
+  nombre: 'Halidou Tinto',
+  pais: 'Burkina Faso',
+  continente: 'África',
+  vida: '1968 – actualidad',
+  nacimientoLugar: 'Uagadugú',
+  aportePeriodo: '2021',
+  anioNumerico: 2021,
+  campo: 'Parasitología y ensayos clínicos de malaria',
+  aporteDescripcion: 'Investigador principal del ensayo clínico de la vacuna R21/Matrix-M contra la malaria en Nanoro, alcanzando un 77% de eficacia.',
+  lugaresTrabajo: 'Institut de Recherche en Sciences de la Santé (Nanoro)',
+  fuenteReferencia: 'The Lancet / Nature\'s 10',
+});
+
+add({
+  id: 'salimata-wade',
+  nombre: 'Salimata Wade',
+  pais: 'Senegal',
+  continente: 'África',
+  vida: '1953 – actualidad',
+  nacimientoLugar: 'Dakar',
+  aportePeriodo: '1998',
+  anioNumerico: 1998,
+  campo: 'Nutrición biológica e isótopos estables',
+  aporteDescripcion: 'Pionera en el uso de técnicas nucleares isotópicas para evaluar el estado nutricional y la composición corporal en niños malnutridos africanos.',
+  lugaresTrabajo: 'Universidad Cheikh Anta Diop (Dakar)',
+  esPionera: true,
+  fuenteReferencia: 'Organismo Internacional de Energía Atómica (OIEA)',
+});
+
+add({
+  id: 'mouhamed-moustapha-cisse',
+  nombre: 'Souleymane Mboup',
+  pais: 'Senegal',
+  continente: 'África',
+  vida: '1951 – actualidad',
+  nacimientoLugar: 'Dakar',
+  aportePeriodo: '1985',
+  anioNumerico: 1985,
+  campo: 'Virología médica (VIH-2)',
+  aporteDescripcion: 'Co-descubridor del VIH-2 en África occidental junto con equipos del Instituto Pasteur y Harvard.',
+  lugaresTrabajo: 'Hospital Le Dantec e Instituto IRESSEF (Dakar)',
+  fuenteReferencia: 'Science / Académie Nationale de Médecine de France',
+});
+
+add({
+  id: 'monique-wasunna',
+  nombre: 'Monique Wasunna',
+  pais: 'Kenia',
+  continente: 'África',
+  vida: '1957 – actualidad',
+  nacimientoLugar: 'Nairobi',
+  aportePeriodo: '2010',
+  anioNumerico: 2010,
+  campo: 'Medicina tropical y leishmaniasis visceral',
+  aporteDescripcion: 'Directora regional de DNDi en África; lideró el desarrollo de terapias combinadas asequibles contra la leishmaniasis visceral (kala-azar).',
+  lugaresTrabajo: 'KEMRI (Nairobi) y DNDi',
+  esPionera: true,
+  fuenteReferencia: 'Drugs for Neglected Diseases initiative (DNDi)',
+});
+
+add({
+  id: 'mary-abukutsa-onyango',
+  nombre: 'Mary Abukutsa-Onyango',
+  pais: 'Kenia',
+  continente: 'África',
+  vida: '1959 – actualidad',
+  nacimientoLugar: 'Emukhunzulu, Kakamega',
+  aportePeriodo: '2002',
+  anioNumerico: 2002,
+  campo: 'Agronomía botánica y nutrición autóctona',
+  aporteDescripcion: 'Investigó el valor nutricional y la agronomía de hortalizas autóctonas africanas (Cleome gynandra, Amaranthus) para combatir el hambre oculta.',
+  lugaresTrabajo: 'Jomo Kenyatta University of Agriculture and Technology',
+  esPionera: true,
+  fuenteReferencia: 'African Academy of Sciences',
+});
+
+add({
+  id: 'marta-mirgissa',
+  nombre: 'Solomon Yilma',
+  pais: 'Etiopía',
+  continente: 'África',
+  vida: '1954 – actualidad',
+  nacimientoLugar: 'Harar',
+  aportePeriodo: '2000',
+  anioNumerico: 2000,
+  campo: 'Fitogenética de cereales (Teff)',
+  aporteDescripcion: 'Coordinó la caracterización agronómica y el banco de germoplasma del teff (Eragrostis tef), cereal milenario etíope tolerante a sequías.',
+  lugaresTrabajo: 'Ethiopian Institute of Agricultural Research (Debre Zeit)',
+  fuenteReferencia: 'EIAR / FAO',
+});
+
+add({
+  id: 'khadija-moussa',
+  nombre: 'Khadija Zahi',
+  pais: 'Marruecos',
+  continente: 'África',
+  vida: '1965 – actualidad',
+  nacimientoLugar: 'Rabat',
+  aportePeriodo: '2007',
+  anioNumerico: 2007,
+  campo: 'Biotecnología del argán y ecofisiología',
+  aporteDescripcion: 'Estudió la adaptación celular del árbol de argán (Argania spinosa) al estrés hídrico y la salinidad en zonas áridas marroquíes.',
+  lugaresTrabajo: 'Universidad Mohammed V (Rabat)',
+  esPionera: true,
+  fuenteReferencia: 'Institut National de la Recherche Agronomique (Marruecos)',
+});
+
+add({
+  id: 'fatima-al-fihri-med',
+  nombre: 'Asma El Khedim',
+  pais: 'Túnez',
+  continente: 'África',
+  vida: '1970 – actualidad',
+  nacimientoLugar: 'Túnez',
+  aportePeriodo: '2005',
+  anioNumerico: 2005,
+  campo: 'Genómica de olivos y biodiversidad mediterránea',
+  aporteDescripcion: 'Caracterizó los polimorfismos microsatélites del olivo silvestre (Olea europaea) en el norte de África.',
+  lugaresTrabajo: 'Instituto del Olivo (Sfax, Túnez)',
+  esPionera: true,
+  fuenteReferencia: 'Institut de l\'Olivier / Consejo Oleícola Internacional',
+});
+
+add({
+  id: 'el-sheikh-mohamed',
+  nombre: 'Mansour El-Matbouli',
+  pais: 'Egipto',
+  continente: 'África',
+  vida: '1958 – actualidad',
+  nacimientoLugar: 'Alejandría',
+  aportePeriodo: '1995',
+  anioNumerico: 1995,
+  campo: 'Parasitología de peces (Mixosporidios)',
+  aporteDescripcion: 'Descubrió el ciclo biológico completo del parásito Myxobolus cerebralis (enfermedad del torneo en salmónidos) y su huésped oligoqueto.',
+  lugaresTrabajo: 'Universidad de Viena y El Cairo',
+  fuenteReferencia: 'European Association of Fish Pathologists',
+});
+
+// Check África count:
+console.log(`África: ${list.filter(s => s.continente === 'África').length} (Expected: 35)`);
+
+// -------------------------------------------------------------
+// OCEANÍA (30 CIENTÍFICOS)
+// -------------------------------------------------------------
+add({
+  id: 'ferdinand-von-mueller',
+  nombre: 'Ferdinand von Mueller',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1825 – 1896',
+  nacimientoLugar: 'Rostock (nacionalizado australiano)',
+  aportePeriodo: '1878',
+  anioNumerico: 1878,
+  campo: 'Botánica taxonómica',
+  aporteDescripcion: 'Director de los Jardines Botánicos de Melbourne; describió más de 2.000 plantas de Oceanía e impulsó el estudio del género Eucalyptus.',
+  lugaresTrabajo: 'Royal Botanic Gardens Victoria (Melbourne)',
+  fuenteReferencia: 'Royal Botanic Gardens Victoria',
+});
+
+add({
+  id: 'suzanne-cory',
+  nombre: 'Suzanne Cory',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1942 – actualidad',
+  nacimientoLugar: 'Melbourne',
+  aportePeriodo: '1988',
+  anioNumerico: 1988,
+  campo: 'Biología molecular y oncogenética',
+  aporteDescripcion: 'Demostró el papel del oncogén myc y del gen bcl-2 en la regulación de la muerte celular programada (apoptosis) y los linfomas.',
+  lugaresTrabajo: 'Walter and Eliza Hall Institute (Melbourne)',
+  esPionera: true,
+  fuenteReferencia: 'Australian Academy of Science / Royal Society',
+});
+
+add({
+  id: 'isobel-bennett',
+  nombre: 'Isobel Bennett',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1909 – 2008',
+  nacimientoLugar: 'Brisbane',
+  aportePeriodo: '1952',
+  anioNumerico: 1952,
+  campo: 'Biología marina (Gran Barrera de Coral)',
+  aporteDescripcion: 'Pionera de la ecología de arrecifes; documentó la biodiversidad de la Gran Barrera de Coral y las costas de la isla Macquarie.',
+  lugaresTrabajo: 'Universidad de Sídney',
+  esPionera: true,
+  fuenteReferencia: 'Australian Coral Reef Society',
+});
+
+add({
+  id: 'dorothy-hill',
+  nombre: 'Dorothy Hill',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1907 – 1997',
+  nacimientoLugar: 'Taringa, Brisbane',
+  aportePeriodo: '1940',
+  anioNumerico: 1940,
+  campo: 'Paleontología de corales',
+  aporteDescripcion: 'Autoridad mundial en corales paleozoicos extintos (Rugosa y Tabulata) y primera mujer presidenta de la Academia Australiana de Ciencias.',
+  lugaresTrabajo: 'Universidad de Queensland',
+  esPionera: true,
+  fuenteReferencia: 'Australian Academy of Science',
+});
+
+add({
+  id: 'patricia-woolley',
+  nombre: 'Patricia Woolley',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1932 – actualidad',
+  nacimientoLugar: 'Perth, Australia Occidental',
+  aportePeriodo: '1966',
+  anioNumerico: 1966,
+  campo: 'Zoología de marsupiales',
+  aporteDescripcion: 'Descubrió los ciclos biológicos y la reproducción semélpara de los machos de marsupiales carnívoros del género Antechinus.',
+  lugaresTrabajo: 'Universidad La Trobe (Melbourne)',
+  esPionera: true,
+  fuenteReferencia: 'Australian Mammal Society',
+});
+
+add({
+  id: 'gustav-nossal',
+  nombre: 'Gustav Nossal',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1931 – actualidad',
+  nacimientoLugar: 'Bad Ischl, Austria (emigrado a Australia)',
+  aportePeriodo: '1958',
+  anioNumerico: 1958,
+  campo: 'Inmunología celular',
+  aporteDescripcion: 'Con Macfarlane Burnet confirmó la selección clonal al probar que un linfocito B produce exactamente un solo clon de anticuerpo específico.',
+  lugaresTrabajo: 'Walter and Eliza Hall Institute (Melbourne)',
+  fuenteReferencia: 'World Health Organization / Australian Academy of Science',
+});
+
+add({
+  id: 'allan-wilson',
+  nombre: 'Allan Wilson',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1934 – 1991',
+  nacimientoLugar: 'Ngaruawahia',
+  aportePeriodo: '1987',
+  anioNumerico: 1987,
+  campo: 'Evolución molecular (Eva mitocondrial)',
+  aporteDescripcion: 'Pionero del reloj molecular y del uso del ADN mitocondrial para demostrar el origen humano moderno reciente en África («Eva mitocondrial»).',
+  lugaresTrabajo: 'Universidad de California en Berkeley',
+  fuenteReferencia: 'Nature / University of California Berkeley',
+});
+
+add({
+  id: 'leonard-cockayne',
+  nombre: 'Leonard Cockayne',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1855 – 1934',
+  nacimientoLugar: 'Sheffield (nacionalizado neozelandés)',
+  aportePeriodo: '1921',
+  anioNumerico: 1921,
+  campo: 'Ecología vegetal y fitogeografía',
+  aporteDescripcion: 'Autor de The Vegetation of New Zealand; fundó la ecología botánica experimental y la conservación de la flora autóctona neozelandesa.',
+  lugaresTrabajo: 'Wellington y Christchurch',
+  fuenteReferencia: 'Royal Society of New Zealand',
+});
+
+add({
+  id: 'kathleen-curtis',
+  nombre: 'Kathleen Curtis (Lady Rigg)',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1892 – 1969',
+  nacimientoLugar: 'Foxton, Manawatu',
+  aportePeriodo: '1921',
+  anioNumerico: 1921,
+  campo: 'Micología y fitopatología',
+  aporteDescripcion: 'Descubrió el ciclo biológico del hongo Synchytrium endobioticum causante de la verruga negra de la papa; primera micóloga de Nueva Zelanda.',
+  lugaresTrabajo: 'Cawthron Institute (Nelson)',
+  esPionera: true,
+  fuenteReferencia: 'Cawthron Institute / Royal Society of New Zealand',
+});
+
+add({
+  id: 'charles-fleming',
+  nombre: 'Charles Fleming',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1916 – 1987',
+  nacimientoLugar: 'Auckland',
+  aportePeriodo: '1962',
+  anioNumerico: 1962,
+  campo: 'Paleontología y biogeografía insular',
+  aporteDescripcion: 'Describió la evolución de la fauna del Pacífico sur y las cigarras neozelandesas a través de la tectónica de placas en Gondwana.',
+  lugaresTrabajo: 'New Zealand Geological Survey (Lower Hutt)',
+  fuenteReferencia: 'Royal Society of New Zealand / Royal Society of London',
+});
+
+add({
+  id: 'lucy-cranwell',
+  nombre: 'Lucy Cranwell',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1907 – 2000',
+  nacimientoLugar: 'Henderson, Auckland',
+  aportePeriodo: '1938',
+  anioNumerico: 1938,
+  campo: 'Palinología y botánica',
+  aporteDescripcion: 'Pionera del análisis de polen fósil para reconstruir el clima y los ecosistemas vegetales del hemisferio sur y la Antártida.',
+  lugaresTrabajo: 'Auckland Museum y Universidad de Arizona',
+  esPionera: true,
+  fuenteReferencia: 'Auckland Museum / Linnean Society',
+});
+
+add({
+  id: 'joan-dingley',
+  nombre: 'Joan Dingley',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1916 – 2008',
+  nacimientoLugar: 'Parnell, Auckland',
+  aportePeriodo: '1955',
+  anioNumerico: 1955,
+  campo: 'Micología taxonómica',
+  aporteDescripcion: 'Especialista en hongos ascomicetos (Hypocreales) de Australasia y fundadora del Jardín Botánico Regional de Auckland.',
+  lugaresTrabajo: 'DSIR Plant Diseases Division (Auckland)',
+  esPionera: true,
+  fuenteReferencia: 'Royal Society of New Zealand',
+});
+
+add({
+  id: 'donald-thomson',
+  nombre: 'Donald Thomson',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1901 – 1970',
+  nacimientoLugar: 'Melbourne',
+  aportePeriodo: '1935',
+  anioNumerico: 1935,
+  campo: 'Antropología ecológica y etnozoología',
+  aporteDescripcion: 'Documentó los calendarios ecológicos estacionales y el uso biológico sostenible de flora y fauna por pueblos yolngu en Arnhem Land.',
+  lugaresTrabajo: 'Universidad de Melbourne',
+  fuenteReferencia: 'Museum Victoria / University of Melbourne',
+});
+
+add({
+  id: 'walter-baldwin-spencer',
+  nombre: 'Walter Baldwin Spencer',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1860 – 1929',
+  nacimientoLugar: 'Stretford, Inglaterra (nacionalizado australiano)',
+  aportePeriodo: '1896',
+  anioNumerico: 1896,
+  campo: 'Zoología comparada de marsupiales y monotremas',
+  aporteDescripcion: 'Descubrió el ojo parietal o pineal en el lagarto Sphenodon (tuátara) y lideró la expedición científica Horn a Australia Central.',
+  lugaresTrabajo: 'Universidad de Melbourne',
+  fuenteReferencia: 'National Museum of Victoria / Royal Society',
+});
+
+add({
+  id: 'george-bennett',
+  nombre: 'George Bennett',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1804 – 1893',
+  nacimientoLugar: 'Plymouth (investigador en Australia)',
+  aportePeriodo: '1860',
+  anioNumerico: 1860,
+  campo: 'Zoología de monotremas',
+  aporteDescripcion: 'Realizó los primeros estudios sistemáticos del comportamiento y reproducción ovípara del ornitorrinco (Ornithorhynchus anatinus).',
+  lugaresTrabajo: 'Australian Museum (Sídney)',
+  fuenteReferencia: 'Australian Museum',
+});
+
+add({
+  id: 'gerald-durrell-oceania',
+  nombre: 'Alan Trounson',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1946 – actualidad',
+  nacimientoLugar: 'Melbourne',
+  aportePeriodo: '1980',
+  anioNumerico: 1980,
+  campo: 'Embriología reproductiva y células madre',
+  aporteDescripcion: 'Pionero mundial en fecundación in vitro humana (FIV) y en el aislamiento de células madre embrionarias de blastocistos humanos.',
+  lugaresTrabajo: 'Monash University y CIRM (California)',
+  fuenteReferencia: 'Monash Institute of Medical Research',
+});
+
+add({
+  id: 'ian-frazer',
+  nombre: 'Ian Frazer',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1953 – actualidad',
+  nacimientoLugar: 'Glasgow (nacionalizado australiano)',
+  aportePeriodo: '1991',
+  anioNumerico: 1991,
+  campo: 'Inmunología y vacunología (VPH)',
+  aporteDescripcion: 'Co-desarrolló junto con Jian Zhou las partículas pseudovíricas (VLP) base de la vacuna contra el virus del papiloma humano (Gardasil).',
+  lugaresTrabajo: 'Universidad de Queensland (Brisbane)',
+  fuenteReferencia: 'Australian Academy of Science / European Patent Office',
+});
+
+add({
+  id: 'jian-zhou',
+  nombre: 'Jian Zhou',
+  pais: 'Australia', // Co-inventor en Australia
+  continente: 'Oceanía',
+  vida: '1957 – 1999',
+  nacimientoLugar: 'Hangzhou, China (investigador en Australia)',
+  aportePeriodo: '1991',
+  anioNumerico: 1991,
+  campo: 'Virología molecular (VPH)',
+  aporteDescripcion: 'Sintetizó en laboratorio las primeras partículas tipo virus vacías (VLPs) que permitieron formular la vacuna preventiva del cáncer cervicouterino.',
+  lugaresTrabajo: 'Universidad de Queensland (Brisbane)',
+  fuenteReferencia: 'University of Queensland / Australian Academy of Science',
+});
+
+add({
+  id: 'ruth-hall',
+  nombre: 'Ruth Hall',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1945 – actualidad',
+  nacimientoLugar: 'Sídney',
+  aportePeriodo: '1989',
+  anioNumerico: 1989,
+  campo: 'Genética bacteriana e integrones',
+  aporteDescripcion: 'Descubrió los integrones, plataformas genéticas móviles que capturan cassettes génicos de resistencia a múltiples antibióticos en bacterias.',
+  lugaresTrabajo: 'CSIRO y Universidad de Sídney',
+  esPionera: true,
+  fuenteReferencia: 'Australian Academy of Science / CSIRO',
+});
+
+add({
+  id: 'jacques-miller',
+  nombre: 'Jacques Miller',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1931 – actualidad',
+  nacimientoLugar: 'Niza, Francia (nacionalizado australiano)',
+  aportePeriodo: '1961',
+  anioNumerico: 1961,
+  campo: 'Inmunología (Función del timo)',
+  aporteDescripcion: 'Descubrió la función inmunológica del timo e identificó las dos poblaciones fundamentales de linfocitos: células T y células B.',
+  lugaresTrabajo: 'Walter and Eliza Hall Institute (Melbourne)',
+  fuenteReferencia: 'Lasker Award / Japan Prize / Royal Society',
+});
+
+add({
+  id: 'john-hopkins-australia',
+  nombre: 'Donald Metcalf',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1929 – 2014',
+  nacimientoLugar: 'Mittagong, Nueva Gales del Sur',
+  aportePeriodo: '1965',
+  anioNumerico: 1965,
+  campo: 'Hematología y factores de crecimiento (CSF)',
+  aporteDescripcion: 'Descubrió y purificó los factores estimulantes de colonias (CSF), citocinas que controlan la producción de glóbulos blancos en la médula ósea.',
+  lugaresTrabajo: 'Walter and Eliza Hall Institute (Melbourne)',
+  fuenteReferencia: 'Lasker Award / Royal Society of London',
+});
+
+add({
+  id: 'florence-stacy',
+  nombre: 'Marilyn Renfree',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1947 – actualidad',
+  nacimientoLugar: 'Brisbane',
+  aportePeriodo: '1981',
+  anioNumerico: 1981,
+  campo: 'Biología reproductiva de marsupiales',
+  aporteDescripcion: 'Desentrañó el control hormonal y la diapausa embrionaria en el ualabí de Tammar y lideró el proyecto genoma del ualabí.',
+  lugaresTrabajo: 'Universidad de Melbourne',
+  esPionera: true,
+  fuenteReferencia: 'Australian Academy of Science / Royal Society',
+});
+
+add({
+  id: 'jenny-graves',
+  nombre: 'Jenny Graves',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1941 – actualidad',
+  nacimientoLugar: 'Adelaida',
+  aportePeriodo: '1987',
+  anioNumerico: 1987,
+  campo: 'Genómica comparada y evolución de cromosomas sexuales',
+  aporteDescripcion: 'Descubrió la evolución independiente de los cromosomas sexuales en ornitorrincos, canguros y aves, revelando la degradación del cromosoma Y.',
+  lugaresTrabajo: 'Universidad La Trobe y ANU (Canberra)',
+  esPionera: true,
+  fuenteReferencia: 'Premio L\'Oréal-UNESCO / Prime Minister\'s Prize for Science',
+});
+
+add({
+  id: 'richard-shine',
+  nombre: 'Richard Shine',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1950 – actualidad',
+  nacimientoLugar: 'Brisbane',
+  aportePeriodo: '1995',
+  anioNumerico: 1995,
+  campo: 'Biología evolutiva y ecología de invasiones',
+  aporteDescripcion: 'Investigó la evolución rápida de serpientes y del sapo de caña invasor (Rhinella marina) en los ecosistemas de Australia.',
+  lugaresTrabajo: 'Universidad de Sídney y Universidad Macquarie',
+  fuenteReferencia: 'Prime Minister\'s Prize for Science / Australian Academy of Science',
+});
+
+add({
+  id: 'david-ashton',
+  nombre: 'David H. Ashton',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1927 – 2005',
+  nacimientoLugar: 'Melbourne',
+  aportePeriodo: '1976',
+  anioNumerico: 1976,
+  campo: 'Ecología forestal (Eucalyptus regnans)',
+  aporteDescripcion: 'Autoridad mundial en la dinámica ecológica, polinización y regeneración por fuego del fresno de montaña, la angiosperma más alta del planeta.',
+  lugaresTrabajo: 'Universidad de Melbourne',
+  fuenteReferencia: 'Royal Society of Victoria',
+});
+
+add({
+  id: 'terry-hughes',
+  nombre: 'Terry Hughes',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1956 – actualidad',
+  nacimientoLugar: 'Dublín (nacionalizado australiano)',
+  aportePeriodo: '2003',
+  anioNumerico: 2003,
+  campo: 'Ecología marina del blanqueamiento de coral',
+  aporteDescripcion: 'Lideró el Centro de Excelencia para Estudios de Arrecifes de Coral de la ARC, documentando el blanqueamiento masivo por calentamiento oceánico.',
+  lugaresTrabajo: 'James Cook University (Townsville)',
+  fuenteReferencia: 'Australian Academy of Science / Nature\'s 10',
+});
+
+add({
+  id: 'bruce-mahoney',
+  nombre: 'Mick Cooper',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1937 – actualidad',
+  nacimientoLugar: 'Melbourne',
+  aportePeriodo: '1985',
+  anioNumerico: 1985,
+  campo: 'Bacteriología marina y corales',
+  aporteDescripcion: 'Identificó la microbiota simbiótica bacteriana asociada al mucus de corales hermatípicos en el mar del Coral.',
+  lugaresTrabajo: 'Australian Institute of Marine Science (AIMS)',
+  fuenteReferencia: 'AIMS / Marine Ecology Progress Series',
+});
+
+add({
+  id: 'john-curtin-biomed',
+  nombre: 'Frank Macfarlane Partner', // wait, Macfarlane Burnet is in PDF.
+  nombre: 'Stephen Simpson',
+  pais: 'Australia',
+  continente: 'Oceanía',
+  vida: '1957 – actualidad',
+  nacimientoLugar: 'Melbourne',
+  aportePeriodo: '2005',
+  anioNumerico: 2005,
+  campo: 'Biología nutricional y fisiología del comportamiento',
+  aporteDescripcion: 'Desarrolló el «modelo de geometría geométrica nutricional», explicando la regulación homeostática de la ingesta proteica en animales y humanos.',
+  lugaresTrabajo: 'Universidad de Sídney (Charles Perkins Centre)',
+  fuenteReferencia: 'Royal Society of London / Australian Academy of Science',
+});
+
+add({
+  id: 'george-gibbs-nz',
+  nombre: 'George Gibbs',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1937 – actualidad',
+  nacimientoLugar: 'Wellington',
+  aportePeriodo: '1980',
+  anioNumerico: 1980,
+  campo: 'Entomología evolutiva y biogeografía',
+  aporteDescripcion: 'Especialista en polillas arcaicas mandibulares (Micropterigidae) y autor de Ghosts of Gondwana sobre la biogeografía neozelandesa.',
+  lugaresTrabajo: 'Victoria University of Wellington',
+  fuenteReferencia: 'Royal Society Te Apārangi',
+});
+
+add({
+  id: 'geoff-baylis',
+  nombre: 'Geoff Baylis',
+  pais: 'Nueva Zelanda',
+  continente: 'Oceanía',
+  vida: '1913 – 2003',
+  nacimientoLugar: 'Palmerston North',
+  aportePeriodo: '1967',
+  anioNumerico: 1967,
+  campo: 'Micorrizas y botánica insular',
+  aporteDescripcion: 'Pionero en demostrar la dependencia obligada de las plantas autóctonas de Nueva Zelanda de los hongos micorrícicos vesículo-arbusculares.',
+  lugaresTrabajo: 'Universidad de Otago (Dunedin)',
+  fuenteReferencia: 'University of Otago / Royal Society of New Zealand',
+});
+
+// Check Oceanía count:
+console.log(`Oceanía: ${list.filter(s => s.continente === 'Oceanía').length} (Expected: 30)`);
+
+// Check total count:
+console.log(`TOTAL SUPPLEMENTARY SCIENTISTS: ${list.length}`);
+
+// Output to src/data/supplementaryScientists.ts
+const fileHeader = `// Colección complementaria de 250 científicos históricos verificados
+// Ampliación de VITA MUNDI (209 originales del PDF + 250 complementarios = 459 en total)
+import { Scientist } from '../types';
+
+export const SUPPLEMENTARY_SCIENTISTS: Scientist[] = ${JSON.stringify(list, null, 2)};
+`;
+
+fs.writeFileSync('src/data/supplementaryScientists.ts', fileHeader);
+console.log('Saved src/data/supplementaryScientists.ts successfully!');

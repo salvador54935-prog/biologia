@@ -52,7 +52,7 @@ export const FeaturedDiscoveries: React.FC<FeaturedDiscoveriesProps> = ({
           onClick={onExploreAll}
           className="flex items-center gap-2 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors whitespace-nowrap cursor-pointer"
         >
-          <span>Ver catálogo completo (209)</span>
+          <span>Ver catálogo completo ({SCIENTISTS_DATA.length})</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
@@ -79,9 +79,14 @@ export const FeaturedDiscoveries: React.FC<FeaturedDiscoveriesProps> = ({
                   <span className="font-mono text-xs font-bold text-amber-400">
                     {s.aportePeriodo}
                   </span>
-                  <span className="text-[11px] font-mono text-slate-300">
-                    {s.continente} · {s.pais}
-                  </span>
+                  <div className="flex items-center gap-2 text-[11px] font-mono text-slate-300">
+                    <span>{s.continente} · {s.pais}</span>
+                    {s.esPionera && (
+                      <span className="px-1.5 py-0.2 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[9px] font-sans">
+                        Pionera
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Name */}
@@ -102,7 +107,9 @@ export const FeaturedDiscoveries: React.FC<FeaturedDiscoveriesProps> = ({
 
               {/* Bottom Card Footer */}
               <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                <span className="font-mono text-[10px]">Pág. {s.paginaPDF} del PDF</span>
+                <span className="font-mono text-[10px]">
+                  {s.paginaPDF ? `Pág. ${s.paginaPDF} del PDF` : 'Colección complementaria'}
+                </span>
                 <span className="text-cyan-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform font-medium">
                   Ver ficha <ArrowRight className="w-3.5 h-3.5" />
                 </span>

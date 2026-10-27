@@ -95,7 +95,7 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
         </button>
 
         <span className="text-xs font-mono text-slate-400">
-          BIOATLAS / {continent.toUpperCase()}
+          VITA MUNDI / {continent.toUpperCase()}
         </span>
       </div>
 
@@ -137,7 +137,7 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
             </div>
             <div>
               <span className="text-[10px] uppercase font-mono text-slate-400 block">
-                Países PDF
+                Países
               </span>
               <span className="text-2xl font-mono font-bold text-cyan-400 tabular-nums">
                 {countriesInContinent.length}
@@ -319,9 +319,22 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
                     <span className="font-mono text-xs font-bold text-amber-400">
                       {s.aportePeriodo}
                     </span>
-                    <span className="text-[11px] font-mono text-slate-400">
-                      Pág. {s.paginaPDF}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {s.esPionera && (
+                        <span className="px-1.5 py-0.5 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[10px] font-sans font-semibold">
+                          Pionera
+                        </span>
+                      )}
+                      {s.paginaPDF ? (
+                        <span className="text-[11px] font-mono text-blue-300 bg-blue-950/70 border border-blue-700/50 px-1.5 py-0.5 rounded">
+                          PDF Pág. {s.paginaPDF}
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-mono text-amber-300 bg-amber-950/60 border border-amber-600/50 px-1.5 py-0.5 rounded">
+                          Ampliación
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
