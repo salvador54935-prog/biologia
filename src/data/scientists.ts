@@ -1,5 +1,6 @@
 import { Scientist } from '../types';
 import { SUPPLEMENTARY_SCIENTISTS } from './supplementaryScientists';
+import { MULTIDISCIPLINARY_SCIENTISTS } from './multidisciplinaryScientists';
 
 export const ORIGINAL_PDF_SCIENTISTS: Scientist[] = [
   // ==========================================
@@ -477,9 +478,13 @@ export const ORIGINAL_PDF_SCIENTISTS: Scientist[] = [
     aportePeriodo: '1859',
     anioNumerico: 1859,
     campo: 'Evolución',
+    disciplinas: ['Biología'],
     aporteDescripcion: 'Propuso que las especies evolucionan por selección natural en El origen de las especies.',
+    biografia: 'Naturalista británico que transformó para siempre las ciencias de la vida al formular la teoría de la evolución biológica por selección natural.',
+    importanciaHistorica: 'Figura cumbre de la biología moderna y del pensamiento científico universal.',
     lugaresTrabajo: 'Down House (Kent)',
     paginaPDF: 3,
+    retratoUrl: '/portraits/charles-darwin.jpg',
     destacado: true,
   },
 
@@ -494,9 +499,13 @@ export const ORIGINAL_PDF_SCIENTISTS: Scientist[] = [
     aportePeriodo: '1862 y 1885',
     anioNumerico: 1862,
     campo: 'Microbiología',
+    disciplinas: ['Biología', 'Medicina'],
     aporteDescripcion: 'Refutó la generación espontánea y desarrolló vacunas contra el carbunco y la rabia.',
+    biografia: 'Químico y bacteriólogo francés, fundador de la microbiología médica, inventor de la pasteurización y de las vacunas modernas contra la rabia y el carbunco.',
+    importanciaHistorica: 'Padre de la microbiología y la teoría germinal de las enfermedades infecciosas.',
     lugaresTrabajo: 'París',
     paginaPDF: 4,
+    retratoUrl: '/portraits/louis-pasteur.jpg',
     destacado: true,
   },
   {
@@ -2340,9 +2349,14 @@ export const ORIGINAL_PDF_SCIENTISTS: Scientist[] = [
     aportePeriodo: '1021',
     anioNumerico: 1021,
     campo: 'Óptica y fisiología',
+    disciplinas: ['Física', 'Astronomía', 'Medicina'],
     aporteDescripcion: 'En su Libro de óptica explicó la visión como luz que entra en el ojo, y no que sale de él.',
+    biografia: 'Matemático, físico y astrónomo de la Edad de Oro del Islam, considerado el padre de la óptica moderna y pionero del método científico experimental riguroso.',
+    importanciaHistorica: 'Padre de la óptica moderna y pionero del método experimental con base matemática.',
     lugaresTrabajo: 'El Cairo',
     paginaPDF: 12,
+    retratoUrl: '/portraits/ibn-al-haytham.jpg',
+    destacado: true,
   },
   {
     id: 'avicena',
@@ -3055,5 +3069,6 @@ export const ORIGINAL_PDF_SCIENTISTS: Scientist[] = [
 export const SCIENTISTS_DATA: Scientist[] = [
   ...ORIGINAL_PDF_SCIENTISTS,
   ...SUPPLEMENTARY_SCIENTISTS,
+  ...MULTIDISCIPLINARY_SCIENTISTS,
 ];
 

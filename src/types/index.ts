@@ -13,10 +13,14 @@ export interface Scientist {
   aporteDescripcion: string; // Resumen del descubrimiento / aporte
   lugaresTrabajo: string; // Lugar(es) de trabajo indicados
   paginaPDF?: number | null; // Página 2 a 15 de donde se extrajo (null para colección ampliada)
-  esComplementario?: boolean; // true si pertenece a la ampliación de 250 científicos
+  esComplementario?: boolean; // true si pertenece a ampliaciones
   fuenteReferencia?: string; // Fuente bibliográfica o enciclopédica del registro
   destacado?: boolean; // Hito destacado para vitrina en lobby
-  esPionera?: boolean; // Distintivo de pioneras e investigadoras en la historia biológica
+  esPionera?: boolean; // Distintivo de pioneras e investigadoras
+  disciplinas?: string[]; // Lista normalizada de disciplinas científicas (Física, Química, Biología, etc.)
+  biografia?: string; // Biografía breve
+  importanciaHistorica?: string; // Importancia histórica de sus aportes
+  retratoUrl?: string; // Ruta al retrato real o imagen histórica verificada
 }
 
 
