@@ -1,7 +1,13 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React, { useState, useMemo } from 'react';
-import { Scientist } from '../types';
-import { getScientistsByCountry, getAllFields } from '../utils/filters';
-import { X, MapPin, Globe, Briefcase, Calendar, Filter, Award } from 'lucide-react';
+import { getScientistsByCountry } from '../utils/filters';
+import { getDisciplinas, getDisciplineStyle } from '../utils/disciplines';
+import { CircularFlag } from './CircularFlag';
+import { X, MapPin, Briefcase, Filter } from 'lucide-react';
 
 interface CountryModalProps {
   country: string | null;
@@ -35,32 +41,32 @@ export const CountryModal: React.FC<CountryModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in text-[#142e20] dark:text-[#f4f1ea]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="country-modal-title"
     >
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#091224] border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div className="relative w-full max-w-4xl max-h-[90vh] bg-[#fcfbf7] dark:bg-[#0e2217] border border-[#234734]/30 dark:border-[#2d563e]/60 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="p-6 bg-[#070d18] border-b border-slate-800 flex items-start justify-between gap-4">
+        <div className="p-6 bg-[#f7f5ed] dark:bg-[#0c1c13] border-b border-[#234734]/20 dark:border-[#2d563e] flex items-start justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-cyan-400 uppercase tracking-wider mb-1">
-              <Globe className="w-3.5 h-3.5" />
-              <span>Registro Nacional Documentado · {continent}</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-[#234734] dark:text-[#a3c9b3] uppercase tracking-wider mb-1 font-semibold">
+              <CircularFlag country={country} size="sm" />
+              <span>Registro Nacional Documentado • {continent}</span>
             </div>
-            <h2 id="country-modal-title" className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-              {country}
+            <h2 id="country-modal-title" className="text-2xl sm:text-3xl font-bold text-[#0f2419] dark:text-[#f4f1ea] tracking-tight font-serif flex items-center gap-2.5">
+              <span>{country}</span>
             </h2>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-[#52796f] dark:text-[#8ba898] mt-1 font-medium">
               {hasRecords
-                ? `${scientists.length} científico${scientists.length > 1 ? 's' : ''} registrado${scientists.length > 1 ? 's' : ''} (${scientists.filter(s => !s.esComplementario).length} del PDF + ${scientists.filter(s => s.esComplementario).length} ampliación)`
-                : 'Sin registros específicos en la delimitación bibliográfica'}
+                ? `${scientists.length} científico${scientists.length > 1 ? 's' : ''} documentado${scientists.length > 1 ? 's' : ''} con ficha biográfica en BIOATLAS`
+                : 'Sin registros específicos en la delimitación actual'}
             </p>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white bg-slate-800/80 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+            className="p-2 text-[#52796f] hover:text-[#0f2419] bg-[#fcfbf7] hover:bg-[#e8e2d4] dark:bg-[#14291e] dark:text-[#a3c9b3] dark:hover:text-white rounded-xl border border-[#234734]/20 dark:border-[#2d563e] transition-colors cursor-pointer"
             aria-label="Cerrar ficha de país"
           >
             <X className="w-5 h-5" />
@@ -70,30 +76,30 @@ export const CountryModal: React.FC<CountryModalProps> = ({
         {/* Content body */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1">
           {!hasRecords ? (
-            <div className="p-6 bg-slate-900 rounded-xl border border-slate-800 text-center space-y-3">
-              <p className="text-sm text-slate-200 font-medium">
-                No hay registros para este país en la colección actual del atlas.
+            <div className="p-6 bg-[#f4efe3] dark:bg-[#12241a] rounded-xl border border-[#234734]/20 text-center space-y-3">
+              <p className="text-sm font-semibold text-[#0f2419] dark:text-white">
+                No hay registros directos para este país en la colección actual.
               </p>
-              <p className="text-xs text-slate-400 max-w-lg mx-auto leading-relaxed">
-                El atlas comprende 459 científicos documentados (209 procedentes del documento histórico 'Línea del tiempo de la biología' y 250 de la ampliación complementaria).
-                La ausencia de una nación en esta lista no implica que no haya habido contribuciones científicas históricas en su territorio, sino que responde a la delimitación bibliográfica de las fuentes consultadas.
+              <p className="text-xs text-[#52796f] dark:text-[#9bb7a5] max-w-lg mx-auto leading-relaxed">
+                BIOATLAS comprende 759 científicos verificados en los cinco continentes.
+                La ausencia de una nación no presupone ausencia de ciencia en su historia territorial.
               </p>
             </div>
           ) : (
             <>
               {/* Summary Stats Strip */}
-              <div className="grid grid-cols-3 gap-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-xs">
+              <div className="grid grid-cols-3 gap-4 p-4 bg-[#f4efe3] dark:bg-[#12241a] rounded-xl border border-[#234734]/20 text-xs">
                 <div>
-                  <span className="text-[10px] uppercase font-mono text-slate-400 block">Total Registrados</span>
-                  <span className="text-xl font-mono font-bold text-white">{scientists.length}</span>
+                  <span className="text-[10px] uppercase font-mono text-[#52796f] dark:text-[#8ba898] block">Total Registrados</span>
+                  <span className="text-xl font-mono font-bold text-[#0f2419] dark:text-white">{scientists.length}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-mono text-slate-400 block">Campos</span>
-                  <span className="text-xl font-mono font-bold text-cyan-400">{fieldsInCountry.length}</span>
+                  <span className="text-[10px] uppercase font-mono text-[#52796f] dark:text-[#8ba898] block">Especialidades</span>
+                  <span className="text-xl font-mono font-bold text-[#1b3a2b] dark:text-[#a3c9b3]">{fieldsInCountry.length}</span>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-mono text-slate-400 block">Rango de aportes</span>
-                  <span className="text-xs font-mono font-semibold text-amber-400 block mt-1">
+                  <span className="text-[10px] uppercase font-mono text-[#52796f] dark:text-[#8ba898] block">Rango de aportes</span>
+                  <span className="text-xs font-mono font-semibold text-[#8c6b2d] dark:text-[#d4af37] block mt-1">
                     {scientists[0]?.aportePeriodo} — {scientists[scientists.length - 1]?.aportePeriodo}
                   </span>
                 </div>
@@ -102,12 +108,12 @@ export const CountryModal: React.FC<CountryModalProps> = ({
               {/* Filter by field */}
               {fieldsInCountry.length > 1 && (
                 <div className="flex items-center gap-2">
-                  <Filter className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-xs text-slate-400">Filtrar por campo:</span>
+                  <Filter className="w-3.5 h-3.5 text-[#52796f] dark:text-[#8ba898]" />
+                  <span className="text-xs text-[#52796f] dark:text-[#8ba898] font-medium">Filtrar por campo:</span>
                   <select
                     value={selectedField}
                     onChange={e => setSelectedField(e.target.value)}
-                    className="px-2.5 py-1 bg-slate-900 border border-slate-800 rounded text-xs text-slate-200 focus:outline-none focus:border-cyan-500 cursor-pointer"
+                    className="px-2.5 py-1 bg-[#fcfbf7] dark:bg-[#12241a] border border-[#234734]/25 rounded-lg text-xs text-[#142e20] dark:text-[#f4f1ea] focus:outline-none focus:ring-1 focus:ring-[#1b3a2b] cursor-pointer"
                   >
                     <option value="Todos">Todos ({scientists.length})</option>
                     {fieldsInCountry.map(f => (
@@ -118,81 +124,90 @@ export const CountryModal: React.FC<CountryModalProps> = ({
               )}
 
               {/* Scientists List */}
-              <div className="space-y-4">
-                {filtered.map(s => (
-                  <div
-                    key={s.id}
-                    onClick={() => {
-                      onClose();
-                      onOpenScientist(s.id);
-                    }}
-                    className="p-4 bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 hover:border-cyan-500/40 rounded-xl transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-baseline justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
-                          {s.nombre}
-                        </h3>
-                        {s.esPionera && (
-                          <span className="px-1.5 py-0.2 rounded bg-rose-950/80 border border-rose-500/50 text-rose-300 text-[9px]">
-                            Pionera
+              <div className="space-y-3">
+                {filtered.map(s => {
+                  const disciplinas = getDisciplinas(s);
+
+                  return (
+                    <div
+                      key={s.id}
+                      onClick={() => {
+                        onClose();
+                        onOpenScientist(s.id);
+                      }}
+                      className="p-4 bg-[#ffffff] hover:bg-[#f7f5ed] dark:bg-[#12241a] dark:hover:bg-[#162d20] border border-[#234734]/15 hover:border-[#234734]/40 dark:border-[#2d563e]/40 rounded-xl transition-all cursor-pointer group shadow-2xs"
+                    >
+                      <div className="flex items-baseline justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-base font-bold text-[#0f2419] dark:text-[#f4f1ea] group-hover:text-[#1b3a2b] dark:group-hover:text-[#a3c9b3] transition-colors font-serif">
+                            {s.nombre}
+                          </h3>
+                          {s.esPionera && (
+                            <span className="px-1.5 py-0.2 rounded bg-[#8c2d4e]/10 border border-[#8c2d4e]/30 text-[#8c2d4e] text-[9px] font-semibold">
+                              Pionera
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-xs font-mono font-bold text-[#8c6b2d] dark:text-[#d4af37]">
+                          {s.aportePeriodo}
+                        </span>
+                      </div>
+
+                      {/* Subtítulo de aporte */}
+                      <p className="mt-1 text-xs font-medium text-[#2d563e] dark:text-[#a3c9b3]">
+                        {s.subtituloAporte || `${s.nombre} — Investigador en ${s.campo}; ${s.aporteDescripcion}`}
+                      </p>
+
+                      <div className="flex flex-wrap items-center gap-2 text-xs text-[#52796f] dark:text-[#8ba898] mt-2">
+                        {disciplinas.slice(0, 2).map(disc => {
+                          const style = getDisciplineStyle(disc);
+                          return (
+                            <span
+                              key={disc}
+                              className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${style.bg} ${style.text} ${style.border}`}
+                            >
+                              {disc}
+                            </span>
+                          );
+                        })}
+                        <span>·</span>
+                        <span>Vida: {s.vida}</span>
+                      </div>
+
+                      <p className="text-xs text-[#243d2c] dark:text-[#d7e6dc] mt-2 leading-relaxed line-clamp-2">
+                        {s.aporteDescripcion}
+                      </p>
+
+                      {/* Birth and work place */}
+                      <div className="mt-3 pt-2 border-t border-[#234734]/10 flex flex-wrap gap-4 text-[11px] text-[#52796f] dark:text-[#8ba898]">
+                        {s.nacimientoLugar && s.nacimientoLugar !== 'No especificado en el documento' && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-[#356e4e]" />
+                            <span>Nacimiento: {s.nacimientoLugar}</span>
+                          </span>
+                        )}
+                        {s.lugaresTrabajo && s.lugaresTrabajo !== 'No especificado en el documento' && (
+                          <span className="flex items-center gap-1">
+                            <Briefcase className="w-3 h-3 text-[#356e4e]" />
+                            <span>Lugares de trabajo: {s.lugaresTrabajo}</span>
                           </span>
                         )}
                       </div>
-                      <span className="text-xs font-mono font-bold text-amber-400">
-                        {s.aportePeriodo}
-                      </span>
                     </div>
-
-                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-400 mt-1">
-                      <span className="text-cyan-400 font-medium">{s.campo}</span>
-                      <span>·</span>
-                      <span>Vida: {s.vida}</span>
-                      <span>·</span>
-                      {s.paginaPDF ? (
-                        <span className="text-blue-300 bg-blue-950/60 px-1.5 py-0.5 rounded text-[10px] font-mono">
-                          PDF Pág. {s.paginaPDF}
-                        </span>
-                      ) : (
-                        <span className="text-amber-300 bg-amber-950/60 px-1.5 py-0.5 rounded text-[10px] font-mono">
-                          Ampliación
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                      {s.aporteDescripcion}
-                    </p>
-
-                    {/* Birth and work place differentiation */}
-                    <div className="mt-3 pt-2 border-t border-slate-800/60 flex flex-wrap gap-4 text-[11px] text-slate-400">
-                      {s.nacimientoLugar !== 'No especificado en el documento' && (
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-slate-500" />
-                          <span>Nacimiento: {s.nacimientoLugar}</span>
-                        </span>
-                      )}
-                      {s.lugaresTrabajo !== 'No especificado en el documento' && (
-                        <span className="flex items-center gap-1">
-                          <Briefcase className="w-3 h-3 text-slate-500" />
-                          <span>Trabajó en: {s.lugaresTrabajo}</span>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </>
           )}
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-[#070d18] border-t border-slate-800 flex justify-end">
+        <div className="p-4 bg-[#f7f5ed] dark:bg-[#0c1c13] border-t border-[#234734]/20 dark:border-[#2d563e] flex justify-end">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white rounded-lg transition-colors cursor-pointer"
+            className="px-4 py-2 bg-[#1b3a2b] hover:bg-[#234734] text-xs font-semibold text-[#fcfbf7] rounded-lg transition-colors cursor-pointer dark:bg-[#2d563e]"
           >
-            Cerrar ficha
+            Cerrar ficha territorial
           </button>
         </div>
       </div>

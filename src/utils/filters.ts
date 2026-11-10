@@ -1,3 +1,8 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { SCIENTISTS_DATA } from '../data/scientists';
 import { ContinentId, Scientist } from '../types';
 
@@ -6,16 +11,25 @@ export interface FilterOptions {
   continente?: ContinentId | 'Todos';
   pais?: string | 'Todos';
   campo?: string | 'Todos';
+  disciplina?: string | 'Todos';
   periodo?: string | 'Todos';
-  soloPDF?: boolean;
-  soloAmpliacion?: boolean;
   soloPioneras?: boolean;
+  soloDestacados?: boolean;
+}
+
+export function getAllDisciplines(): string[] {
+  const disciplines = new Set<string>();
+  SCIENTISTS_DATA.forEach(s => {
+    if (s.disciplinas) {
+      s.disciplinas.forEach(d => disciplines.add(d));
+    }
+  });
+  return Array.from(disciplines).sort((a, b) => a.localeCompare(b, 'es'));
 }
 
 export function getAllFields(): string[] {
   const fields = new Set<string>();
   SCIENTISTS_DATA.forEach(s => {
-    // split if composite like "Zoología y ecología"
     fields.add(s.campo);
   });
   return Array.from(fields).sort((a, b) => a.localeCompare(b, 'es'));
@@ -54,9 +68,13 @@ export function getStatistics() {
   const campos = new Set(SCIENTISTS_DATA.map(s => s.campo));
   const totalCampos = campos.size;
 
+  const todasDisciplinas = new Set<string>();
+  SCIENTISTS_DATA.forEach(s => s.disciplinas?.forEach(d => todasDisciplinas.add(d)));
+  const totalDisciplinas = todasDisciplinas.size;
+
   const ordenados = [...SCIENTISTS_DATA].sort((a, b) => a.anioNumerico - b.anioNumerico);
   const primerAporte = ordenados[0]?.aportePeriodo ?? 'c. 2650 a. C.';
-  const ultimoAporte = ordenados[ordenados.length - 1]?.aportePeriodo ?? '2012';
+  const ultimoAporte = ordenados[ordenados.length - 1]?.aportePeriodo ?? 'Presente';
 
   const porContinente = {
     Europa: SCIENTISTS_DATA.filter(s => s.continente === 'Europa').length,
@@ -71,6 +89,7 @@ export function getStatistics() {
     totalContinentes,
     totalPaises,
     totalCampos,
+    totalDisciplinas,
     primerAporte,
     ultimoAporte,
     porContinente,
@@ -78,19 +97,15 @@ export function getStatistics() {
 }
 
 export function filterScientists(options: FilterOptions): Scientist[] {
-  const { query, continente, pais, campo, periodo, soloPDF, soloAmpliacion, soloPioneras } = options;
+  const { query, continente, pais, campo, disciplina, periodo, soloPioneras, soloDestacados } = options;
 
   const normalizedQuery = query ? query.trim().toLowerCase() : '';
 
   return SCIENTISTS_DATA.filter(s => {
-    // Collection source filter
-    if (soloPDF && s.esComplementario) {
-      return false;
-    }
-    if (soloAmpliacion && !s.esComplementario) {
-      return false;
-    }
     if (soloPioneras && !s.esPionera) {
+      return false;
+    }
+    if (soloDestacados && !s.destacado) {
       return false;
     }
 
@@ -102,6 +117,13 @@ export function filterScientists(options: FilterOptions): Scientist[] {
     // País
     if (pais && pais !== 'Todos' && s.pais !== pais) {
       return false;
+    }
+
+    // Disciplina
+    if (disciplina && disciplina !== 'Todos') {
+      if (!s.disciplinas || !s.disciplinas.includes(disciplina)) {
+        return false;
+      }
     }
 
     // Campo
@@ -123,21 +145,32 @@ export function filterScientists(options: FilterOptions): Scientist[] {
     // Query text search
     if (normalizedQuery) {
       const matchName = s.nombre.toLowerCase().includes(normalizedQuery);
+      const matchSubtitulo = s.subtituloAporte?.toLowerCase().includes(normalizedQuery) || false;
       const matchCountry = s.pais.toLowerCase().includes(normalizedQuery);
       const matchContinent = s.continente.toLowerCase().includes(normalizedQuery);
       const matchField = s.campo.toLowerCase().includes(normalizedQuery);
+      const matchDisciplines = s.disciplinas?.some(d => d.toLowerCase().includes(normalizedQuery)) || false;
       const matchDesc = s.aporteDescripcion.toLowerCase().includes(normalizedQuery);
       const matchPeriod = s.aportePeriodo.toLowerCase().includes(normalizedQuery);
-      const matchBirth = s.nacimientoLugar.toLowerCase().includes(normalizedQuery);
       const matchWork = s.lugaresTrabajo.toLowerCase().includes(normalizedQuery);
+      const matchBio = s.biografia?.toLowerCase().includes(normalizedQuery) || false;
 
-      if (!matchName && !matchCountry && !matchContinent && !matchField && !matchDesc && !matchPeriod && !matchBirth && !matchWork) {
-        return false;
-      }
+      return (
+        matchName ||
+        matchSubtitulo ||
+        matchCountry ||
+        matchContinent ||
+        matchField ||
+        matchDisciplines ||
+        matchDesc ||
+        matchPeriod ||
+        matchWork ||
+        matchBio
+      );
     }
 
     return true;
-  }).sort((a, b) => a.anioNumerico - b.anioNumerico);
+  });
 }
 
 export function getAdjacentScientists(id: string): { prev: Scientist | null; next: Scientist | null } {
@@ -145,14 +178,14 @@ export function getAdjacentScientists(id: string): { prev: Scientist | null; nex
   const index = sorted.findIndex(s => s.id === id);
   if (index === -1) return { prev: null, next: null };
 
-  return {
-    prev: index > 0 ? sorted[index - 1] : null,
-    next: index < sorted.length - 1 ? sorted[index + 1] : null,
-  };
+  const prev = index > 0 ? sorted[index - 1] : null;
+  const next = index < sorted.length - 1 ? sorted[index + 1] : null;
+
+  return { prev, next };
 }
 
-export function getRelatedScientists(scientist: Scientist, limit = 3): Scientist[] {
-  return SCIENTISTS_DATA.filter(
-    s => s.id !== scientist.id && s.campo.toLowerCase().includes(scientist.campo.toLowerCase())
-  ).slice(0, limit);
+export function getRelatedScientists(scientist: Scientist, limit: number = 3): Scientist[] {
+  return SCIENTISTS_DATA
+    .filter(s => s.id !== scientist.id && (s.campo === scientist.campo || (s.disciplinas && scientist.disciplinas && s.disciplinas.some(d => scientist.disciplinas?.includes(d)))))
+    .slice(0, limit);
 }

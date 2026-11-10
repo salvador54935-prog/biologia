@@ -1,28 +1,41 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 export type ContinentId = 'Europa' | 'América' | 'Asia' | 'África' | 'Oceanía';
 
 export interface Scientist {
   id: string;
   nombre: string;
-  pais: string; // País de identificación
+  nombreCompleto?: string; // Nombre completo formal si difiere
+  subtituloAporte?: string; // Pequeña descripción que indica por qué es reconocido o de qué fue pionero
+  pais: string; // País de identificación histórica
   continente: ContinentId;
-  vida: string; // Fecha de nacimiento y muerte
+  vida: string; // Fecha de nacimiento y muerte (o actualidad)
   nacimientoLugar: string; // Lugar de nacimiento
-  aportePeriodo: string; // Texto del año o período tal como figura en el registro
-  anioNumerico: number; // Año numérico para ordenación (negativo para a.C.)
-  campo: string; // Disciplina o campo científico
-  aporteDescripcion: string; // Resumen del descubrimiento / aporte
-  lugaresTrabajo: string; // Lugar(es) de trabajo indicados
-  paginaPDF?: number | null; // Página 2 a 15 de donde se extrajo (null para colección ampliada)
-  esComplementario?: boolean; // true si pertenece a ampliaciones
-  fuenteReferencia?: string; // Fuente bibliográfica o enciclopédica del registro
-  destacado?: boolean; // Hito destacado para vitrina en lobby
-  esPionera?: boolean; // Distintivo de pioneras e investigadoras
-  disciplinas?: string[]; // Lista normalizada de disciplinas científicas (Física, Química, Biología, etc.)
-  biografia?: string; // Biografía breve
-  importanciaHistorica?: string; // Importancia histórica de sus aportes
-  retratoUrl?: string; // Ruta al retrato real o imagen histórica verificada
-}
+  fallecimientoLugar?: string; // Lugar de fallecimiento (si aplica)
+  aportePeriodo: string; // Año o período del aporte histórico
+  anioNumerico: number; // Año numérico para ordenación cronológica (negativo para a. C.)
+  campo: string; // Campo o especialidad científica principal
+  disciplinas: string[]; // Lista normalizada de disciplinas (Física, Química, Biología, etc.)
+  aporteDescripcion: string; // Resumen del descubrimiento / aporte principal
+  lugaresTrabajo: string; // Lugares o instituciones donde desarrolló su labor científica
+  esComplementario?: boolean; // Distintivo interno de investigación complementaria
+  fuenteReferencia?: string; // Fuente bibliográfica principal
+  destacado?: boolean; // Científico destacado para el pabellón de honor
+  esPionera?: boolean; // Distintivo de científicas pioneras
+  biografia?: string; // Biografía desarrollada y redactada
+  importanciaHistorica?: string; // Importancia histórica y legado contemporáneo
+  retratoUrl?: string; // Ruta al retrato histórico auténtico verificado
 
+  // Campos de investigación profunda y ampliación biográfica
+  contextoHistorico?: string; // Contexto social, histórico y científico de su época
+  formacionTrayectoria?: string; // Estudios, maestros, instituciones y dificultades superadas
+  descubrimientosDetallados?: string; // Explicación técnica y conceptual de sus descubrimientos
+  obrasYReconocimientos?: string[]; // Libros clave, publicaciones y premios
+  enlacesReferencia?: { titulo: string; url?: string }[]; // Enlaces y referencias bibliográficas
+}
 
 export interface ContinentInfo {
   id: ContinentId;

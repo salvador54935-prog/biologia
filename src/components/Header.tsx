@@ -28,14 +28,14 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={() => onSelectTab('inicio')}
           className="flex items-center gap-3 text-left group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1b3a2b] rounded-lg py-1"
-          aria-label="Ir a inicio de VITA MUNDI"
+          aria-label="Ir a inicio de BIOATLAS"
         >
           <div className="w-9 h-9 rounded-xl bg-[#1b3a2b] flex items-center justify-center text-[#fcfbf7] shadow-sm shadow-[#1b3a2b]/20 group-hover:bg-[#254f3a] transition-all dark:bg-[#2d6148] dark:group-hover:bg-[#397a5b]">
-            <Globe2 className="w-5 h-5 text-[#fcfbf7]" />
+            <Compass className="w-5 h-5 text-[#fcfbf7]" />
           </div>
           <div className="flex flex-col">
             <span className="text-lg font-bold tracking-tight text-[#14231b] dark:text-[#f4f1ea] font-serif leading-none">
-              VITA MUNDI
+              BIOATLAS
             </span>
             <span className="text-[10px] text-[#7a6438] dark:text-[#d4af37] uppercase tracking-widest font-mono mt-1 font-semibold">
               Atlas Universal de la Ciencia

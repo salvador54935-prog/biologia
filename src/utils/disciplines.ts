@@ -1,78 +1,54 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { Scientist } from '../types';
 
 export const FLAG_EMOJIS: Record<string, string> = {
   'Alemania': '🇩🇪',
   'Argentina': '🇦🇷',
-  'Armenia': '🇦🇲',
   'Australia': '🇦🇺',
   'Austria': '🇦🇹',
   'Bélgica': '🇧🇪',
   'Brasil': '🇧🇷',
-  'Bulgaria': '🇧🇬',
   'Canadá': '🇨🇦',
   'Chile': '🇨🇱',
   'China': '🇨🇳',
   'Colombia': '🇨🇴',
-  'Corea del Sur': '🇰🇷',
   'Costa Rica': '🇨🇷',
-  'Croacia': '🇭🇷',
   'Cuba': '🇨🇺',
   'Dinamarca': '🇩🇰',
-  'Ecuador': '🇪🇨',
   'Egipto': '🇪🇬',
   'España': '🇪🇸',
   'Estados Unidos': '🇺🇸',
   'Etiopía': '🇪🇹',
-  'Filipinas': '🇵🇭',
-  'Finlandia': '🇫🇮',
   'Francia': '🇫🇷',
-  'Georgia': '🇬🇪',
-  'Ghana': '🇬🇭',
   'Grecia': '🇬🇷',
-  'Guatemala': '🇬🇹',
   'Hungría': '🇭🇺',
   'India': '🇮🇳',
-  'Indonesia': '🇮🇩',
-  'Irán': '🇮🇷',
   'Irak': '🇮🇶',
-  'Irlanda': '🇮🇪',
-  'Islandia': '🇮🇸',
+  'Irán': '🇮🇷',
   'Israel': '🇮🇱',
   'Italia': '🇮🇹',
   'Japón': '🇯🇵',
   'Kenia': '🇰🇪',
-  'Marruecos': '🇲🇦',
   'México': '🇲🇽',
-  'Nigeria': '🇳🇬',
-  'Noruega': '🇳🇴',
   'Nueva Zelanda': '🇳🇿',
   'Países Bajos': '🇳🇱',
-  'Pakistán': '🇵🇰',
-  'Palestina': '🇵🇸',
-  'Panamá': '🇵🇦',
   'Perú': '🇵🇪',
   'Polonia': '🇵🇱',
-  'Portugal': '🇵🇹',
   'Reino Unido': '🇬🇧',
-  'República Checa': '🇨🇿',
-  'Rumanía': '🇷🇴',
   'Rusia': '🇷🇺',
-  'Senegal': '🇸🇳',
   'Serbia': '🇷🇸',
-  'Singapur': '🇸🇬',
+  'Siria': '🇸🇾',
   'Sudáfrica': '🇿🇦',
   'Suecia': '🇸🇪',
   'Suiza': '🇨🇭',
-  'Tailandia': '🇹🇭',
-  'Túnez': '🇹🇳',
   'Turquía': '🇹🇷',
   'Ucrania': '🇺🇦',
-  'Uganda': '🇺🇬',
-  'Uruguay': '🇺🇾',
   'Uzbekistán': '🇺🇿',
   'Venezuela': '🇻🇪',
-  'Vietnam': '🇻🇳',
-  'Zimbabue': '🇿🇼',
 };
 
 export function getCountryFlag(country: string): string {
@@ -86,10 +62,10 @@ export function getDisciplinas(s: Scientist): string[] {
   if (s.disciplinas && s.disciplinas.length > 0) {
     return s.disciplinas;
   }
-  const text = s.campo.toLowerCase();
+  const text = (s.campo || '').toLowerCase();
   const res = new Set<string>();
 
-  if (text.includes('físic') || text.includes('cuántic') || text.includes('relativid') || text.includes('termodinám') || text.includes('electromagn')) res.add('Física');
+  if (text.includes('físic') || text.includes('cuántic') || text.includes('relativid') || text.includes('termodinám') || text.includes('electromagn') || text.includes('óptica')) res.add('Física');
   if (text.includes('químic') || text.includes('bioquím') || text.includes('cristalograf')) res.add('Química');
   if (text.includes('biolog') || text.includes('genétic') || text.includes('botánic') || text.includes('zoolog') || text.includes('ecolog') || text.includes('evoluc') || text.includes('microbiol') || text.includes('fisiolog') || text.includes('citolog') || text.includes('micolog') || text.includes('entomolog') || text.includes('etolog') || text.includes('inmunol') || text.includes('virolog') || text.includes('embriolog')) res.add('Biología');
   if (text.includes('matemát') || text.includes('álgebr') || text.includes('geometr') || text.includes('cálcul') || text.includes('estadíst') || text.includes('topolog') || text.includes('teoría de números')) res.add('Matemáticas');
@@ -111,29 +87,81 @@ export function getDisciplinas(s: Scientist): string[] {
 }
 
 /**
- * Estilos discretos y refinados para cada disciplina científica
- * Alineados con la paleta editorial crema, marfil y verde bosque profundo.
+ * Estilos discretos, armónicos y legibles basados estrictamente en la paleta verde editorial
+ * (verde oscuro, verde bosque, verde salvia, verde oliva y verde pino).
  */
 export const DISCIPLINE_STYLES: Record<string, { bg: string; text: string; border: string }> = {
-  'Física': { bg: 'bg-[#1b3a2b]/10 dark:bg-[#1b3a2b]/30', text: 'text-[#1b3a2b] dark:text-[#a3c9b3]', border: 'border-[#1b3a2b]/30' },
-  'Química': { bg: 'bg-[#8c5028]/10 dark:bg-[#8c5028]/30', text: 'text-[#8c5028] dark:text-[#f4caa8]', border: 'border-[#8c5028]/30' },
-  'Biología': { bg: 'bg-[#2d5a27]/10 dark:bg-[#2d5a27]/30', text: 'text-[#2d5a27] dark:text-[#a8dfa0]', border: 'border-[#2d5a27]/30' },
-  'Matemáticas': { bg: 'bg-[#1e4558]/10 dark:bg-[#1e4558]/30', text: 'text-[#1e4558] dark:text-[#a0d2eb]', border: 'border-[#1e4558]/30' },
-  'Astronomía': { bg: 'bg-[#3b3355]/10 dark:bg-[#3b3355]/30', text: 'text-[#3b3355] dark:text-[#cfc3e8]', border: 'border-[#3b3355]/30' },
-  'Medicina': { bg: 'bg-[#7d2e38]/10 dark:bg-[#7d2e38]/30', text: 'text-[#7d2e38] dark:text-[#f2aab2]', border: 'border-[#7d2e38]/30' },
-  'Informática': { bg: 'bg-[#0f4c5c]/10 dark:bg-[#0f4c5c]/30', text: 'text-[#0f4c5c] dark:text-[#8ee3ef]', border: 'border-[#0f4c5c]/30' },
-  'Ingeniería': { bg: 'bg-[#5c4d3c]/10 dark:bg-[#5c4d3c]/30', text: 'text-[#5c4d3c] dark:text-[#d9c7b0]', border: 'border-[#5c4d3c]/30' },
-  'Geología': { bg: 'bg-[#5c4033]/10 dark:bg-[#5c4033]/30', text: 'text-[#5c4033] dark:text-[#d7beaa]', border: 'border-[#5c4033]/30' },
-  'Geografía': { bg: 'bg-[#2b594b]/10 dark:bg-[#2b594b]/30', text: 'text-[#2b594b] dark:text-[#a8d5c4]', border: 'border-[#2b594b]/30' },
-  'Neurociencia': { bg: 'bg-[#5a2a6b]/10 dark:bg-[#5a2a6b]/30', text: 'text-[#5a2a6b] dark:text-[#dfb3f0]', border: 'border-[#5a2a6b]/30' },
-  'Paleontología': { bg: 'bg-[#6b583e]/10 dark:bg-[#6b583e]/30', text: 'text-[#6b583e] dark:text-[#dfccb0]', border: 'border-[#6b583e]/30' },
-  'Ciencias ambientales': { bg: 'bg-[#24583b]/10 dark:bg-[#24583b]/30', text: 'text-[#24583b] dark:text-[#a9dbba]', border: 'border-[#24583b]/30' },
+  'Física': { 
+    bg: 'bg-[#1b3a2b]/10 dark:bg-[#1b3a2b]/30', 
+    text: 'text-[#142e20] dark:text-[#a3c9b3]', 
+    border: 'border-[#1b3a2b]/25 dark:border-[#2d563e]' 
+  },
+  'Química': { 
+    bg: 'bg-[#2d563e]/12 dark:bg-[#2d563e]/30', 
+    text: 'text-[#1e442f] dark:text-[#b2d8c1]', 
+    border: 'border-[#2d563e]/30 dark:border-[#3d7a57]' 
+  },
+  'Biología': { 
+    bg: 'bg-[#234734]/12 dark:bg-[#234734]/35', 
+    text: 'text-[#163323] dark:text-[#99d6ad]', 
+    border: 'border-[#234734]/25 dark:border-[#2e6345]' 
+  },
+  'Matemáticas': { 
+    bg: 'bg-[#356e4e]/10 dark:bg-[#356e4e]/30', 
+    text: 'text-[#234d35] dark:text-[#a0dbb7]', 
+    border: 'border-[#356e4e]/25 dark:border-[#428760]' 
+  },
+  'Astronomía': { 
+    bg: 'bg-[#52796f]/12 dark:bg-[#52796f]/30', 
+    text: 'text-[#2b4c44] dark:text-[#b4d8cf]', 
+    border: 'border-[#52796f]/30 dark:border-[#659387]' 
+  },
+  'Medicina': { 
+    bg: 'bg-[#28523b]/12 dark:bg-[#28523b]/30', 
+    text: 'text-[#1c3e2b] dark:text-[#a8e0be]', 
+    border: 'border-[#28523b]/25 dark:border-[#356e4e]' 
+  },
+  'Informática': { 
+    bg: 'bg-[#1e3b2b]/12 dark:bg-[#1e3b2b]/30', 
+    text: 'text-[#152e20] dark:text-[#a5d4b9]', 
+    border: 'border-[#1e3b2b]/25 dark:border-[#2b543d]' 
+  },
+  'Ingeniería': { 
+    bg: 'bg-[#405d43]/12 dark:bg-[#405d43]/30', 
+    text: 'text-[#2d4530] dark:text-[#bfd6c2]', 
+    border: 'border-[#405d43]/25 dark:border-[#527756]' 
+  },
+  'Geología': { 
+    bg: 'bg-[#4a6b51]/12 dark:bg-[#4a6b51]/30', 
+    text: 'text-[#304a35] dark:text-[#c4dfc9]', 
+    border: 'border-[#4a6b51]/25 dark:border-[#5f8767]' 
+  },
+  'Geografía': { 
+    bg: 'bg-[#3b634c]/12 dark:bg-[#3b634c]/30', 
+    text: 'text-[#264433] dark:text-[#b0d8c0]', 
+    border: 'border-[#3b634c]/25 dark:border-[#4c7e61]' 
+  },
+  'Neurociencia': { 
+    bg: 'bg-[#244c35]/12 dark:bg-[#244c35]/30', 
+    text: 'text-[#183625] dark:text-[#9ed6b4]', 
+    border: 'border-[#244c35]/25 dark:border-[#326949]' 
+  },
+  'Paleontología': { 
+    bg: 'bg-[#556b2f]/10 dark:bg-[#556b2f]/30', 
+    text: 'text-[#38491d] dark:text-[#cde0a6]', 
+    border: 'border-[#556b2f]/25 dark:border-[#6f8b3c]' 
+  },
+  'Ciencias ambientales': { 
+    bg: 'bg-[#2e7d32]/10 dark:bg-[#2e7d32]/30', 
+    text: 'text-[#1b5e20] dark:text-[#a5d6a7]', 
+    border: 'border-[#2e7d32]/25 dark:border-[#388e3c]' 
+  },
 };
 
 export function getDisciplineStyle(discipline: string) {
   return DISCIPLINE_STYLES[discipline] || {
-    bg: 'bg-[#2c3e2e]/10 dark:bg-[#2c3e2e]/30',
-    text: 'text-[#2c3e2e] dark:text-[#c4d4c6]',
-    border: 'border-[#2c3e2e]/20',
+    bg: 'bg-[#1b3a2b]/10 dark:bg-[#1b3a2b]/30',
+    text: 'text-[#1b3a2b] dark:text-[#a3c9b3]',
+    border: 'border-[#1b3a2b]/20 dark:border-[#2d563e]',
   };
 }

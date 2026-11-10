@@ -7,14 +7,16 @@ import React, { useState, useMemo } from 'react';
 import { ContinentId } from '../types';
 import { SCIENTISTS_DATA } from '../data/scientists';
 import { getAllCountries, filterScientists } from '../utils/filters';
-import { getCountryFlag, getDisciplinas, getDisciplineStyle } from '../utils/disciplines';
+import { getDisciplinas, getDisciplineStyle } from '../utils/disciplines';
+import { CircularFlag } from './CircularFlag';
 import {
   Search,
   BookOpen,
-  MapPin,
   Sparkles,
   ArrowUpDown,
-  Filter
+  Filter,
+  CheckCircle2,
+  Calendar,
 } from 'lucide-react';
 
 interface ScientistsDirectoryProps {
@@ -47,7 +49,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
   const [continent, setContinent] = useState<ContinentId | 'Todos'>('Todos');
   const [country, setCountry] = useState<string>('Todos');
   const [disciplineFilter, setDisciplineFilter] = useState<string>('Todas');
-  const [collectionFilter, setCollectionFilter] = useState<'all' | 'pdf' | 'supplementary' | 'multidisciplinary' | 'pioneras'>('all');
+  const [showPioneersOnly, setShowPioneersOnly] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<'chrono-asc' | 'chrono-desc' | 'alpha-asc'>('chrono-asc');
 
   const allCountries = useMemo(() => getAllCountries(), []);
@@ -63,13 +65,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
       list = list.filter(s => getDisciplinas(s).includes(disciplineFilter));
     }
 
-    if (collectionFilter === 'pdf') {
-      list = list.filter(s => s.paginaPDF !== null && s.paginaPDF !== undefined);
-    } else if (collectionFilter === 'supplementary') {
-      list = list.filter(s => s.esComplementario);
-    } else if (collectionFilter === 'multidisciplinary') {
-      list = list.filter(s => s.disciplinas && s.disciplinas.length > 0 && !s.paginaPDF && !s.esComplementario);
-    } else if (collectionFilter === 'pioneras') {
+    if (showPioneersOnly) {
       list = list.filter(s => s.esPionera);
     }
 
@@ -82,7 +78,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
     }
 
     return list;
-  }, [query, continent, country, disciplineFilter, collectionFilter, sortBy]);
+  }, [query, continent, country, disciplineFilter, showPioneersOnly, sortBy]);
 
   return (
     <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 text-[#14231b] dark:text-[#f4f1ea]">
@@ -97,77 +93,37 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
             Catálogo General de Científicos ({SCIENTISTS_DATA.length})
           </h1>
           <p className="text-xs sm:text-sm text-[#5c6e62] dark:text-[#9bb7a5] mt-0.5">
-            Colección completa multidisciplinaria: física, química, biología, matemáticas, astronomía, medicina e ingeniería a través de los siglos.
+            Colección completa multidisciplinaria con fichas biográficas desarrolladas, banderas oficiales e identificación de aportes históricos.
           </p>
         </div>
 
-        {/* Collection Filter Quick Chips */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-[#f4efe3] dark:bg-[#12241a] rounded-xl border border-[#1b3a2b]/15 dark:border-[#234734]/50 shadow-xs">
+        {/* Quick Pioneers Filter Button */}
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setCollectionFilter('all')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
-              collectionFilter === 'all'
-                ? 'bg-[#1b3a2b] text-[#fcfbf7] font-semibold shadow-xs dark:bg-[#2d6148]'
-                : 'text-[#445b4c] dark:text-[#a3c9b3] hover:text-[#14231b] dark:hover:text-white'
+            onClick={() => setShowPioneersOnly(!showPioneersOnly)}
+            className={`px-3.5 py-1.5 text-xs font-medium rounded-xl border transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs ${
+              showPioneersOnly
+                ? 'bg-[#8c2d4e] border-[#8c2d4e] text-white font-semibold'
+                : 'border-[#234734]/20 bg-[#fcfbf7] text-[#14231b] hover:bg-[#f2ede0] dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]'
             }`}
           >
-            Todos ({SCIENTISTS_DATA.length})
-          </button>
-          <button
-            onClick={() => setCollectionFilter('pdf')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
-              collectionFilter === 'pdf'
-                ? 'bg-[#1b3a2b] text-[#fcfbf7] font-semibold shadow-xs dark:bg-[#2d6148]'
-                : 'text-[#445b4c] dark:text-[#a3c9b3] hover:text-[#14231b] dark:hover:text-white'
-            }`}
-          >
-            PDF Original (209)
-          </button>
-          <button
-            onClick={() => setCollectionFilter('supplementary')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
-              collectionFilter === 'supplementary'
-                ? 'bg-[#1b3a2b] text-[#fcfbf7] font-semibold shadow-xs dark:bg-[#2d6148]'
-                : 'text-[#445b4c] dark:text-[#a3c9b3] hover:text-[#14231b] dark:hover:text-white'
-            }`}
-          >
-            Ampliación (250)
-          </button>
-          <button
-            onClick={() => setCollectionFilter('multidisciplinary')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer ${
-              collectionFilter === 'multidisciplinary'
-                ? 'bg-[#1b3a2b] text-[#fcfbf7] font-semibold shadow-xs dark:bg-[#2d6148]'
-                : 'text-[#445b4c] dark:text-[#a3c9b3] hover:text-[#14231b] dark:hover:text-white'
-            }`}
-          >
-            Multidisciplinar (300)
-          </button>
-          <button
-            onClick={() => setCollectionFilter('pioneras')}
-            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
-              collectionFilter === 'pioneras'
-                ? 'bg-[#7d2e38] text-[#fcfbf7] font-semibold shadow-xs dark:bg-[#963744]'
-                : 'text-[#7d2e38] dark:text-[#f2aab2] hover:text-[#14231b]'
-            }`}
-          >
-            <Sparkles className="w-3 h-3" />
-            <span>Pioneras</span>
+            <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
+            <span>Ver solo Pioneras de la Ciencia</span>
           </button>
         </div>
       </div>
 
       {/* Global Filter Bar */}
       <div className="bg-[#f5f0e4] dark:bg-[#102419] rounded-2xl border border-[#1b3a2b]/15 dark:border-[#234734]/50 p-4 space-y-3 shadow-sm">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Query input */}
-          <div className="lg:col-span-2 relative">
+          <div className="relative">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#7a6438] dark:text-[#d4af37]" />
             <input
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Buscar por científico, aporte, país o concepto..."
+              placeholder="Buscar científico, aporte, ciudad o país..."
               className="w-full pl-9 pr-3 py-2 bg-[#fcfbf7] dark:bg-[#0c1811] border border-[#1b3a2b]/20 dark:border-[#234734] rounded-xl text-xs text-[#14231b] dark:text-[#f4f1ea] placeholder-[#5c6e62] dark:placeholder-[#7a9383] focus:outline-none focus:ring-2 focus:ring-[#1b3a2b] dark:focus:ring-[#2d6148]"
             />
             {query && (
@@ -187,7 +143,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
               onChange={e => setContinent(e.target.value as any)}
               className="w-full px-3 py-2 bg-[#fcfbf7] dark:bg-[#0c1811] border border-[#1b3a2b]/20 dark:border-[#234734] rounded-xl text-xs text-[#14231b] dark:text-[#f4f1ea] focus:outline-none focus:ring-2 focus:ring-[#1b3a2b]"
             >
-              <option value="Todos">Todos los continentes</option>
+              <option value="Todos">Todos los continentes (5)</option>
               <option value="Europa">Europa</option>
               <option value="América">América</option>
               <option value="Asia">Asia</option>
@@ -205,7 +161,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
             >
               {DISCIPLINES_LIST.map(d => (
                 <option key={d} value={d}>
-                  {d === 'Todas' ? 'Todas las disciplinas' : d}
+                  {d === 'Todas' ? 'Todas las disciplinas (14)' : d}
                 </option>
               ))}
             </select>
@@ -221,7 +177,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
               <option value="Todos">Todos los países ({allCountries.length})</option>
               {allCountries.map(c => (
                 <option key={c} value={c}>
-                  {getCountryFlag(c)} {c}
+                  {c}
                 </option>
               ))}
             </select>
@@ -234,14 +190,14 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
             <span className="font-medium text-[#5c6e62] dark:text-[#9bb7a5]">
               Mostrando <strong className="text-[#14231b] dark:text-[#f4f1ea] font-mono">{results.length}</strong> de {SCIENTISTS_DATA.length} científicos
             </span>
-            {(query || continent !== 'Todos' || country !== 'Todos' || disciplineFilter !== 'Todas' || collectionFilter !== 'all') && (
+            {(query || continent !== 'Todos' || country !== 'Todos' || disciplineFilter !== 'Todas' || showPioneersOnly) && (
               <button
                 onClick={() => {
                   setQuery('');
                   setContinent('Todos');
                   setCountry('Todos');
                   setDisciplineFilter('Todas');
-                  setCollectionFilter('all');
+                  setShowPioneersOnly(false);
                 }}
                 className="text-[11px] text-[#8c5028] dark:text-[#f4caa8] underline hover:no-underline cursor-pointer"
               >
@@ -261,7 +217,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
             >
               <option value="chrono-asc">Cronológico (antiguo a reciente)</option>
               <option value="chrono-desc">Cronológico (reciente a antiguo)</option>
-              <option value="alpha-asc">Alfabético (A – Z)</option>
+              <option value="alpha-asc">Alfabético por nombre (A – Z)</option>
             </select>
           </div>
         </div>
@@ -271,16 +227,15 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
       {results.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-[#1b3a2b]/20 bg-[#f4efe3]/50 p-12 text-center text-[#5c6e62] dark:border-[#234734] dark:bg-[#12241a]/50 dark:text-[#a3c9b3]">
           <p className="text-base font-semibold">No se encontraron científicos con los filtros seleccionados.</p>
-          <p className="text-xs mt-1">Prueba cambiando el término de búsqueda o limpiando los filtros activos.</p>
+          <p className="text-xs mt-1">Prueba cambiando el término de búsqueda o restableciendo los filtros activos.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {results.map(s => {
             const disciplinas = getDisciplinas(s);
-            const flag = getCountryFlag(s.pais);
 
             return (
-              <div
+              <article
                 key={s.id}
                 onClick={() => onOpenScientist(s.id)}
                 className="bg-[#fcfbf7] hover:bg-[#ffffff] dark:bg-[#12241a] dark:hover:bg-[#162d21] border border-[#1b3a2b]/15 hover:border-[#1b3a2b]/40 dark:border-[#234734]/50 dark:hover:border-[#387859] rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all group cursor-pointer shadow-xs hover:shadow-md"
@@ -289,7 +244,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
                 onKeyDown={e => {
                   if (e.key === 'Enter' || e.key === ' ') onOpenScientist(s.id);
                 }}
-                aria-label={`Ver biografía de ${s.nombre}`}
+                aria-label={`Ver biografía documentada de ${s.nombre}`}
               >
                 <div>
                   {/* Encabezado: Periodo y Etiquetas de Disciplina */}
@@ -298,7 +253,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
                       {s.aportePeriodo}
                     </span>
 
-                    {/* Disciplinas Primarias */}
+                    {/* Disciplinas */}
                     <div className="flex flex-wrap justify-end gap-1">
                       {disciplinas.slice(0, 2).map(disc => {
                         const style = getDisciplineStyle(disc);
@@ -314,16 +269,20 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
                     </div>
                   </div>
 
-                  {/* Retrato opcional si existe o Nombre */}
-                  <div className="flex items-center gap-3 mt-1">
-                    {s.retratoUrl && (
-                      <div className="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-[#1b3a2b]/20 shadow-xs dark:border-[#234734]">
+                  {/* Retrato opcional si existe o Insignia + Nombre */}
+                  <div className="flex items-start gap-3 mt-1.5">
+                    {s.retratoUrl ? (
+                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#1b3a2b]/20 shadow-xs dark:border-[#234734]">
                         <img
                           src={s.retratoUrl}
                           alt={s.nombre}
                           className="h-full w-full object-cover object-top"
                           loading="lazy"
                         />
+                      </div>
+                    ) : (
+                      <div className="h-10 w-10 shrink-0 rounded-xl border border-[#234734]/20 bg-[#234734]/5 dark:bg-[#2d563e]/20 flex items-center justify-center">
+                        <CircularFlag country={s.pais} size="md" />
                       </div>
                     )}
                     <div>
@@ -336,13 +295,14 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
                     </div>
                   </div>
 
-                  {/* Campo específico y país con bandera circular */}
-                  <div className="flex items-center gap-1.5 text-xs text-[#2d563e] dark:text-[#a3c9b3] font-medium mt-2">
-                    <span className="line-clamp-1">{s.campo}</span>
-                  </div>
+                  {/* Identificación de sus aportes junto al nombre */}
+                  <p className="mt-2 text-xs font-medium text-[#2d563e] dark:text-[#a3c9b3] line-clamp-2 leading-snug">
+                    {s.subtituloAporte || `${s.nombre} — Pionero en ${s.campo}; ${s.aporteDescripcion}`}
+                  </p>
 
-                  <div className="flex items-center gap-1.5 text-xs text-[#5c6e62] dark:text-[#9bb7a5] mt-1">
-                    <span className="text-sm">{flag}</span>
+                  {/* País con bandera circular oficial y continente */}
+                  <div className="flex items-center gap-1.5 text-xs text-[#5c6e62] dark:text-[#9bb7a5] mt-2">
+                    <CircularFlag country={s.pais} size="sm" />
                     <button
                       onClick={e => {
                         e.stopPropagation();
@@ -362,23 +322,17 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
                   </p>
                 </div>
 
-                {/* Pie de tarjeta con trazabilidad documental secundaria */}
+                {/* Pie de tarjeta con trazabilidad académica */}
                 <div className="pt-3 mt-3 border-t border-[#1b3a2b]/10 dark:border-[#234734]/30 flex items-center justify-between text-[11px] text-[#5c6e62] dark:text-[#9bb7a5]">
                   <span className="line-clamp-1 text-[10px] font-mono">
-                    {s.paginaPDF ? (
-                      `Doc. PDF pág. ${s.paginaPDF}`
-                    ) : s.esComplementario ? (
-                      'Ampliación documental'
-                    ) : (
-                      'Registro multidisciplinar'
-                    )}
+                    {s.esPionera ? 'Pionera científica' : `Especialidad: ${s.campo}`}
                   </span>
 
                   <span className="text-xs font-semibold text-[#1b3a2b] dark:text-[#78c09a] group-hover:translate-x-0.5 transition-transform">
                     Ver biografía →
                   </span>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
