@@ -105,7 +105,7 @@ export default function App() {
                   </div>
                   <div className="inline-flex items-center gap-1.5 rounded-full border border-[#234734]/20 bg-[#fcfbf7]/90 px-3 py-1 text-[#142e20] shadow-2xs dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#8c6b2d]" />
-                    <strong className="font-bold">42</strong> Naciones con Bandera Oficial
+                    <strong className="font-bold">71</strong> Naciones con Bandera Oficial (100%)
                   </div>
                   <div className="inline-flex items-center gap-1.5 rounded-full border border-[#234734]/20 bg-[#fcfbf7]/90 px-3 py-1 text-[#142e20] shadow-2xs dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#52796f]" />

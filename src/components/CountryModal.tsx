@@ -54,7 +54,8 @@ export const CountryModal: React.FC<CountryModalProps> = ({
               <CircularFlag country={country} size="sm" />
               <span>Registro Nacional Documentado • {continent}</span>
             </div>
-            <h2 id="country-modal-title" className="text-2xl sm:text-3xl font-bold text-[#0f2419] dark:text-[#f4f1ea] tracking-tight font-serif flex items-center gap-2.5">
+            <h2 id="country-modal-title" className="text-2xl sm:text-3xl font-bold text-[#0f2419] dark:text-[#f4f1ea] tracking-tight font-serif flex items-center gap-3">
+              <CircularFlag country={country} size="xl" />
               <span>{country}</span>
             </h2>
             <p className="text-xs text-[#52796f] dark:text-[#8ba898] mt-1 font-medium">

@@ -41,6 +41,7 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
   onSelectCountry,
 }) => {
   const [activeSection, setActiveSection] = useState<'todo' | 'contexto' | 'trayectoria' | 'descubrimientos' | 'obras'>('todo');
+  const [imageError, setImageError] = useState<boolean>(false);
 
   const scientist = useMemo(
     () => SCIENTISTS_DATA.find(s => s.id === scientistId),
@@ -56,9 +57,10 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
-  // Reset section tab when changing scientist
+  // Reset section tab and image error state when changing scientist
   useEffect(() => {
     setActiveSection('todo');
+    setImageError(false);
   }, [scientistId]);
 
   if (!scientist) return null;
@@ -228,25 +230,41 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
         <div className="p-5 sm:p-6 overflow-y-auto space-y-6 flex-1 text-sm">
           {/* Ficha Resumen con Retrato o Insignia y Datos Vitales */}
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center rounded-xl border border-[#234734]/20 bg-[#f7f5ed] p-4 dark:border-[#2d563e]/40 dark:bg-[#12241a]">
-            {scientist.retratoUrl ? (
+            {scientist.retratoUrl && !imageError ? (
               <div className="sm:col-span-3 flex justify-center">
-                <div className="h-24 w-24 overflow-hidden rounded-xl border-2 border-[#1b3a2b]/20 shadow-md dark:border-[#2d563e]">
-                  <img
-                    src={scientist.retratoUrl}
-                    alt={scientist.nombre}
-                    className="h-full w-full object-cover object-top"
-                  />
+                <div className="relative group">
+                  <div className="h-28 w-28 overflow-hidden rounded-2xl border-2 border-[#1b3a2b]/30 shadow-md dark:border-[#2d563e] bg-[#f0ebd9] dark:bg-[#14291e]">
+                    <img
+                      src={scientist.retratoUrl}
+                      alt={scientist.nombre}
+                      onError={() => setImageError(true)}
+                      className="h-full w-full object-cover object-top"
+                    />
+                  </div>
+                  {/* Insignia circular de la bandera nacional en la esquina */}
+                  <div
+                    className="absolute -bottom-2 -right-2 p-0.5 rounded-full bg-[#fcfbf7] dark:bg-[#0e2217] shadow-md border border-[#1b3a2b]/30"
+                    title={`Bandera oficial de ${scientist.pais}`}
+                  >
+                    <CircularFlag country={scientist.pais} size="md" />
+                  </div>
                 </div>
               </div>
             ) : (
-              <div className="sm:col-span-2 flex justify-center">
-                <div className="h-16 w-16 rounded-full border-2 border-[#234734]/30 bg-[#234734]/10 dark:bg-[#2d563e]/20 flex items-center justify-center">
-                  <CircularFlag country={scientist.pais} size="lg" />
+              <div className="sm:col-span-3 flex flex-col items-center justify-center text-center p-3.5 rounded-2xl bg-gradient-to-b from-[#efe9d8]/70 to-[#e4dcbe]/40 dark:from-[#14291e]/80 dark:to-[#0f2117]/80 border border-[#234734]/25 dark:border-[#2d563e]/40 shadow-xs">
+                <div className="relative p-1 rounded-full bg-[#fcfbf7] dark:bg-[#0e2217] shadow-sm border border-[#234734]/30">
+                  <CircularFlag country={scientist.pais} size="2xl" />
                 </div>
+                <span className="mt-2 text-xs font-serif font-bold text-[#142e20] dark:text-[#f4f1ea]">
+                  {scientist.pais}
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-[#52796f] dark:text-[#8ba898]">
+                  Insignia Oficial
+                </span>
               </div>
             )}
 
-            <div className={`${scientist.retratoUrl ? 'sm:col-span-9' : 'sm:col-span-10'} grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs`}>
+            <div className="sm:col-span-9 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div className="flex items-start gap-2">
                 <Calendar className="w-4 h-4 text-[#8c6b2d] dark:text-[#d4af37] shrink-0 mt-0.5" />
                 <div>

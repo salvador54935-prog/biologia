@@ -269,20 +269,23 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
                     </div>
                   </div>
 
-                  {/* Retrato opcional si existe o Insignia + Nombre */}
+                  {/* Retrato opcional si existe o Insignia Nacional + Nombre */}
                   <div className="flex items-start gap-3 mt-1.5">
                     {s.retratoUrl ? (
-                      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#1b3a2b]/20 shadow-xs dark:border-[#234734]">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#1b3a2b]/25 shadow-xs dark:border-[#234734] bg-[#f0ebd9] dark:bg-[#14291e]">
                         <img
                           src={s.retratoUrl}
                           alt={s.nombre}
                           className="h-full w-full object-cover object-top"
                           loading="lazy"
                         />
+                        <div className="absolute -bottom-1 -right-1 p-0.5 rounded-full bg-[#fcfbf7] dark:bg-[#12241a] shadow-xs">
+                          <CircularFlag country={s.pais} size="xs" />
+                        </div>
                       </div>
                     ) : (
-                      <div className="h-10 w-10 shrink-0 rounded-xl border border-[#234734]/20 bg-[#234734]/5 dark:bg-[#2d563e]/20 flex items-center justify-center">
-                        <CircularFlag country={s.pais} size="md" />
+                      <div className="h-12 w-12 shrink-0 rounded-xl border border-[#234734]/25 bg-gradient-to-b from-[#efe9d8]/80 to-[#e4dcbe]/50 dark:from-[#14291e] dark:to-[#0d1e14] flex items-center justify-center shadow-2xs">
+                        <CircularFlag country={s.pais} size="lg" />
                       </div>
                     )}
                     <div>

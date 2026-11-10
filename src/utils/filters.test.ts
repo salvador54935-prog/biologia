@@ -133,3 +133,25 @@ test('adjacent scientist navigation works chronologically across full collection
   assert.ok(nav.prev !== null);
   assert.ok(nav.next !== null);
 });
+
+test('100% of scientists have an official circular flag in CircularFlag component', () => {
+  const flagFile = fs.readFileSync(path.join(process.cwd(), 'src/components/CircularFlag.tsx'), 'utf-8');
+  const supportedCases = new Set<string>();
+  const regex = /case\s+['"]([^'"]+)['"]:/g;
+  let match;
+  while ((match = regex.exec(flagFile)) !== null) {
+    supportedCases.add(match[1]);
+  }
+
+  // Verify each scientist's country maps to a supported case
+  for (const s of SCIENTISTS_DATA) {
+    const raw = s.pais.trim();
+    // Normalize aliases as done in normalizeCountryName
+    const norm = raw === 'Malí' ? 'Mali' : raw;
+    assert.ok(
+      supportedCases.has(norm),
+      `Scientist ${s.nombre} (${s.id}) from ${s.pais} has no circular flag in CircularFlag.tsx`
+    );
+  }
+});
+
