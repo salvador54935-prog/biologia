@@ -169,7 +169,7 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
         </div>
 
         {/* Barra de pestañas de navegación interna del dossier */}
-        <div className="flex items-center gap-1 overflow-x-auto px-5 py-2 bg-[#f4efe3] dark:bg-[#0c1c13] border-b border-[#234734]/15 dark:border-[#2d563e]/30 text-xs font-medium">
+        <div className="flex items-center gap-1 overflow-x-auto px-5 py-2 bg-[#f4efe3] dark:bg-[#0c1c13] border-b border-[#234734]/15 dark:border-[#2d563e]/30 text-xs font-medium modal-tabs-scroll">
           <button
             onClick={() => setActiveSection('todo')}
             className={`px-3 py-1 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
