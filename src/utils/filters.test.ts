@@ -4,20 +4,30 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {
   getStatistics,
+  getContinentSpans,
   filterScientists,
   getAdjacentScientists,
-  getCountriesForContinent,
-  getAllDisciplines,
+  getCountryGeographicProfile,
 } from './filters.ts';
 import { SCIENTISTS_DATA, HISTORICAL_SCIENTISTS } from '../data/scientists.ts';
 import { SUPPLEMENTARY_SCIENTISTS } from '../data/supplementaryScientists.ts';
 import { MULTIDISCIPLINARY_SCIENTISTS } from '../data/multidisciplinaryScientists.ts';
+import { UNIVERSAL_SCIENTISTS } from '../data/universalScientists.ts';
 import { SHOWCASE_SCIENTISTS } from '../components/ShowcaseHero.tsx';
+
+function normalizeName(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 
 test('historical foundational collection contains exactly 209 independent scientists', () => {
   assert.equal(HISTORICAL_SCIENTISTS.length, 209);
-  
-  // Verify no PDF properties remain
+
   for (const s of HISTORICAL_SCIENTISTS) {
     assert.equal((s as any).paginaPDF, undefined, `paginaPDF must not exist for ${s.id}`);
     assert.ok(s.subtituloAporte, `Missing subtituloAporte for ${s.id}`);
@@ -49,28 +59,58 @@ test('multidisciplinary collection contains exactly 300 verified scientists', ()
   }
 });
 
-test('total multidisciplinary expanded collection reaches exactly 759 scientists', () => {
-  assert.equal(SCIENTISTS_DATA.length, 759);
-  const stats = getStatistics();
-  assert.equal(stats.totalCientificos, 759);
-  assert.equal(stats.totalContinentes, 5);
-  assert.ok(stats.totalPaises >= 40);
-  assert.ok(stats.totalDisciplinas >= 10);
+test('universal encyclopedia expansion adds 391 verified unique scientists', () => {
+  assert.equal(UNIVERSAL_SCIENTISTS.length, 391);
+  for (const s of UNIVERSAL_SCIENTISTS) {
+    assert.ok(s.id, 'ID must not be empty');
+    assert.ok(s.nombre, 'Nombre must not be empty');
+    assert.ok(s.pais, 'Pais must not be empty');
+    assert.ok(s.continente, 'Continente must not be empty');
+    assert.ok(s.subtituloAporte, `subtituloAporte required for ${s.id}`);
+    assert.ok(s.disciplinas && s.disciplinas.length > 0, `Disciplinas required for ${s.id}`);
+    assert.ok(s.biografia, `Biografia required for ${s.id}`);
+    assert.ok(s.importanciaHistorica, `Importancia historica required for ${s.id}`);
+  }
 });
 
-test('no duplicate scientist IDs exist across all 759 records', () => {
+test('total expanded collection reaches exactly 1,150 scientists across 81 countries and 5 continents', () => {
+  assert.equal(SCIENTISTS_DATA.length, 1150);
+  const stats = getStatistics();
+  assert.equal(stats.totalCientificos, 1150);
+  assert.equal(stats.totalContinentes, 5);
+  assert.equal(stats.totalPaises, 81);
+  assert.ok(stats.totalDisciplinas >= 13);
+  assert.equal(stats.primerAporte, 'c. 2650 a. C.');
+  assert.equal(stats.ultimoAporte, '2024');
+  assert.equal(stats.ultimoAporte.includes('–'), false);
+
+  const spans = getContinentSpans();
+  for (const [continent, span] of Object.entries(spans)) {
+    assert.equal(span.first.includes('–'), false, `${continent} start should be a single year`);
+    assert.equal(span.last.includes('–'), false, `${continent} end should be a single year`);
+  }
+});
+
+test('no duplicate scientist IDs or normalized names exist across all 1,150 records', () => {
   const ids = new Set<string>();
+  const names = new Set<string>();
   for (const s of SCIENTISTS_DATA) {
     assert.equal(ids.has(s.id), false, `Duplicate ID found: ${s.id}`);
     ids.add(s.id);
+    const norm = normalizeName(s.nombre);
+    assert.equal(names.has(norm), false, `Duplicate normalized name found: ${s.nombre} (${s.id})`);
+    names.add(norm);
   }
-  assert.equal(ids.size, 759);
+  assert.equal(ids.size, 1150);
+  assert.equal(names.size, 1150);
 });
 
-test('every scientist has subtituloAporte and disciplinas populated', () => {
+test('every scientist has complete non-placeholder metadata', () => {
   for (const s of SCIENTISTS_DATA) {
     assert.ok(s.subtituloAporte && s.subtituloAporte.trim().length > 5, `Missing subtituloAporte for ${s.id}`);
     assert.ok(s.disciplinas && s.disciplinas.length > 0, `Missing disciplinas for ${s.id}`);
+    assert.notEqual(s.nacimientoLugar, 'No especificado en el documento', `Placeholder nacimientoLugar for ${s.id}`);
+    assert.notEqual(s.lugaresTrabajo, 'No especificado en el documento', `Placeholder lugaresTrabajo for ${s.id}`);
   }
 });
 
@@ -88,16 +128,27 @@ test('exactly 10 showcase scientists are defined and exist in collection with ve
     'ibn-al-haytham',
     'katherine-johnson',
   ];
-  
+
   assert.deepEqual(SHOWCASE_SCIENTISTS.map(s => s.id), showcaseIds);
 
   for (const item of SHOWCASE_SCIENTISTS) {
     const record = SCIENTISTS_DATA.find(s => s.id === item.id);
     assert.ok(record, `Showcase scientist ${item.id} not found in SCIENTISTS_DATA`);
-    // Verify local portrait file exists
     const portraitFile = path.join(process.cwd(), 'public', item.retratoUrl);
     assert.ok(fs.existsSync(portraitFile), `Local portrait file ${portraitFile} must exist`);
   }
+});
+
+test('country geographic profile distinguishes associated, birthplace, and workplace links', () => {
+  const uk = getCountryGeographicProfile('Reino Unido');
+  assert.ok(uk.direct.length > 50);
+  assert.ok(uk.bornIn.length > 40);
+  assert.ok(uk.workedIn.length > uk.direct.length);
+  assert.ok(uk.workedIn.some(s => s.id === 'marie-curie' || s.pais !== 'Reino Unido'));
+
+  const mauricio = getCountryGeographicProfile('Mauricio');
+  assert.equal(mauricio.direct.length, 1);
+  assert.equal(mauricio.direct[0].id, 'ameenah-gurib-fakim');
 });
 
 test('search query finds scientists across physics, chemistry, biology, math, astronomy', () => {
@@ -134,7 +185,7 @@ test('adjacent scientist navigation works chronologically across full collection
   assert.ok(nav.next !== null);
 });
 
-test('100% of scientists have an official circular flag in CircularFlag component', () => {
+test('100% of scientists across all 81 countries have an official circular flag in CircularFlag component', () => {
   const flagFile = fs.readFileSync(path.join(process.cwd(), 'src/components/CircularFlag.tsx'), 'utf-8');
   const supportedCases = new Set<string>();
   const regex = /case\s+['"]([^'"]+)['"]:/g;
@@ -143,10 +194,8 @@ test('100% of scientists have an official circular flag in CircularFlag componen
     supportedCases.add(match[1]);
   }
 
-  // Verify each scientist's country maps to a supported case
   for (const s of SCIENTISTS_DATA) {
     const raw = s.pais.trim();
-    // Normalize aliases as done in normalizeCountryName
     const norm = raw === 'Malí' ? 'Mali' : raw;
     assert.ok(
       supportedCases.has(norm),

@@ -12043,7 +12043,7 @@ export const MULTIDISCIPLINARY_SCIENTISTS: Scientist[] = [
     "nombre": "Cheikh Modibo Diarra",
     "nombreCompleto": "Cheikh Modibo Diarra",
     "subtituloAporte": "Contribuyó en ingeniería aeroespacial, mecánica orbital y misiones interplanetarias; navegador interplanetario jefe en el Jet Propulsion Laboratory (JPL) de la NASA para misiones históricas del sistema solar como Mars Pathfinder, Galileo (Júpiter), Ulysses (Sol) y Mars Observer.",
-    "pais": "Malí",
+    "pais": "Mali",
     "continente": "África",
     "vida": "1952 – Presente",
     "nacimientoLugar": "Nioro du Sahel, Malí",

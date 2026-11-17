@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ContinentId } from '../types';
 import { CONTINENTS_INFO } from '../data/continents';
 import {
@@ -19,7 +19,8 @@ import {
   MapPin,
   Briefcase,
   Globe,
-  Sparkles,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 interface ContinentViewProps {
@@ -28,6 +29,8 @@ interface ContinentViewProps {
   onOpenScientist: (id: string) => void;
   onSelectCountry: (country: string) => void;
 }
+
+const CONTINENT_ITEMS_PER_PAGE = 24;
 
 export const ContinentView: React.FC<ContinentViewProps> = ({
   continent,
@@ -48,6 +51,18 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
   const [selectedCountry, setSelectedCountry] = useState<string>('Todos');
   const [selectedField, setSelectedField] = useState<string>('Todos');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  useEffect(() => {
+    setSelectedCountry('Todos');
+    setSelectedField('Todos');
+    setSearchQuery('');
+    setCurrentPage(1);
+  }, [continent]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCountry, selectedField, searchQuery]);
 
   // Extract all distinct fields present in this continent
   const fieldsInContinent = useMemo(() => {
@@ -82,6 +97,14 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
     });
   }, [allContinentScientists, selectedCountry, selectedField, searchQuery]);
 
+  const totalPages = Math.max(1, Math.ceil(filteredScientists.length / CONTINENT_ITEMS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIdx = (safePage - 1) * CONTINENT_ITEMS_PER_PAGE;
+  const paginatedScientists = useMemo(
+    () => filteredScientists.slice(startIdx, startIdx + CONTINENT_ITEMS_PER_PAGE),
+    [filteredScientists, startIdx]
+  );
+
   const firstScientist = allContinentScientists[0];
   const lastScientist = allContinentScientists[allContinentScientists.length - 1];
 
@@ -104,11 +127,6 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
 
       {/* Continent Hero Banner */}
       <div className="relative bg-[#f7f5ed] dark:bg-[#0e2217] rounded-2xl border border-[#234734]/25 dark:border-[#2d563e]/60 p-6 sm:p-8 overflow-hidden shadow-sm">
-        <div
-          className="absolute -right-20 -top-20 w-80 h-80 rounded-full blur-3xl opacity-20 pointer-events-none"
-          style={{ backgroundColor: continentInfo.color }}
-        />
-
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="max-w-3xl">
             <div className="flex items-center gap-2.5 mb-2">
@@ -268,7 +286,9 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
       <div>
         <div className="flex items-center justify-between mb-4">
           <span className="text-xs font-mono text-[#52796f] dark:text-[#8ba898]">
-            {filteredScientists.length} de {allContinentScientists.length} científicos
+            {filteredScientists.length === 0
+              ? `0 de ${allContinentScientists.length} científicos`
+              : `Mostrando ${startIdx + 1}–${Math.min(startIdx + CONTINENT_ITEMS_PER_PAGE, filteredScientists.length)} de ${filteredScientists.length} científicos`}
           </span>
           <span className="text-xs text-[#52796f] dark:text-[#8ba898]">
             Orden cronológico por año del aporte
@@ -293,7 +313,7 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredScientists.map(s => {
+            {paginatedScientists.map(s => {
               const disciplinas = getDisciplinas(s);
 
               return (
@@ -377,6 +397,41 @@ export const ContinentView: React.FC<ContinentViewProps> = ({
               );
             })}
           </div>
+        )}
+
+        {/* Pagination Bar */}
+        {filteredScientists.length > CONTINENT_ITEMS_PER_PAGE && (
+          <nav aria-label="Paginación de continente" className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#234734]/20 text-xs">
+            <span className="font-mono text-[#52796f] dark:text-[#8ba898]">
+              Página <strong className="text-[#0f2419] dark:text-white">{safePage}</strong> de <strong className="text-[#0f2419] dark:text-white">{totalPages}</strong>
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                disabled={safePage <= 1}
+                onClick={() => {
+                  setCurrentPage(p => Math.max(1, p - 1));
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] text-[#142e20] hover:bg-[#f2ede0] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>Anterior</span>
+              </button>
+              <button
+                type="button"
+                disabled={safePage >= totalPages}
+                onClick={() => {
+                  setCurrentPage(p => Math.min(totalPages, p + 1));
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] text-[#142e20] hover:bg-[#f2ede0] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]"
+              >
+                <span>Siguiente</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </nav>
         )}
       </div>
     </div>

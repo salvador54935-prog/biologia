@@ -24,7 +24,7 @@ import {
   GraduationCap,
   Lightbulb,
   ScrollText,
-  ChevronRight,
+  Printer,
 } from 'lucide-react';
 
 interface ScientistModalProps {
@@ -83,12 +83,16 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
 
   return (
     <div
+      id="scientist-modal-backdrop"
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md animate-fade-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby="scientist-modal-title"
     >
-      <div className="relative w-full max-w-4xl max-h-[92vh] bg-[#fcfbf7] dark:bg-[#0e2217] border border-[#234734]/25 dark:border-[#2d563e]/60 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-[#142e20] dark:text-[#f4f1ea]">
+      <div
+        id="scientist-dossier-printable"
+        className="relative w-full max-w-4xl max-h-[92vh] bg-[#fcfbf7] dark:bg-[#0e2217] border border-[#234734]/25 dark:border-[#2d563e]/60 rounded-2xl shadow-2xl flex flex-col overflow-hidden text-[#142e20] dark:text-[#f4f1ea]"
+      >
         {/* Encabezado Superior Editorial */}
         <div className="p-5 sm:p-6 bg-gradient-to-r from-[#f7f5ed] to-[#ede7d8] dark:from-[#0b1b12] dark:to-[#12281b] border-b border-[#234734]/20 dark:border-[#2d563e]/40 flex items-start justify-between gap-4">
           <div className="space-y-2 flex-1">
@@ -158,18 +162,31 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
             </div>
           </div>
 
-          {/* Botón de Cierre */}
-          <button
-            onClick={onClose}
-            className="p-2 text-[#41604a] hover:text-[#0f2419] bg-[#fcfbf7]/80 hover:bg-[#e8e2d4] dark:text-[#a3c9b3] dark:bg-[#14291e] dark:hover:bg-[#1f3f2e] dark:hover:text-white rounded-xl border border-[#234734]/20 dark:border-[#2d563e] transition-colors cursor-pointer shrink-0"
-            aria-label="Cerrar ficha biográfica"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          {/* Acciones de ficha: Imprimir y Cerrar */}
+          <div className="flex items-center gap-2 shrink-0 no-print">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[#1b3a2b] hover:text-[#0f2419] bg-[#fcfbf7]/90 hover:bg-[#e8e2d4] dark:text-[#e4efe8] dark:bg-[#14291e] dark:hover:bg-[#1f3f2e] rounded-xl border border-[#234734]/20 dark:border-[#2d563e] transition-colors cursor-pointer"
+              aria-label="Imprimir ficha biográfica"
+              title="Imprimir ficha biográfica o guardar en PDF"
+            >
+              <Printer className="w-4 h-4 text-[#8c6b2d] dark:text-[#d4af37]" />
+              <span className="hidden sm:inline">Imprimir ficha</span>
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-2 text-[#41604a] hover:text-[#0f2419] bg-[#fcfbf7]/80 hover:bg-[#e8e2d4] dark:text-[#a3c9b3] dark:bg-[#14291e] dark:hover:bg-[#1f3f2e] dark:hover:text-white rounded-xl border border-[#234734]/20 dark:border-[#2d563e] transition-colors cursor-pointer"
+              aria-label="Cerrar ficha biográfica"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Barra de pestañas de navegación interna del dossier */}
-        <div className="flex items-center gap-1 overflow-x-auto px-5 py-2 bg-[#f4efe3] dark:bg-[#0c1c13] border-b border-[#234734]/15 dark:border-[#2d563e]/30 text-xs font-medium modal-tabs-scroll">
+        <div className="no-print flex items-center gap-1 overflow-x-auto px-5 py-2 bg-[#f4efe3] dark:bg-[#0c1c13] border-b border-[#234734]/15 dark:border-[#2d563e]/30 text-xs font-medium modal-tabs-scroll">
           <button
             onClick={() => setActiveSection('todo')}
             className={`px-3 py-1 rounded-lg transition-all cursor-pointer whitespace-nowrap ${
@@ -227,7 +244,7 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
         </div>
 
         {/* Cuerpo del Modal (Scrollable) */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-6 flex-1 text-sm">
+        <div id="scientist-dossier-scroll" className="p-5 sm:p-6 overflow-y-auto space-y-6 flex-1 text-sm">
           {/* Ficha Resumen con Retrato o Insignia y Datos Vitales */}
           <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center rounded-xl border border-[#234734]/20 bg-[#f7f5ed] p-4 dark:border-[#2d563e]/40 dark:bg-[#12241a]">
             {scientist.retratoUrl && !imageError ? (
@@ -364,10 +381,17 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
                 <ScrollText className="w-4 h-4 text-[#52796f] dark:text-[#8ba898]" />
                 <span>4. Obras Principales, Publicaciones y Reconocimientos</span>
               </div>
-              <p className="text-xs sm:text-sm text-[#243d2c] dark:text-[#d7e6dc] leading-relaxed">
-                {scientist.obrasYReconocimientos ||
-                  `Sus aportes quedaron plasmados en monografías fundamentales, tratados académicos y publicaciones en las sociedades científicas de mayor prestigio de su época. Sus conclusiones sirvieron de fundamento directo para posteriores generaciones de investigadores en ${scientist.campo}.`}
-              </p>
+              {Array.isArray(scientist.obrasYReconocimientos) && scientist.obrasYReconocimientos.length > 0 ? (
+                <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-[#243d2c] dark:text-[#d7e6dc] leading-relaxed">
+                  {scientist.obrasYReconocimientos.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-xs sm:text-sm text-[#243d2c] dark:text-[#d7e6dc] leading-relaxed">
+                  {`Sus aportes quedaron plasmados en monografías fundamentales, tratados académicos y publicaciones en las sociedades científicas de mayor prestigio de su época. Sus conclusiones sirvieron de fundamento directo para posteriores generaciones de investigadores en ${scientist.campo}.`}
+                </p>
+              )}
             </div>
           )}
 
@@ -383,25 +407,34 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
 
             {scientist.enlacesReferencia && scientist.enlacesReferencia.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
-                {scientist.enlacesReferencia.map((ref, idx) => (
-                  <a
-                    key={idx}
-                    href={ref.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] px-2.5 py-1 text-[11px] font-medium text-[#1b3a2b] transition-all hover:bg-[#234734]/10 dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#d7e6dc] dark:hover:bg-[#234734]/40"
-                  >
-                    <span>{ref.titulo}</span>
-                    <ExternalLink className="h-2.5 w-2.5 text-[#52796f] dark:text-[#8ba898]" />
-                  </a>
-                ))}
+                {scientist.enlacesReferencia.map((ref, idx) =>
+                  ref.url ? (
+                    <a
+                      key={idx}
+                      href={ref.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] px-2.5 py-1 text-[11px] font-medium text-[#1b3a2b] transition-all hover:bg-[#234734]/10 dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#d7e6dc] dark:hover:bg-[#234734]/40"
+                    >
+                      <span>{ref.titulo}</span>
+                      <ExternalLink className="h-2.5 w-2.5 text-[#52796f] dark:text-[#8ba898]" />
+                    </a>
+                  ) : (
+                    <span
+                      key={idx}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] px-2.5 py-1 text-[11px] font-medium text-[#1b3a2b] dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#d7e6dc]"
+                    >
+                      <span>{ref.titulo}</span>
+                    </span>
+                  )
+                )}
               </div>
             )}
           </div>
 
           {/* Científicos relacionados en la misma disciplina */}
           {related.length > 0 && (
-            <div>
+            <div className="no-print">
               <span className="text-xs uppercase tracking-wider font-mono text-[#41604a] dark:text-[#8ba898] block mb-2 font-semibold">
                 Otras figuras científicas relacionadas en {scientist.campo}
               </span>
@@ -432,7 +465,7 @@ export const ScientistModal: React.FC<ScientistModalProps> = ({
         </div>
 
         {/* Pie del Modal con Navegación Cronológica */}
-        <div className="p-4 bg-[#f4efe3] dark:bg-[#0b1b12] border-t border-[#234734]/20 dark:border-[#2d563e]/40 flex items-center justify-between gap-2">
+        <div className="no-print p-4 bg-[#f4efe3] dark:bg-[#0b1b12] border-t border-[#234734]/20 dark:border-[#2d563e]/40 flex items-center justify-between gap-2">
           {prev ? (
             <button
               onClick={() => onSelectScientist(prev.id)}

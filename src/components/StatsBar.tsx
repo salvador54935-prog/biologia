@@ -25,7 +25,7 @@ export const StatsBar: React.FC = () => {
               <span className="text-xs text-[#1b3a2b] dark:text-[#78c09a] font-mono font-semibold">biografías</span>
             </div>
             <span className="text-[11px] text-[#5c6e62] dark:text-[#9bb7a5] mt-1">
-              209 PDF + 250 ampl. + 300 multidisc.
+              Colección verificada en {stats.totalContinentes} continentes
             </span>
           </div>
 
@@ -57,7 +57,7 @@ export const StatsBar: React.FC = () => {
               <span className="text-xs text-[#8c6b2d]/80 dark:text-[#d4af37]/80 font-mono font-semibold">años</span>
             </div>
             <span className="text-[11px] text-[#5c6e62] dark:text-[#9bb7a5] mt-1 font-mono">
-              c. 2650 a. C. — Presente
+              {stats.primerAporte} — {stats.ultimoAporte}
             </span>
           </div>
 
@@ -84,7 +84,7 @@ export const StatsBar: React.FC = () => {
             </span>
             <div className="flex items-baseline gap-1.5 mt-1">
               <span className="text-3xl font-mono font-bold text-[#14231b] dark:text-[#f4f1ea] tabular-nums">
-                14+
+                {stats.totalDisciplinas}
               </span>
               <span className="text-xs text-[#8c5028] dark:text-[#f4caa8] font-mono font-semibold">disciplinas</span>
             </div>

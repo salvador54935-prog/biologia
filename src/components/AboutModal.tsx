@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { BookOpen, Globe, CheckCircle2, ShieldCheck, Sparkles, Award } from 'lucide-react';
-import { getStatistics } from '../utils/filters';
+import { getStatistics, getContinentSpans } from '../utils/filters';
 
 interface AboutSectionProps {
   onBackToHome?: () => void;
@@ -13,6 +13,7 @@ interface AboutSectionProps {
 
 export const AboutSection: React.FC<AboutSectionProps> = ({ onBackToHome }) => {
   const stats = getStatistics();
+  const spans = getContinentSpans();
 
   return (
     <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-8 text-[#142e20] dark:text-[#f4f1ea]">
@@ -27,7 +28,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onBackToHome }) => {
         </h1>
         <p className="text-sm text-[#243d2c] dark:text-[#d7e6dc] mt-2 leading-relaxed">
           Plataforma web educativa e interactiva diseñada para cartografiar la historia viva de los descubrimientos humanos.
-          Reúne <strong className="text-[#0f2419] dark:text-white">759 científicos verificados</strong> en física, química, biología, matemáticas, astronomía, medicina, ingeniería y computación,
+          Reúne <strong className="text-[#0f2419] dark:text-white">{stats.totalCientificos} científicos verificados</strong> en física, química, biología, matemáticas, astronomía, medicina, ingeniería y computación,
           abarcando desde las primeras dinastías egipcias y la antigüedad clásica hasta las fronteras contemporáneas de la ciencia.
         </p>
       </div>
@@ -54,44 +55,44 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onBackToHome }) => {
               <tr>
                 <td className="py-2.5 px-3 font-sans font-semibold text-[#2d6a4f] dark:text-[#78c09a]">Europa</td>
                 <td className="py-2.5 px-3 text-center text-[#0f2419] dark:text-white font-bold">{stats.porContinente.Europa}</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">c. 400 a. C.</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">2024</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.Europa.first}</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.Europa.last}</td>
                 <td className="py-2.5 px-3 font-sans text-xs">Pioneros fundacionales e ilustración</td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans font-semibold text-[#d99b26] dark:text-[#f4caa8]">América</td>
                 <td className="py-2.5 px-3 text-center text-[#0f2419] dark:text-white font-bold">{stats.porContinente.América}</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">1752</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">2024</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.América.first}</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.América.last}</td>
                 <td className="py-2.5 px-3 font-sans text-xs">Investigación biomédica, aeroespacial y tecnología</td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans font-semibold text-[#a47148] dark:text-[#d8a882]">Asia</td>
                 <td className="py-2.5 px-3 text-center text-[#0f2419] dark:text-white font-bold">{stats.porContinente.Asia}</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">c. 600 a. C.</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">2024</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.Asia.first}</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.Asia.last}</td>
                 <td className="py-2.5 px-3 font-sans text-xs">Medicina milenaria, óptica y computación</td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans font-semibold text-[#4d8b55] dark:text-[#9bb7a5]">África</td>
                 <td className="py-2.5 px-3 text-center text-[#0f2419] dark:text-white font-bold">{stats.porContinente.África}</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">c. 2650 a. C.</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">2024</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.África.first}</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.África.last}</td>
                 <td className="py-2.5 px-3 font-sans text-xs">Arquitectura faraónica, cirugía e inmunología</td>
               </tr>
               <tr>
                 <td className="py-2.5 px-3 font-sans font-semibold text-[#b85d43] dark:text-[#f2aab2]">Oceanía</td>
                 <td className="py-2.5 px-3 text-center text-[#0f2419] dark:text-white font-bold">{stats.porContinente.Oceanía}</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">1915</td>
-                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">2024</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.Oceanía.first}</td>
+                <td className="py-2.5 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{spans.Oceanía.last}</td>
                 <td className="py-2.5 px-3 font-sans text-xs">Inmunología clínica, genética y ecología</td>
               </tr>
               <tr className="bg-[#f4efe3] dark:bg-[#12241a] font-bold text-[#0f2419] dark:text-white border-t-2 border-[#234734]/30">
                 <td className="py-3 px-3 font-sans">Total Colección BIOATLAS</td>
-                <td className="py-3 px-3 text-center text-[#1b3a2b] dark:text-[#a3c9b3] text-sm">759</td>
-                <td className="py-3 px-3 text-[#8c6b2d] dark:text-[#d4af37]">c. 2650 a. C.</td>
-                <td className="py-3 px-3 text-[#8c6b2d] dark:text-[#d4af37]">2024</td>
-                <td className="py-3 px-3 font-sans text-xs">42 Naciones representadas</td>
+                <td className="py-3 px-3 text-center text-[#1b3a2b] dark:text-[#a3c9b3] text-sm">{stats.totalCientificos}</td>
+                <td className="py-3 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{stats.primerAporte}</td>
+                <td className="py-3 px-3 text-[#8c6b2d] dark:text-[#d4af37]">{stats.ultimoAporte}</td>
+                <td className="py-3 px-3 font-sans text-xs">{stats.totalPaises} Naciones representadas</td>
               </tr>
             </tbody>
           </table>

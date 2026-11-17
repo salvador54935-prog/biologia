@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ContinentId } from '../types';
 import { SCIENTISTS_DATA } from '../data/scientists';
 import {
@@ -20,12 +20,16 @@ import {
   Columns,
   Sparkles,
   ArrowRight,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 interface GlobalTimelineProps {
   onOpenScientist: (id: string) => void;
   onSelectCountry: (country: string) => void;
 }
+
+const TIMELINE_ITEMS_PER_PAGE = 30;
 
 export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
   onOpenScientist,
@@ -38,9 +42,14 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [viewMode, setViewMode] = useState<'timeline' | 'table'>('timeline');
   const [showPioneersOnly, setShowPioneersOnly] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const allFields = useMemo(() => getAllFields(), []);
   const allCountries = useMemo(() => getAllCountries(), []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedContinent, selectedCountry, selectedField, selectedPeriod, showPioneersOnly, viewMode]);
 
   // Defined historical eras
   const ERAS = [
@@ -69,6 +78,14 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
 
     return list;
   }, [searchQuery, selectedContinent, selectedCountry, selectedField, selectedPeriod, showPioneersOnly]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredScientists.length / TIMELINE_ITEMS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIdx = (safePage - 1) * TIMELINE_ITEMS_PER_PAGE;
+  const paginatedScientists = useMemo(
+    () => filteredScientists.slice(startIdx, startIdx + TIMELINE_ITEMS_PER_PAGE),
+    [filteredScientists, startIdx]
+  );
 
   const getCenturyMarker = (year: number) => {
     if (year < 0) return 'Antigüedad a. C.';
@@ -241,7 +258,9 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
         {/* Results counter and reset */}
         <div className="flex items-center justify-between text-xs text-[#52796f] dark:text-[#8ba898] pt-2 border-t border-[#234734]/15">
           <span className="font-mono">
-            {filteredScientists.length} de {SCIENTISTS_DATA.length} científicos mostrados
+            {filteredScientists.length === 0
+              ? `0 de ${SCIENTISTS_DATA.length} científicos`
+              : `Mostrando ${startIdx + 1}–${Math.min(startIdx + TIMELINE_ITEMS_PER_PAGE, filteredScientists.length)} de ${filteredScientists.length} científicos`}
           </span>
           {(searchQuery || selectedContinent !== 'Todos' || selectedCountry !== 'Todos' || selectedField !== 'Todos' || selectedPeriod !== 'Todos' || showPioneersOnly) && (
             <button
@@ -269,8 +288,8 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
               No hay descubrimientos que coincidan con estos criterios. Prueba restableciendo los filtros.
             </div>
           ) : (
-            filteredScientists.map((s, idx) => {
-              const prevItem = filteredScientists[idx - 1];
+            paginatedScientists.map((s, idx) => {
+              const prevItem = paginatedScientists[idx - 1];
               const showCenturyHeader =
                 !prevItem || getCenturyMarker(prevItem.anioNumerico) !== getCenturyMarker(s.anioNumerico);
               const disciplinas = getDisciplinas(s);
@@ -378,7 +397,7 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-[#234734]/10 text-[#142e20] dark:text-[#e4efe8]">
-              {filteredScientists.map(s => (
+              {paginatedScientists.map(s => (
                 <tr
                   key={s.id}
                   onClick={() => onOpenScientist(s.id)}
@@ -417,6 +436,41 @@ export const GlobalTimeline: React.FC<GlobalTimelineProps> = ({
             </tbody>
           </table>
         </div>
+      )}
+
+      {/* Pagination Bar */}
+      {filteredScientists.length > TIMELINE_ITEMS_PER_PAGE && (
+        <nav aria-label="Paginación de línea del tiempo" className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#234734]/20 text-xs">
+          <span className="font-mono text-[#52796f] dark:text-[#8ba898]">
+            Página <strong className="text-[#0f2419] dark:text-white">{safePage}</strong> de <strong className="text-[#0f2419] dark:text-white">{totalPages}</strong>
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={safePage <= 1}
+              onClick={() => {
+                setCurrentPage(p => Math.max(1, p - 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] text-[#142e20] hover:bg-[#f2ede0] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+              <span>Anterior</span>
+            </button>
+            <button
+              type="button"
+              disabled={safePage >= totalPages}
+              onClick={() => {
+                setCurrentPage(p => Math.min(totalPages, p + 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#234734]/20 bg-[#fcfbf7] text-[#142e20] hover:bg-[#f2ede0] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]"
+            >
+              <span>Siguiente</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </nav>
       )}
     </div>
   );

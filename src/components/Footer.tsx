@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { ActiveTab } from '../types';
-import { Compass, BookOpen, Globe2, ShieldCheck, Sparkles } from 'lucide-react';
+import { Compass } from 'lucide-react';
+import { getStatistics } from '../utils/filters';
 
 interface FooterProps {
   onSelectTab: (tab: ActiveTab) => void;
@@ -13,6 +14,8 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onSelectTab, onOpenSearch }) => {
+  const stats = getStatistics();
+
   return (
     <footer className="bg-[#0f2419] border-t border-[#234734]/60 text-[#a3c9b3] text-xs py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -25,7 +28,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab, onOpenSearch }) => 
             <span className="font-bold tracking-tight text-base font-serif">BIOATLAS</span>
           </div>
           <p className="text-[#b4d8c2] text-[11px] leading-relaxed">
-            Atlas Universal del Conocimiento Científico. Plataforma interactiva con 759 científicos verificados en física, química, biología, matemáticas, astronomía, medicina, ingeniería y computación, desde c. 2650 a. C. hasta la actualidad.
+            Atlas Universal del Conocimiento Científico. Plataforma interactiva con {stats.totalCientificos} científicos verificados en física, química, biología, matemáticas, astronomía, medicina, ingeniería y computación, desde {stats.primerAporte} hasta la actualidad.
           </p>
         </div>
 
@@ -64,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab, onOpenSearch }) => 
                 onClick={() => onSelectTab('cientificos')}
                 className="hover:text-white transition-colors cursor-pointer"
               >
-                Catálogo General (759)
+                Catálogo General ({stats.totalCientificos})
               </button>
             </li>
           </ul>
@@ -76,11 +79,11 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab, onOpenSearch }) => 
             Colección Documental
           </span>
           <ul className="space-y-1.5 text-[11px] font-mono text-[#b4d8c2]">
-            <li>Total Científicos: <span className="text-white font-bold">759 biografías</span></li>
-            <li>Naciones con Bandera: <span className="text-white">71 países (100% oficial)</span></li>
-            <li>Continentes: <span className="text-white">5 continentes</span></li>
-            <li>Disciplinas: <span className="text-white">14 ramas de la ciencia</span></li>
-            <li>Rango Temporal: <span className="text-[#d4af37]">c. 2650 a. C. – 2024</span></li>
+            <li>Total Científicos: <span className="text-white font-bold">{stats.totalCientificos} biografías</span></li>
+            <li>Naciones con Bandera: <span className="text-white">{stats.totalPaises} países (100% oficial)</span></li>
+            <li>Continentes: <span className="text-white">{stats.totalContinentes} continentes</span></li>
+            <li>Disciplinas: <span className="text-white">{stats.totalDisciplinas} ramas de la ciencia</span></li>
+            <li>Rango Temporal: <span className="text-[#d4af37]">{stats.primerAporte} – {stats.ultimoAporte}</span></li>
           </ul>
         </div>
 
@@ -105,7 +108,7 @@ export const Footer: React.FC<FooterProps> = ({ onSelectTab, onOpenSearch }) => 
 
       <div className="max-w-7xl mx-auto mt-8 pt-6 border-t border-[#234734]/80 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#8ba898] gap-2">
         <span>BIOATLAS • Atlas Universal del Conocimiento Científico</span>
-        <span className="font-mono text-[#a3c9b3]">759 Registros Verificados • 71 Banderas Oficiales (100%)</span>
+        <span className="font-mono text-[#a3c9b3]">{stats.totalCientificos} Registros Verificados • {stats.totalPaises} Banderas Oficiales (100%)</span>
       </div>
     </footer>
   );

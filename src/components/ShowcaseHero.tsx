@@ -189,48 +189,36 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const durationMs = 10000; // 10 segundos obligatorios
-  const stepInterval = 100;
-  const progressTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const advanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const current = SHOWCASE_SCIENTISTS[currentIndex];
 
   const goToNext = () => {
     setCurrentIndex((prev) => (prev + 1) % SHOWCASE_SCIENTISTS.length);
-    setProgress(0);
   };
 
   const goToPrev = () => {
     setCurrentIndex((prev) => (prev - 1 + SHOWCASE_SCIENTISTS.length) % SHOWCASE_SCIENTISTS.length);
-    setProgress(0);
   };
 
   const goToIndex = (index: number) => {
     setCurrentIndex(index);
-    setProgress(0);
   };
 
   useEffect(() => {
     if (!isPlaying || isHovered) {
-      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
       return;
     }
 
-    progressTimerRef.current = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + (stepInterval / durationMs) * 100;
-        if (next >= 100) {
-          goToNext();
-          return 0;
-        }
-        return next;
-      });
-    }, stepInterval);
+    advanceTimerRef.current = setTimeout(() => {
+      goToNext();
+    }, durationMs);
 
     return () => {
-      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+      if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     };
   }, [isPlaying, isHovered, currentIndex]);
 
@@ -241,11 +229,14 @@ export const ShowcaseHero: React.FC<ShowcaseHeroProps> = ({
       onMouseLeave={() => setIsHovered(false)}
       aria-label="Pabellón de 10 Grandes Científicos de la Historia"
     >
-      {/* Barra de progreso de rotación de 10 segundos */}
+      {/* Barra de progreso de rotación de 10 segundos (GPU transform sin re-renderizados) */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-[#234734]/10 dark:bg-[#2d563e]/30 z-30">
-        <div 
-          className="h-full bg-gradient-to-r from-[#234734] via-[#356e4e] to-[#8c6b2d] transition-all duration-100 ease-linear dark:from-[#3d7a57] dark:to-[#d4af37]"
-          style={{ width: `${progress}%` }}
+        <div
+          key={currentIndex}
+          className="h-full w-full bg-gradient-to-r from-[#234734] via-[#356e4e] to-[#8c6b2d] dark:from-[#3d7a57] dark:to-[#d4af37] showcase-progress-bar"
+          style={{
+            animationPlayState: isPlaying && !isHovered ? 'running' : 'paused',
+          }}
         />
       </div>
 

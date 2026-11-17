@@ -4,9 +4,9 @@
  */
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { filterScientists } from '../utils/filters';
+import { filterScientists, getStatistics } from '../utils/filters';
 import { CircularFlag } from './CircularFlag';
-import { Search, X, ArrowRight, Sparkles } from 'lucide-react';
+import { Search, X, ArrowRight } from 'lucide-react';
 
 interface SearchDialogProps {
   isOpen: boolean;
@@ -21,6 +21,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
 }) => {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const stats = getStatistics();
 
   useEffect(() => {
     if (isOpen) {
@@ -91,7 +92,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
         <div className="max-h-[60vh] overflow-y-auto p-2">
           {!query.trim() ? (
             <div className="p-8 text-center text-xs text-[#52796f] dark:text-[#8ba898] space-y-2">
-              <p className="text-[#142e20] dark:text-[#f4f1ea] font-medium text-sm">Búsqueda universal instantánea en los 759 científicos</p>
+              <p className="text-[#142e20] dark:text-[#f4f1ea] font-medium text-sm">Búsqueda universal instantánea en los {stats.totalCientificos} científicos</p>
               <p>Prueba con: «relatividad», «Newton», «Pasteur», «vacuna», «ADN», «CRISPR», «genética», «álgebra»</p>
             </div>
           ) : results.length === 0 ? (

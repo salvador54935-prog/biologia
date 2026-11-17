@@ -100,3 +100,75 @@
   width: 0 !important;
   height: 0 !important;
 }
+
+@keyframes showcase-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.showcase-progress-bar {
+  transform-origin: left center;
+  animation: showcase-progress 10s linear forwards;
+}
+
+/* ========================================================
+   IMPRESIÓN DE FICHA BIOGRÁFICA EDITORIAL (@media print)
+   ======================================================== */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 15mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #142e20 !important;
+  }
+
+  /* Ocultar la interfaz principal de fondo cuando se imprime la ficha */
+  #app-main-shell {
+    display: none !important;
+  }
+
+  /* Expandir el contenedor modal imprimible a flujo natural de documento */
+  #scientist-modal-backdrop {
+    position: static !important;
+    inset: auto !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    display: block !important;
+  }
+
+  #scientist-dossier-printable {
+    max-width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #142e20 !important;
+    display: block !important;
+  }
+
+  #scientist-dossier-scroll {
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 12px 0 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  #scientist-dossier-printable * {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

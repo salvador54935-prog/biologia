@@ -91,6 +91,15 @@ export function normalizeCountryName(country: string): string {
     case 'Uzbekistán':
     case 'Uzbekistan':
       return 'Uzbekistán';
+    case 'Esuatini':
+      return 'Suazilandia';
+    case 'Congo':
+    case 'Republica del Congo':
+      return 'República del Congo';
+    case 'Libano':
+      return 'Líbano';
+    case 'Zimbawe':
+      return 'Zimbabue';
     default:
       return trimmed;
   }
@@ -114,6 +123,19 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
             <rect width="512" height="170.7" fill="#000000" />
             <rect y="170.7" width="512" height="170.7" fill="#DD0000" />
             <rect y="341.3" width="512" height="170.7" fill="#FFCE00" />
+          </svg>
+        );
+
+      case 'Argelia':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="256" height="512" fill="#006633" />
+            <rect x="256" width="256" height="512" fill="#FFFFFF" />
+            <circle cx="256" cy="256" r="105" fill="#D21034" />
+            <circle cx="282" cy="256" r="84" fill="#FFFFFF" />
+            <circle cx="256" cy="256" r="84" fill="none" />
+            <path d="M256,172 A84,84 0 0,0 256,340 A105,105 0 0,1 256,172" fill="#D21034" />
+            <polygon points="300,206 312,242 350,242 320,264 332,300 300,278 268,300 280,264 250,242 288,242" fill="#D21034" />
           </svg>
         );
 
@@ -467,6 +489,16 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
           </svg>
         );
 
+      case 'Ghana':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="170.7" fill="#CF0921" />
+            <rect y="170.7" width="512" height="170.7" fill="#FCD116" />
+            <rect y="341.3" width="512" height="170.7" fill="#006B3F" />
+            <polygon points="256,190 272,240 324,240 282,270 298,320 256,290 214,320 230,270 188,240 240,240" fill="#000000" />
+          </svg>
+        );
+
       case 'Grecia':
         return (
           <svg viewBox="0 0 512 512" className="w-full h-full">
@@ -478,6 +510,18 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
             <rect width="227.6" height="227.6" fill="#0D5EAF" />
             <rect x="85.3" width="56.9" height="227.6" fill="#FFFFFF" />
             <rect y="85.3" width="227.6" height="56.9" fill="#FFFFFF" />
+          </svg>
+        );
+
+      case 'Guatemala':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="170.7" height="512" fill="#4997D0" />
+            <rect x="170.7" width="170.7" height="512" fill="#FFFFFF" />
+            <rect x="341.3" width="170.7" height="512" fill="#4997D0" />
+            <circle cx="256" cy="256" r="46" fill="none" stroke="#38761D" strokeWidth="10" />
+            <rect x="234" y="236" width="44" height="36" rx="4" fill="#F4EFE3" stroke="#8C6B2D" strokeWidth="4" />
+            <circle cx="256" cy="222" r="10" fill="#009E49" />
           </svg>
         );
 
@@ -512,6 +556,14 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
             <rect y="341.3" width="512" height="170.7" fill="#138808" />
             <circle cx="256" cy="256" r="45" fill="none" stroke="#000080" strokeWidth="6" />
             <circle cx="256" cy="256" r="10" fill="#000080" />
+          </svg>
+        );
+
+      case 'Indonesia':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="256" fill="#CE1126" />
+            <rect y="256" width="512" height="256" fill="#FFFFFF" />
           </svg>
         );
 
@@ -596,6 +648,16 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
           </svg>
         );
 
+      case 'Líbano':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="128" fill="#ED1C24" />
+            <rect y="128" width="512" height="256" fill="#FFFFFF" />
+            <rect y="384" width="512" height="128" fill="#ED1C24" />
+            <polygon points="256,155 186,305 236,305 236,348 276,348 276,305 326,305" fill="#00A651" />
+          </svg>
+        );
+
       case 'Luxemburgo':
         return (
           <svg viewBox="0 0 512 512" className="w-full h-full">
@@ -625,6 +687,16 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
               strokeWidth="18"
               strokeLinejoin="miter"
             />
+          </svg>
+        );
+
+      case 'Mauricio':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="128" fill="#EA2839" />
+            <rect y="128" width="512" height="128" fill="#1A206D" />
+            <rect y="256" width="512" height="128" fill="#FFD500" />
+            <rect y="384" width="512" height="128" fill="#00A551" />
           </svg>
         );
 
@@ -712,6 +784,16 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
           </svg>
         );
 
+      case 'Portugal':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="205" height="512" fill="#006600" />
+            <rect x="205" width="307" height="512" fill="#FF0000" />
+            <circle cx="205" cy="256" r="76" fill="#FFFF00" />
+            <rect x="173" y="218" width="64" height="76" rx="14" fill="#FFFFFF" stroke="#D52B1E" strokeWidth="14" />
+          </svg>
+        );
+
       case 'Reino Unido':
         return (
           <svg viewBox="0 0 512 512" className="w-full h-full">
@@ -723,6 +805,15 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
             <rect width="120" height="512" x="196" fill="#FFFFFF" />
             <rect width="512" height="72" y="220" fill="#C8102E" />
             <rect width="72" height="512" x="220" fill="#C8102E" />
+          </svg>
+        );
+
+      case 'República del Congo':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <polygon points="0,0 512,0 0,512" fill="#009543" />
+            <polygon points="512,0 512,512 0,512" fill="#DC241F" />
+            <polygon points="380,0 512,0 132,512 0,512" fill="#FBDE4A" />
           </svg>
         );
 
@@ -771,6 +862,19 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
             <rect y="341.3" width="512" height="170.7" fill="#000000" />
             <circle cx="190" cy="256" r="22" fill="#007A3D" />
             <circle cx="322" cy="256" r="22" fill="#007A3D" />
+          </svg>
+        );
+
+      case 'Suazilandia':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="96" fill="#3E5EB9" />
+            <rect y="96" width="512" height="24" fill="#FFD900" />
+            <rect y="120" width="512" height="272" fill="#B10C0C" />
+            <rect y="392" width="512" height="24" fill="#FFD900" />
+            <rect y="416" width="512" height="96" fill="#3E5EB9" />
+            <ellipse cx="256" cy="256" rx="95" ry="52" fill="#FFFFFF" stroke="#000000" strokeWidth="8" />
+            <path d="M161,256 A95,52 0 0,0 256,308 L256,204 A95,52 0 0,0 161,256 Z" fill="#000000" />
           </svg>
         );
 
@@ -921,6 +1025,29 @@ export const CircularFlag: React.FC<CircularFlagProps> = ({
             <circle cx="236" cy="225" r="10" fill="#FFFFFF" />
             <circle cx="276" cy="225" r="10" fill="#FFFFFF" />
             <circle cx="256" cy="210" r="10" fill="#FFFFFF" />
+          </svg>
+        );
+
+      case 'Vietnam':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="512" fill="#DA251D" />
+            <polygon points="256,120 290,220 396,220 310,282 342,382 256,320 170,382 202,282 116,220 222,220" fill="#FFFF00" />
+          </svg>
+        );
+
+      case 'Zimbabue':
+        return (
+          <svg viewBox="0 0 512 512" className="w-full h-full">
+            <rect width="512" height="73.1" fill="#319208" />
+            <rect y="73.1" width="512" height="73.1" fill="#FFD200" />
+            <rect y="146.2" width="512" height="73.1" fill="#D40000" />
+            <rect y="219.3" width="512" height="73.4" fill="#000000" />
+            <rect y="292.7" width="512" height="73.1" fill="#D40000" />
+            <rect y="365.8" width="512" height="73.1" fill="#FFD200" />
+            <rect y="438.9" width="512" height="73.1" fill="#319208" />
+            <polygon points="0,0 220,256 0,512" fill="#FFFFFF" stroke="#000000" strokeWidth="12" />
+            <polygon points="75,205 90,248 135,248 98,274 112,317 75,290 38,317 52,274 15,248 60,248" fill="#D40000" />
           </svg>
         );
 

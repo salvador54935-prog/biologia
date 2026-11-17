@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { ContinentId } from '../types';
 import { SCIENTISTS_DATA } from '../data/scientists';
 import { getAllCountries, filterScientists } from '../utils/filters';
@@ -14,9 +14,8 @@ import {
   BookOpen,
   Sparkles,
   ArrowUpDown,
-  Filter,
-  CheckCircle2,
-  Calendar,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 interface ScientistsDirectoryProps {
@@ -41,6 +40,8 @@ const DISCIPLINES_LIST = [
   'Ciencias ambientales'
 ];
 
+const ITEMS_PER_PAGE = 24;
+
 export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
   onOpenScientist,
   onSelectCountry,
@@ -51,8 +52,13 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
   const [disciplineFilter, setDisciplineFilter] = useState<string>('Todas');
   const [showPioneersOnly, setShowPioneersOnly] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<'chrono-asc' | 'chrono-desc' | 'alpha-asc'>('chrono-asc');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const allCountries = useMemo(() => getAllCountries(), []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [query, continent, country, disciplineFilter, showPioneersOnly, sortBy]);
 
   const results = useMemo(() => {
     let list = filterScientists({
@@ -79,6 +85,14 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
 
     return list;
   }, [query, continent, country, disciplineFilter, showPioneersOnly, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(results.length / ITEMS_PER_PAGE));
+  const safePage = Math.min(currentPage, totalPages);
+  const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
+  const paginatedResults = useMemo(
+    () => results.slice(startIdx, startIdx + ITEMS_PER_PAGE),
+    [results, startIdx]
+  );
 
   return (
     <div className="py-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-6 text-[#14231b] dark:text-[#f4f1ea]">
@@ -161,7 +175,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
             >
               {DISCIPLINES_LIST.map(d => (
                 <option key={d} value={d}>
-                  {d === 'Todas' ? 'Todas las disciplinas (14)' : d}
+                  {d === 'Todas' ? `Todas las disciplinas (${DISCIPLINES_LIST.length - 1})` : d}
                 </option>
               ))}
             </select>
@@ -188,7 +202,14 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-[#1b3a2b]/10 dark:border-[#234734]/30 text-xs">
           <div className="flex items-center gap-2">
             <span className="font-medium text-[#5c6e62] dark:text-[#9bb7a5]">
-              Mostrando <strong className="text-[#14231b] dark:text-[#f4f1ea] font-mono">{results.length}</strong> de {SCIENTISTS_DATA.length} científicos
+              {results.length === 0 ? (
+                <>Mostrando <strong className="text-[#14231b] dark:text-[#f4f1ea] font-mono">0</strong> resultados</>
+              ) : (
+                <>
+                  Mostrando <strong className="text-[#14231b] dark:text-[#f4f1ea] font-mono">{startIdx + 1}–{Math.min(startIdx + ITEMS_PER_PAGE, results.length)}</strong> de{' '}
+                  <strong className="text-[#14231b] dark:text-[#f4f1ea] font-mono">{results.length}</strong> científicos
+                </>
+              )}
             </span>
             {(query || continent !== 'Todos' || country !== 'Todos' || disciplineFilter !== 'Todas' || showPioneersOnly) && (
               <button
@@ -231,7 +252,7 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {results.map(s => {
+          {paginatedResults.map(s => {
             const disciplinas = getDisciplinas(s);
 
             return (
@@ -339,6 +360,41 @@ export const ScientistsDirectory: React.FC<ScientistsDirectoryProps> = ({
             );
           })}
         </div>
+      )}
+
+      {/* Pagination Bar */}
+      {results.length > ITEMS_PER_PAGE && (
+        <nav aria-label="Paginación del catálogo" className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-[#1b3a2b]/15 dark:border-[#234734]/40 text-xs">
+          <span className="font-mono text-[#5c6e62] dark:text-[#9bb7a5]">
+            Página <strong className="text-[#14231b] dark:text-white">{safePage}</strong> de <strong className="text-[#14231b] dark:text-white">{totalPages}</strong>
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={safePage <= 1}
+              onClick={() => {
+                setCurrentPage(p => Math.max(1, p - 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#1b3a2b]/20 bg-[#fcfbf7] text-[#14231b] hover:bg-[#f2ede0] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+              <span>Anterior</span>
+            </button>
+            <button
+              type="button"
+              disabled={safePage >= totalPages}
+              onClick={() => {
+                setCurrentPage(p => Math.min(totalPages, p + 1));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#1b3a2b]/20 bg-[#fcfbf7] text-[#14231b] hover:bg-[#f2ede0] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer dark:border-[#2d563e] dark:bg-[#14291e] dark:text-[#e4efe8]"
+            >
+              <span>Siguiente</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </nav>
       )}
     </div>
   );
